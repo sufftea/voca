@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/router.dart';
 
-void main() {
+void main() async {
+  await Intls.load(const Locale('us'));
+
   runApp(const MyApp());
 }
 
@@ -9,12 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SizedBox.shrink(),
+      routerConfig: router,
     );
   }
 }
