@@ -45,3 +45,5 @@ app.*.map.json
 
 # =========== 
 lib/presentation/base/l10n/gen
+*.freezed.dart
+*.config.dart
