@@ -1,3 +1,4 @@
 {
-    "language": "Language: {languageName}"
+    "language": "Language: {languageName}",
+    "lookUpWord": "Look up word"
 }

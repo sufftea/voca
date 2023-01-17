@@ -10,6 +10,7 @@ class BaseColors {
   static const concrete = Color(0xfff3f3f3);
   static const curiousBlue = Color(0xff1E88E5);
   static final curiousBlue10 = curiousBlue.withOpacity(0.1);
+  static const neptune = Color(0xff7EACBA);
 }
 
 final baseTheme = ThemeData(
