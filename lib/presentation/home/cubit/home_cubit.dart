@@ -9,7 +9,7 @@ class HomeCubit extends Cubit<LoadingState<HomeState>> {
   HomeCubit() : super(LoadingState.loading());
 
   Future<void> startLoading() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
 
     emit(LoadingState.ready(HomeState(
       selectedLanguage: 'English',
