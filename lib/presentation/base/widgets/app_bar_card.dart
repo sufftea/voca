@@ -3,11 +3,11 @@ import 'package:voca/presentation/base/base_theme.dart';
 
 class AppBarCard extends StatelessWidget {
   const AppBarCard({
-    this.child,
+    required this.child,
     super.key,
   });
 
-  final Widget? child;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class AppBarCard extends StatelessWidget {
           ),
         ],
       ),
-      child: child,
+      child: SafeArea(child: child),
     );
   }
 }

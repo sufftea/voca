@@ -1,4 +1,18 @@
 {
     "language": "Language: {languageName}",
-    "lookUpWord": "Look up word"
+    "lookUpWord": "Look up a word",
+    "discoverBannerTitle": "Discover the words you don't know yet",
+    "practiceBannerTitle": "Practice with spaced repetition",
+    
+    "todaysGoal": "Today's goal: {amount}",
+
+    "discoverNew": "Discover new",
+    "@discoverNew": {
+        "description": "Text on the button"
+    },
+
+    "practice": "Practice",
+    "@practice": {
+        "description": "Text on the button"
+    }
 }

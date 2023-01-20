@@ -6,6 +6,7 @@ class BaseColors {
   static const white = Colors.white;
   static const black = Colors.black;
   static final black10 = Colors.black.withOpacity(0.1);
+  static final black25 = Colors.black.withOpacity(0.25);
   static const mineShaft = Color(0xff2e2e2e);
   static const concrete = Color(0xfff3f3f3);
   static const curiousBlue = Color(0xff1E88E5);
@@ -26,6 +27,25 @@ final baseTheme = ThemeData(
       borderRadius: BorderRadius.circular(5),
     )),
   )),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
+      elevation: const MaterialStatePropertyAll(0),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      maximumSize: const MaterialStatePropertyAll(Size.infinite),
+      minimumSize: const MaterialStatePropertyAll(Size.zero),
+      side: const MaterialStatePropertyAll(BorderSide.none),
+      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      )),
+      textStyle: const MaterialStatePropertyAll(TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeights.medium,
+        color: BaseColors.white,
+      )),
+    ),
+  ),
 );
 
 class FontWeights {
