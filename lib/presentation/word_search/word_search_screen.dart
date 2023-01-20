@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/search_bar.dart';
@@ -14,7 +13,10 @@ class WordSearchScreen extends StatelessWidget {
       body: Column(
         children: const [
           AppBarCard(
-            child: SearchBar(),
+            child: Material(
+              type: MaterialType.transparency,
+              child: SearchBar(),
+            ),
           ),
         ],
       ),

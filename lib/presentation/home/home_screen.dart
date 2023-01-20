@@ -9,6 +9,8 @@ import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
+import 'package:voca/presentation/home/widgets/discover_banner.dart';
+import 'package:voca/presentation/home/widgets/practice_banner.dart';
 import 'package:voca/presentation/word_search/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,14 +41,49 @@ class _HomeScreenState extends State<HomeScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildAppBar(),
-          SingleChildScrollView(
-            child: Column(
-              children: [],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    buildDiscoverBanner(),
+                    const SizedBox(height: 20),
+                    buildPracticeBanner(),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget buildDiscoverBanner() {
+    return builder(
+      (context, state) {
+        return state.map(
+          loading: (a) => DiscoverBanner.placeholder,
+          ready: (a) => const DiscoverBanner(),
+          error: (a) => DiscoverBanner.placeholder,
+        );
+      },
+    );
+  }
+
+  Widget buildPracticeBanner() {
+    return builder((context, state) {
+      return state.map(
+        loading: (a) => PracticeBanner.placeholder,
+        ready: (a) => PracticeBanner(
+          todaysGoal: a.data.todaysGoal,
+          todaysGoalCompleted: a.data.todaysGoalCompleted,
+        ),
+        error: (a) => PracticeBanner.placeholder,
+      );
+    });
   }
 
   Widget buildAppBar() {
