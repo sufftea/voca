@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/l10n.dart';
-import 'package:voca/presentation/base/router.dart';
+import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -12,6 +12,7 @@ import 'package:voca/presentation/home/cubit/home_state.dart';
 import 'package:voca/presentation/home/widgets/discover_banner.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
 import 'package:voca/presentation/word_search/search_bar.dart';
+import 'package:voca/presentation/word_search/search_bar_hero_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -87,42 +88,73 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget buildAppBar() {
+    return builder((context, state) {
+      return state.map(
+        loading: (a) => buildAppBarLoading(),
+        ready: (a) => buildAppBarReady(a.data),
+        error: (a) => buildAppBarLoading(),
+      );
+    });
+  }
+
+  Widget buildAppBarLoading() {
     return AppBarCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildLanguageButton(),
+          PlaceholderOr(real: buildLanguageButton('Placeholder text')),
           const SizedBox(height: 20),
-          SearchBar(
-            key: SearchBar.globalKey,
-            onTap: onSearchBarTap,
-          ),
+          const PlaceholderOr(real: SearchBar()),
         ],
       ),
     );
   }
 
-  Widget buildLanguageButton() {
-    Widget buttonReady(String text) => TextButton(
-          onPressed: () {},
-          child: Text(
-            Intls.current.language(text),
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeights.bold,
-              color: BaseColors.mineShaft,
+  Widget buildAppBarReady(HomeState state) {
+    return Hero(
+      tag: SearchBarHeroData.tag,
+      child: Material(
+        type: MaterialType.transparency,
+        child: AppBarCard(
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            reverse: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                buildLanguageButton(state.selectedLanguage),
+                const SizedBox(height: 20),
+                buildSearchBar(),
+              ],
             ),
           ),
-        );
+        ),
+      ),
+    );
+  }
 
-    return builder(
-      (context, state) {
-        return state.map(
-          loading: (a) => PlaceholderOr(real: buttonReady('Placeholder text')),
-          ready: (a) => buttonReady(a.data.selectedLanguage),
-          error: (a) => PlaceholderOr(real: buttonReady('Placeholder text')),
-        );
-      },
+  Listener buildSearchBar() {
+    return Listener(
+      onPointerDown: (_) => onSearchBarTap(),
+      behavior: HitTestBehavior.opaque,
+      child: const AbsorbPointer(
+        child: SearchBar(),
+      ),
+    );
+  }
+
+  Widget buildLanguageButton(String selectedLanguage) {
+    return TextButton(
+      onPressed: () {},
+      child: Text(
+        Intls.current.language(selectedLanguage),
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeights.bold,
+          color: BaseColors.mineShaft,
+        ),
+      ),
     );
   }
 }

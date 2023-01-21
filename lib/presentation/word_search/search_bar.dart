@@ -2,37 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/l10n.dart';
 
-class SearchBar extends StatefulWidget {
+
+class SearchBar extends StatelessWidget{
   const SearchBar({
     this.onChanged,
     this.onTap,
+    this.autofocus = false,
     super.key,
   });
 
-  /// For the Hero transition
-  static final globalKey = GlobalKey();
-
   final VoidCallback? onTap;
   final void Function(String)? onChanged;
-
-  @override
-  State<SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<SearchBar> {
-  final controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      onTap: widget.onTap,
-      onChanged: widget.onChanged,
+      onTap: onTap,
+      onChanged: onChanged,
+      autofocus: autofocus,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(10),
         filled: true,
