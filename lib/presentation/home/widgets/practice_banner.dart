@@ -16,8 +16,8 @@ class PracticeBanner extends StatelessWidget {
     super.key,
   });
 
-  static const placeholder =
-      PlaceholderOr(real: PracticeBanner(todaysGoal: 0, todaysGoalCompleted: 0));
+  static const placeholder = PlaceholderOr(
+      real: PracticeBanner(todaysGoal: 0, todaysGoalCompleted: 0));
 
   final int todaysGoal;
   final int todaysGoalCompleted;

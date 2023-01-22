@@ -21,7 +21,8 @@ class HomeState {
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       todaysGoal: todaysGoal ?? this.todaysGoal,
       todaysGoalCompleted: todaysGoalCompleted ?? this.todaysGoalCompleted,
-      nofWordsCurrentlyLearning: nofWordsCurrentlyLearning ?? this.nofWordsCurrentlyLearning,
+      nofWordsCurrentlyLearning:
+          nofWordsCurrentlyLearning ?? this.nofWordsCurrentlyLearning,
     );
   }
 }
