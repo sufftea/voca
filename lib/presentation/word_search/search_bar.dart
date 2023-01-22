@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/l10n.dart';
 
-
-class SearchBar extends StatelessWidget{
+class SearchBar extends StatelessWidget {
   const SearchBar({
     this.onChanged,
     this.onTap,

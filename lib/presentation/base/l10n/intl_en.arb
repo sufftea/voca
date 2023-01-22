@@ -14,5 +14,8 @@
     "practice": "Practice",
     "@practice": {
         "description": "Text on the button"
-    }
+    },
+
+    "home": "Home",
+    "settings": "Settings"
 }

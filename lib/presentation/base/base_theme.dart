@@ -8,6 +8,8 @@ class BaseColors {
   static final black10 = Colors.black.withOpacity(0.1);
   static final black25 = Colors.black.withOpacity(0.25);
   static const mineShaft = Color(0xff2e2e2e);
+  static final mineShaft10 = mineShaft.withOpacity(0.10);
+  static const mercury = Color(0xffE9E9E9);
   static const concrete = Color(0xfff3f3f3);
   static const curiousBlue = Color(0xff1E88E5);
   static final curiousBlue10 = curiousBlue.withOpacity(0.1);

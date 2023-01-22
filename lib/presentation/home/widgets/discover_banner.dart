@@ -17,7 +17,8 @@ class DiscoverBanner extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            Intls.current.discoverBannerTitle,textAlign: TextAlign.center,
+            Intls.current.discoverBannerTitle,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeights.bold,

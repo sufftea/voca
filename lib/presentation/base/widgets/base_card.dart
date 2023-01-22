@@ -17,7 +17,7 @@ class BaseCard extends StatelessWidget {
     return Card(
       color: BaseColors.concrete,
       elevation: 0,
-      shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: Padding(
         padding: padding,
         child: child,

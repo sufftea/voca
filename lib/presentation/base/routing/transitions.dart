@@ -1,12 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
-import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
-import 'package:voca/presentation/word_search/word_search_screen.dart';
 
-Page<dynamic> fadePageTransition(context, state) {
+Page<dynamic> fadePageTransition(
+  BuildContext context,
+  GoRouterState state,
+  Widget child,
+) {
   return CustomTransitionPage(
-    child: cubitProvider<SearchCubit>(const WordSearchScreen()),
+    child: child,
     transitionsBuilder: (
       context,
       animation,
