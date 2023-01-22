@@ -77,7 +77,7 @@ class _NavBarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return FilledButton(
       onPressed: onTap,
       style: ButtonStyle(
         padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),

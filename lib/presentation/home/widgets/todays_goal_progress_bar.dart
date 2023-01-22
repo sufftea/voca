@@ -22,7 +22,6 @@ class TodaysGoalProgBar extends StatelessWidget {
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeights.bold,
-            color: BaseColors.mineShaft,
           ),
         ),
         const SizedBox(height: 5),
@@ -34,7 +33,7 @@ class TodaysGoalProgBar extends StatelessWidget {
             border: Border.all(
               color: BaseColors.black25,
               width: 0.5,
-              strokeAlign: StrokeAlign.outside,
+              strokeAlign: BorderSide.strokeAlignOutside,
             ),
           ),
           alignment: Alignment.centerLeft,
