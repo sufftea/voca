@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
       (context, state) {
         return state.map(
           loading: (a) => DiscoverBanner.placeholder,
-          ready: (a) => const DiscoverBanner(),
+          ready: (a) => DiscoverBanner(wordRange: a.data.selectedWordRange),
           error: (a) => DiscoverBanner.placeholder,
         );
       },
@@ -152,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen>
         style: const TextStyle(
           fontSize: 24,
           fontWeight: FontWeights.bold,
-          color: BaseColors.mineShaft,
         ),
       ),
     );

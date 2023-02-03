@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/l10n.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -35,7 +31,6 @@ class PracticeBanner extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeights.bold,
-              color: BaseColors.mineShaft,
             ),
           ),
           const SizedBox(height: 20),
@@ -44,11 +39,8 @@ class PracticeBanner extends StatelessWidget {
             completed: todaysGoalCompleted,
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {},
-            style: const ButtonStyle(
-              padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
-            ),
             child: Text(Intls.current.practice),
           ),
         ],

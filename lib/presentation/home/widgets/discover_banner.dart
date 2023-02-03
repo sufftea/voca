@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
+import 'package:voca/presentation/entities/word_range.dart';
+import 'package:voca/presentation/home/widgets/word_range_button.dart';
 
 class DiscoverBanner extends StatelessWidget {
-  const DiscoverBanner({super.key});
+  const DiscoverBanner({
+    required this.wordRange,
+    super.key,
+  });
 
-  static const placeholder = PlaceholderOr(real: DiscoverBanner());
+  static final placeholder = PlaceholderOr(
+      real: DiscoverBanner(
+    wordRange: WordRange(
+      low: 0,
+      high: 0,
+      learningNumber: 0,
+      knowNumber: 0,
+    ),
+  ));
+
+  final WordRange wordRange;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +39,18 @@ class DiscoverBanner extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeights.bold,
-              color: BaseColors.mineShaft,
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
+          WordRangeButton(
+            onTap: () {
+              GoRouter.of(context).goNamed(RouteNames.wordRangeList);
+            },
+            wordRange: wordRange,
+          ),
+          const SizedBox(height: 20),
+          FilledButton(
             onPressed: () {},
-            style: const ButtonStyle(
-              padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
-            ),
             child: Text(Intls.current.discoverNew),
           ),
         ],

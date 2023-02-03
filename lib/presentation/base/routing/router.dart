@@ -1,4 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/routing/transitions.dart';
@@ -8,6 +7,8 @@ import 'package:voca/presentation/home/home_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
 import 'package:voca/presentation/nav_bar/nav_bar_shell.dart';
 import 'package:voca/presentation/settings/settings_screen.dart';
+import 'package:voca/presentation/word_range/cubit/word_range_list_cubit.dart';
+import 'package:voca/presentation/word_range/word_range_list_screen.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/word_search_screen.dart';
 
@@ -17,6 +18,7 @@ class RouteNames {
   static const home = 'home';
   static const wordSearch = 'wordSearch';
   static const settings = 'settings';
+  static const wordRangeList = 'wordRangeList';
 }
 
 final _rootKey = GlobalKey<NavigatorState>();
@@ -49,6 +51,19 @@ final router = GoRouter(
                   context,
                   state,
                   cubitProvider<SearchCubit>(const WordSearchScreen()),
+                );
+              },
+            ),
+            GoRoute(
+              // better name?
+              path: 'all_words',
+              name: RouteNames.wordRangeList,
+              parentNavigatorKey: _rootKey,
+              pageBuilder: (context, state) {
+                return fadePageTransition(
+                  context,
+                  state,
+                  cubitProvider<WordRangeListCubit>(const WordRangeListScreen()),
                 );
               },
             ),
