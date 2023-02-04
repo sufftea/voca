@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -21,6 +21,8 @@ class NavBarShell extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Scaffold(
       body: child,
       bottomNavigationBar: AppBarCard(
@@ -36,7 +38,7 @@ class NavBarShell extends StatelessWidget
                     cubit(context).setTab(NavBarTab.home);
                   },
                   icon: Icons.home,
-                  name: Intls.current.home,
+                  name: t.navBar.home,
                   active: state.activeTab == NavBarTab.home,
                 );
               }),
@@ -50,7 +52,7 @@ class NavBarShell extends StatelessWidget
                     cubit(context).setTab(NavBarTab.settings);
                   },
                   icon: Icons.settings,
-                  name: Intls.current.settings,
+                  name: t.navBar.settings,
                   active: state.activeTab == NavBarTab.settings,
                 );
               }),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
@@ -28,13 +28,15 @@ class DiscoverBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return BaseCard(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            Intls.current.discoverBannerTitle,
+            t.home.discoverBanner.header,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
@@ -51,7 +53,7 @@ class DiscoverBanner extends StatelessWidget {
           const SizedBox(height: 20),
           FilledButton(
             onPressed: () {},
-            child: Text(Intls.current.discoverNew),
+            child: Text(t.home.discoverBanner.discoverNew),
           ),
         ],
       ),

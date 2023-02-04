@@ -22,11 +22,13 @@ class BaseColors {
 
 final baseTheme = ThemeData(
   useMaterial3: true,
+  primarySwatch: Colors.blue,
+  //
   textTheme: Typography.blackMountainView.apply(
     bodyColor: BaseColors.mineShaft,
     displayColor: BaseColors.mineShaft,
   ),
-  primarySwatch: Colors.blue,
+  //
   textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
     backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
@@ -38,6 +40,7 @@ final baseTheme = ThemeData(
     )),
     foregroundColor: const MaterialStatePropertyAll(BaseColors.mineShaft),
   )),
+  //
   filledButtonTheme: FilledButtonThemeData(
     style: ButtonStyle(
       backgroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),

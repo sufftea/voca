@@ -1,0 +1,3 @@
+input_directory: lib/presentation/base/l10n/locales/
+output_directory: lib/presentation/base/l10n/
+input_file_pattern: .yaml

@@ -16,11 +16,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.1
   intl: ^0.17.0
-  intl_utils: ^2.7.0
   go_router: ^6.0.1
   freezed_annotation: ^2.2.0
   injectable: ^2.1.0
   get_it: ^7.2.0
+  slang: ^3.11.1
+  slang_flutter: ^3.11.0
 
 flutter_intl:
   enabled: true

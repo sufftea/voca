@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 
 const _progBarHeight = 20.0;
@@ -28,7 +28,7 @@ class WordRangeProgressBar extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              buildKnowLearningTexts(),
+              buildKnowLearningTexts(context),
               const SizedBox(height: 5),
               buildProgressBar(),
             ],
@@ -76,13 +76,13 @@ class WordRangeProgressBar extends StatelessWidget {
     );
   }
 
-  Row buildKnowLearningTexts() {
-    final l = Intls.current;
+  Row buildKnowLearningTexts(BuildContext context) {
+    final t = Translations.of(context);
 
     return Row(
       children: [
         Text(
-          l.knownAmount(wordRange.knowNumber),
+          t.rangeSelection.knownAmount(n: wordRange.knowNumber),
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeights.bold,
@@ -91,7 +91,7 @@ class WordRangeProgressBar extends StatelessWidget {
         ),
         const Spacer(),
         Text(
-          l.learningAmount(wordRange.learningNumber),
+          t.rangeSelection.learningAmount(n: wordRange.learningNumber),
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeights.bold,

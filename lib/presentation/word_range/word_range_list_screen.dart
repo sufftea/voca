@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -134,13 +134,15 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
 
     final f = NumberFormat.compact();
 
+    final t = Translations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            Intls.current.selectedRange,
+            t.rangeSelection.selectedRange,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeights.bold,
