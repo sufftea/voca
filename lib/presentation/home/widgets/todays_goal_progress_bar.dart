@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 
 class TodaysGoalProgBar extends StatelessWidget {
   const TodaysGoalProgBar({
@@ -14,11 +14,13 @@ class TodaysGoalProgBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          Intls.current.todaysGoal(goal),
+          t.home.practiceBanner.todaysGoal(n: goal),
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeights.bold,

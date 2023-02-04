@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
@@ -16,6 +16,8 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return TextField(
       onTap: onTap,
       onChanged: onChanged,
@@ -28,7 +30,7 @@ class SearchBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide.none,
         ),
-        hintText: Intls.current.lookUpWord,
+        hintText: t.search.lookUpWord,
         hintStyle: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.bold,

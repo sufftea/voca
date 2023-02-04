@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 
 const _barWidth = 25.0;
@@ -18,20 +18,22 @@ class WordRangesGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        buildLegend(),
+        buildLegend(context),
         buildGraph(),
       ],
     );
   }
 
-  Widget buildLegend() {
+  Widget buildLegend(BuildContext context) {
+    final t = Translations.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Row(
         children: [
-          buildLabel(Intls.current.learning, BaseColors.curiousBlue),
+          buildLabel(t.rangeSelection.learning, BaseColors.curiousBlue),
           const SizedBox(width: 20),
-          buildLabel(Intls.current.known, BaseColors.neptune),
+          buildLabel(t.rangeSelection.known, BaseColors.neptune),
         ],
       ),
     );

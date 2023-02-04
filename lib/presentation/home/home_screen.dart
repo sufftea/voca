@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/gen/l10n.dart';
+import 'package:voca/presentation/base/l10n/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
@@ -65,10 +65,9 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildDiscoverBanner() {
     return builder(
       (context, state) {
-        return state.map(
-          loading: (a) => DiscoverBanner.placeholder,
-          ready: (a) => DiscoverBanner(wordRange: a.data.selectedWordRange),
-          error: (a) => DiscoverBanner.placeholder,
+        return state.readyMap(
+          loading: () => DiscoverBanner.placeholder,
+          ready: (data) => DiscoverBanner(wordRange: data.selectedWordRange),
         );
       },
     );
@@ -76,23 +75,21 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildPracticeBanner() {
     return builder((context, state) {
-      return state.map(
-        loading: (a) => PracticeBanner.placeholder,
-        ready: (a) => PracticeBanner(
-          todaysGoal: a.data.todaysGoal,
-          todaysGoalCompleted: a.data.todaysGoalCompleted,
+      return state.readyMap(
+        loading: () => PracticeBanner.placeholder,
+        ready: (data) => PracticeBanner(
+          todaysGoal: data.todaysGoal,
+          todaysGoalCompleted: data.todaysGoalCompleted,
         ),
-        error: (a) => PracticeBanner.placeholder,
       );
     });
   }
 
   Widget buildAppBar() {
     return builder((context, state) {
-      return state.map(
-        loading: (a) => buildAppBarLoading(),
-        ready: (a) => buildAppBarReady(a.data),
-        error: (a) => buildAppBarLoading(),
+      return state.readyMap(
+        loading: () => buildAppBarLoading(),
+        ready: (data) => buildAppBarReady(data),
       );
     });
   }
@@ -145,10 +142,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget buildLanguageButton(String selectedLanguage) {
+    final t = Translations.of(context);
+    
     return TextButton(
       onPressed: () {},
       child: Text(
-        Intls.current.language(selectedLanguage),
+        t.home.languageIs(language: selectedLanguage),
         style: const TextStyle(
           fontSize: 24,
           fontWeight: FontWeights.bold,
