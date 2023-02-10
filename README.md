@@ -14,4 +14,3 @@ flutter pub run build_runner build --delete-conflicting-outputs
 Wordnet: Princeton University "About WordNet." WordNet. Princeton University. 2010. https://wordnet.princeton.edu/
 
 Words by frequency of use dataset: https://www.kaggle.com/datasets/wheelercode/dictionary-word-frequency?resource=download
-
