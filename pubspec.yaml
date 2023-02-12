@@ -22,6 +22,8 @@ dependencies:
   get_it: ^7.2.0
   slang: ^3.11.1
   slang_flutter: ^3.11.0
+  sqflite: ^2.2.4+1
+  path: ^1.8.2
 
 flutter_intl:
   enabled: true
@@ -41,3 +43,5 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - assets/
