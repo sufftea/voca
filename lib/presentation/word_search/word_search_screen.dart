@@ -17,6 +17,20 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   @override
   void initState() {
     super.initState();
+
+    test();
+  }
+
+  void test() async {
+    debugPrint('starting search');
+    
+    await cubit.onSearchTextChanged('worl');
+
+    final results = cubit.state.results;
+
+    for (final word in results) {
+      debugPrint(word.name);
+    }
   }
 
   @override

@@ -1,12 +1,14 @@
 import 'dart:collection';
 
+import 'package:voca/domain/entities/word.dart';
+
 class DictionaryEntry {
   DictionaryEntry({
-    required this.name,
+    required this.word,
     required this.definitions,
   });
 
-  final String name;
+  final Word word;
   final UnmodifiableListView<WordDefinition> definitions;
 }
 

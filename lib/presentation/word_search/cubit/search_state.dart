@@ -1,27 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/domain/repositories/words_repository.dart';
+import 'package:voca/domain/entities/word.dart';
 
 class SearchState {
   const SearchState({
     this.results = const [],
-    this.message = SearchStatus.idle,
-    this.handle,
+    this.status = SearchStatus.idle,
+    this.lastSearch,
   });
 
-  final List<WordCard> results;
-  final SearchStatus message;
-  final SearchHandle<WordCard>? handle;
+  final List<Word> results;
+  final SearchStatus status;
+  final String? lastSearch;
 
   SearchState copyWith({
-    List<WordCard>? results,
-    SearchStatus? message,
-    SearchHandle<WordCard>? handle,
+    List<Word>? results,
+    SearchStatus? status,
+    String? lastSearch,
   }) {
     return SearchState(
       results: results ?? this.results,
-      message: message ?? this.message,
-      handle: handle ?? this.handle,
+      status: status ?? this.status,
+      lastSearch: lastSearch ?? this.lastSearch,
     );
   }
 }
@@ -31,5 +30,4 @@ enum SearchStatus {
   noResults,
   idle,
   loading,
-  canLoadMore,
 }
