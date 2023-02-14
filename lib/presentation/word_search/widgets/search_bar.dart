@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/strings.g.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({

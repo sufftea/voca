@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/strings.g.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 
 const _progBarHeight = 20.0;

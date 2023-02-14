@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/strings.g.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
@@ -11,8 +11,8 @@ import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
 import 'package:voca/presentation/home/widgets/discover_banner.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
-import 'package:voca/presentation/word_search/search_bar.dart';
-import 'package:voca/presentation/word_search/search_bar_hero_data.dart';
+import 'package:voca/presentation/word_search/widgets/search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildLanguageButton(String selectedLanguage) {
     final t = Translations.of(context);
-    
+
     return TextButton(
       onPressed: () {},
       child: Text(

@@ -10,7 +10,13 @@ class SearchCubit extends Cubit<SearchState> {
   final FindWordsUseCase _findWordsUseCase;
 
   Future<void> onSearchTextChanged(String text) async {
-    if (text.length < 3) {
+    if (text.isEmpty) {
+      emit(state.copyWith(
+        results: [],
+        status: SearchStatus.idle,
+        lastSearch: text,
+      ));
+    } else if (text.length < 3) {
       emit(state.copyWith(
         results: [],
         status: SearchStatus.needsMoreLetters,
@@ -33,7 +39,7 @@ class SearchCubit extends Cubit<SearchState> {
 
     emit(state.copyWith(
       results: words,
-      status: SearchStatus.idle,
+      status: words.isEmpty ? SearchStatus.noResults : SearchStatus.idle,
     ));
   }
 }

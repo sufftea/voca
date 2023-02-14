@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 class SearchBarHeroData {
   const SearchBarHeroData._();
 

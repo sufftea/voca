@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 @LazySingleton(as: AssetsRepository)
 class AssetsRepositoryImpl implements AssetsRepository {
   @override
-  Future<void> loadDatabaseFromAssets() async {
+  Future<void> initDatabaseFromAssets() async {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, "en_dictionary.db");
 

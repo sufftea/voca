@@ -1,3 +1,3 @@
 abstract class AssetsRepository {
-  Future<void> loadDatabaseFromAssets();
+  Future<void> initDatabaseFromAssets();
 }

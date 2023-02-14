@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/strings.g.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/widgets/todays_goal_progress_bar.dart';
