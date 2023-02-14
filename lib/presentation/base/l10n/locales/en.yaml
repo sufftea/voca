@@ -19,6 +19,9 @@ navBar:
 
 search:
   lookUpWord: Look up a word
+  enterNLetters: Enter 3 letters or more, please
+  noResults: No results
+  completed: Completed
 
 rangeSelection:
   learning: Learning

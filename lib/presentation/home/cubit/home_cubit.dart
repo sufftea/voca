@@ -8,7 +8,7 @@ import 'package:voca/presentation/home/cubit/home_state.dart';
 class HomeCubit extends Cubit<LoadingState<HomeState>> {
   HomeCubit() : super(LoadingState.loading());
 
-  Future<void> startLoading() async {
+  Future<void> onScreenOpened() async {
     await Future.delayed(const Duration(seconds: 2));
 
     emit(LoadingState.ready(HomeState(

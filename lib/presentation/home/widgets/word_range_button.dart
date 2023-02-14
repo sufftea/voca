@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/l10n/strings.g.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/widgets/clicable_card.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 import 'package:voca/presentation/word_range/widgets/word_range_progress_bar.dart';
