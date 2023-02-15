@@ -46,7 +46,7 @@ class DiscoverBanner extends StatelessWidget {
           const SizedBox(height: 20),
           WordRangeButton(
             onTap: () {
-              GoRouter.of(context).goNamed(RouteNames.wordRangeList);
+              GoRouter.of(context).goNamed(RouteNames.learningRange);
             },
             wordRange: wordRange,
           ),

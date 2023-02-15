@@ -5,9 +5,9 @@ part 'loading_state.freezed.dart';
 class LoadingState<T> with _$LoadingState<T> {
   const LoadingState._();
 
-  factory LoadingState.loading() = _$Loading;
-  factory LoadingState.ready(T data) = _$Ready<T>;
-  factory LoadingState.error() = _$Error;
+  const factory LoadingState.loading() = _$Loading<T>;
+  const factory LoadingState.ready(T data) = _$Ready<T>;
+  const factory LoadingState.error() = _$Error<T>;
 
   T? get readyData => mapOrNull(ready: (a) => a.data);
   
