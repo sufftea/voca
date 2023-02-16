@@ -6,7 +6,7 @@ import 'package:voca/presentation/word_range/cubit/word_range_list_state.dart';
 
 @injectable
 class WordRangeListCubit extends Cubit<LoadingState<WordRrangeListState>> {
-  WordRangeListCubit() : super(LoadingState<WordRrangeListState>.loading());
+  WordRangeListCubit() : super(const LoadingState<WordRrangeListState>.loading());
 
   void startLoading() async {
     await Future.delayed(const Duration(seconds: 1));

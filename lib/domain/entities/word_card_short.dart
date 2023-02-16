@@ -1,23 +1,17 @@
 import 'package:voca/domain/entities/word.dart';
+import 'package:voca/domain/entities/word_card_meta.dart';
 
-/// Only most important info about a word card
+/// Only the most important info from a word card
 class WordCardShort {
   const WordCardShort({
     required this.word,
-    this.status = WordCardStatus.unknown,
-    this.repetitionCount = 0,
+    this.cardData = const WordCardMeta(
+      repetitionCount: 0,
+      status: WordCardStatus.unknown,
+    ),
   });
 
   final Word word;
-  final int repetitionCount;
-  final WordCardStatus status;
+  final WordCardMeta cardData;
 }
 
-enum WordCardStatus {
-  unknown,
-
-  /// Also includes learned words ([repetitionCount] == [maxRepetitionCount])
-  learning,
-
-  markedKnown,
-}

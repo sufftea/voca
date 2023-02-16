@@ -6,7 +6,7 @@ import 'package:voca/presentation/home/cubit/home_state.dart';
 
 @injectable
 class HomeCubit extends Cubit<LoadingState<HomeState>> {
-  HomeCubit() : super(LoadingState.loading());
+  HomeCubit() : super(const LoadingState.loading());
 
   Future<void> onScreenOpened() async {
     await Future.delayed(const Duration(seconds: 2));

@@ -5,6 +5,7 @@ class BaseCard extends StatelessWidget {
   const BaseCard({
     this.padding = EdgeInsets.zero,
     this.borderSide = BorderSide.none,
+    this.color,
     this.child,
     super.key,
   });
@@ -12,12 +13,13 @@ class BaseCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Widget? child;
   final BorderSide borderSide;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero,
-      color: BaseColors.concrete,
+      color: color ?? BaseColors.concrete,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
