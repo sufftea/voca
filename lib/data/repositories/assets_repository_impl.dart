@@ -8,13 +8,16 @@ import 'package:path/path.dart';
 
 @LazySingleton(as: AssetsRepository)
 class AssetsRepositoryImpl implements AssetsRepository {
+  static const enDictionaryDbName = 'en_dictionary.db';
+
   @override
   Future<void> initDatabaseFromAssets() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, "en_dictionary.db");
+    final path = join(databasesPath, enDictionaryDbName);
 
     final exists = await databaseExists(path);
 
+    // TODO: versionning logic
     if (!exists) {
       _copyDatabase(path);
     }
@@ -23,7 +26,7 @@ class AssetsRepositoryImpl implements AssetsRepository {
   Future<void> _copyDatabase(String path) async {
     await Directory(dirname(path)).create(recursive: true);
 
-    ByteData data = await rootBundle.load(join("assets", "en_dictionary.db"));
+    ByteData data = await rootBundle.load(join("assets", enDictionaryDbName));
     List<int> bytes =
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 

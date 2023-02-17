@@ -5,7 +5,9 @@ import 'package:voca/presentation/word_search/cubit/search_state.dart';
 
 @injectable
 class SearchCubit extends Cubit<SearchState> {
-  SearchCubit(this._findWordsUseCase) : super(const SearchState());
+  SearchCubit(
+    this._findWordsUseCase,
+  ) : super(const SearchState());
 
   final FindWordsUseCase _findWordsUseCase;
 
