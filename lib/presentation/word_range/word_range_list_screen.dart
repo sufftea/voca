@@ -34,9 +34,10 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
     return Scaffold(
       backgroundColor: BaseColors.white,
       body: Column(
+        verticalDirection: VerticalDirection.up,
         children: [
-          buildAppBar(),
           buildBody(),
+          buildAppBar(),
         ],
       ),
     );
@@ -84,13 +85,15 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
   }
 
   Widget buildBody() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildGraph(),
-          const SizedBox(height: 20),
-          buildRangeSelection(),
-        ],
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildGraph(),
+            const SizedBox(height: 20),
+            buildRangeSelection(),
+          ],
+        ),
       ),
     );
   }
@@ -98,9 +101,9 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
   Widget buildGraph() {
     return builder(
       (context, state) {
-        return state.readyMap(
-          loading: () => const PlaceholderCard(height: 400),
-          ready: (data) => WordRangesGraph(ranges: data.ranges),
+        return state.maybeMap(
+          orElse: () => const PlaceholderCard(height: 400),
+          ready: (a) => WordRangesGraph(ranges: a.data.ranges),
         );
       },
       buildWhen: (prev, curr) =>
@@ -112,11 +115,11 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
   Widget buildRangeSelection() {
     return builder(
       (context, state) {
-        return state.readyMap(
-          loading: () => const PlaceholderCard(height: 50),
-          ready: (data) => bulidRangeSelectionReady(
-            selectedRange: data.selectedRange,
-            ranges: data.ranges,
+        return state.maybeMap(
+          orElse: () => const PlaceholderCard(height: 50),
+          ready: (a) => bulidRangeSelectionReady(
+            selectedRange: a.data.selectedRange,
+            ranges: a.data.ranges,
           ),
         );
       },

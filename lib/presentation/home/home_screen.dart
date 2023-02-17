@@ -40,24 +40,29 @@ class _HomeScreenState extends State<HomeScreen>
       backgroundColor: BaseColors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        verticalDirection: VerticalDirection.up,
         children: [
+          buildBody(),
           buildAppBar(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    buildDiscoverBanner(),
-                    const SizedBox(height: 20),
-                    buildPracticeBanner(),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+
+  Expanded buildBody() {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildDiscoverBanner(),
+              const SizedBox(height: 20),
+              buildPracticeBanner(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -65,9 +70,9 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildDiscoverBanner() {
     return builder(
       (context, state) {
-        return state.readyMap(
-          loading: () => DiscoverBanner.placeholder,
-          ready: (data) => DiscoverBanner(wordRange: data.selectedWordRange),
+        return state.maybeMap(
+          orElse: () => DiscoverBanner.placeholder,
+          ready: (a) => DiscoverBanner(wordRange: a.data.selectedWordRange),
         );
       },
     );
@@ -75,11 +80,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildPracticeBanner() {
     return builder((context, state) {
-      return state.readyMap(
-        loading: () => PracticeBanner.placeholder,
-        ready: (data) => PracticeBanner(
-          todaysGoal: data.todaysGoal,
-          todaysGoalCompleted: data.todaysGoalCompleted,
+      return state.maybeMap(
+        orElse: () => PracticeBanner.placeholder,
+        ready: (a) => PracticeBanner(
+          todaysGoal: a.data.todaysGoal,
+          todaysGoalCompleted: a.data.todaysGoalCompleted,
         ),
       );
     });
@@ -87,9 +92,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildAppBar() {
     return builder((context, state) {
-      return state.readyMap(
-        loading: () => buildAppBarLoading(),
-        ready: (data) => buildAppBarReady(data),
+      return state.maybeMap(
+        orElse: () => buildAppBarLoading(),
+        ready: (a) => buildAppBarReady(a.data),
       );
     });
   }
