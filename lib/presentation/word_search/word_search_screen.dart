@@ -25,9 +25,10 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     return Scaffold(
       backgroundColor: BaseColors.white,
       body: Column(
+        verticalDirection: VerticalDirection.up,
         children: [
-          buildAppBar(),
           buildBody(),
+          buildAppBar(),
         ],
       ),
     );
