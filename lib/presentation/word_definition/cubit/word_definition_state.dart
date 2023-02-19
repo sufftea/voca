@@ -1,18 +1,34 @@
-import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:collection';
+
+import 'package:voca/domain/entities/dictionary_entry.dart';
+import 'package:voca/domain/entities/word.dart';
+import 'package:voca/domain/entities/word_card_user_data.dart';
 
 class WordDefinitionState {
   const WordDefinitionState({
-    this.wordCard = const LoadingState<WordCard>.loading(),
+    this.repetitionCount,
+    this.status,
+    this.word,
+    this.definitions,
   });
 
-  final LoadingState<WordCard> wordCard;
+  final int? repetitionCount;
+  final WordCardStatus? status;
+  final Word? word;
+  final UnmodifiableListView<WordDefinition>? definitions;
 
   WordDefinitionState copyWith({
-    LoadingState<WordCard>? wordCard,
+    int? repetitionCount,
+    WordCardStatus? status,
+    Word? word,
+    UnmodifiableListView<WordDefinition>? definitions,
   }) {
     return WordDefinitionState(
-      wordCard: wordCard ?? this.wordCard,
+      repetitionCount: repetitionCount ?? this.repetitionCount,
+      status: status ?? this.status,
+      word: word ?? this.word,
+      definitions: definitions ?? this.definitions,
     );
   }
 }

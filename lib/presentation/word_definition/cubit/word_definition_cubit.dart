@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:voca/domain/entities/word_card_user_data.dart';
 import 'package:voca/domain/entities/word_card_short.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
-import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';
 
 @injectable
@@ -14,10 +14,78 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
   final WordsRepository _wordsRepository;
 
   Future<void> onPageOpened(WordCardShort wordCard) async {
+    emit(state.copyWith(
+      repetitionCount: wordCard.userData.repetitionCount,
+      status: wordCard.userData.status,
+      word: wordCard.word,
+    ));
+
     final card = await _wordsRepository.fetchWordCard(wordCard.word);
 
     emit(state.copyWith(
-      wordCard: LoadingState.ready(card),
+      definitions: card.dictionaryEntry.definitions,
+    ));
+  }
+
+  Future<void> setWordLearning() async {
+    assert(state.word != null, "Call onPageOpened first");
+
+    emit(state.copyWith(
+      status: null,
+    ));
+
+    await _wordsRepository.setWordCardStatus(
+      state.word!,
+      WordCardStatus.learningOrLearned,
+    );
+
+    emit(state.copyWith(
+      status: WordCardStatus.learningOrLearned,
+    ));
+  }
+
+  Future<void> setWordKnown() async {
+    assert(state.word != null, 'Call onPageOpened first');
+
+    emit(state.copyWith(
+      status: null,
+    ));
+
+    await _wordsRepository.setWordCardStatus(
+      state.word!,
+      WordCardStatus.known,
+    );
+
+    emit(state.copyWith(
+      status: WordCardStatus.known,
+    ));
+  }
+
+  Future<void> setWordUnknown() async {
+    assert(state.word != null, 'Call onPageOpened first');
+
+    emit(state.copyWith(
+      status: null,
+    ));
+
+    await _wordsRepository.setWordCardStatus(
+      state.word!,
+      WordCardStatus.unknown,
+    );
+
+    emit(state.copyWith(
+      status: WordCardStatus.unknown,
+    ));
+  }
+
+  Future<void> resetWord() async {
+    assert(state.word != null, 'Call onPageOpened first');
+
+    await _wordsRepository.setWordCardRepetitions(state.word!, 0);
+
+    emit(state.copyWith(
+      status: WordCardStatus.learningOrLearned,
+      repetitionCount: 0,
     ));
   }
 }

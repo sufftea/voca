@@ -1,23 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:voca/domain/entities/dictionary_entry.dart';
-import 'package:voca/domain/entities/word_card_meta.dart';
+import 'package:voca/domain/entities/word_card_user_data.dart';
 
 class WordCard {
   WordCard({
     required this.dictionaryEntry,
-    required this.cardData,
+    required this.userData,
   });
   
   final DictionaryEntry dictionaryEntry;
-  final WordCardMeta cardData;
+  final WordCardUserData userData;
 
   WordCard copyWith({
     DictionaryEntry? dictionaryEntry,
-    WordCardMeta? cardData,
+    WordCardUserData? userData,
   }) {
     return WordCard(
       dictionaryEntry: dictionaryEntry ?? this.dictionaryEntry,
-      cardData: cardData ?? this.cardData,
+      userData: userData ?? this.userData,
     );
   }
 }
