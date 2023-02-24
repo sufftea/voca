@@ -41,7 +41,11 @@ class WordsRepositoryImpl implements WordsRepository {
         join(await getDatabasesPath(), AssetsRepositoryImpl.enDictionaryDbName),
       );
 
-      await _detachAllDb(_db!);
+      assert(await () async {
+        await _detachAllDb(_db!);
+        return true;
+      }());
+
       await _attachUserProgressDb(_db!);
     }
 
@@ -52,11 +56,12 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<List<WordCardShort>> findWords(String query) async {
     final db = await this.db;
 
-    final qWords = await db.rawQuery('''
-      SELECT rowid, word FROM word WHERE word LIKE ?
-    ''', [
-      '$query%',
-    ]);
+    final qWords = await db.query(
+      'word',
+      columns: ['rowid', 'word'],
+      where: 'word LIKE ?',
+      whereArgs: ['$query%'],
+    );
 
     final words = <WordCardShort>[];
 
@@ -79,12 +84,12 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<WordCard> fetchWordCard(Word word) async {
     final db = await this.db;
 
-    final qDefinitions = await db.rawQuery('''
-      SELECT rowId, definition, pos FROM definition 
-      WHERE wordId = ?
-    ''', [
-      word.id,
-    ]);
+    final qDefinitions = await db.query(
+      'definition',
+      columns: ['rowId', 'definition', 'pos'],
+      where: 'wordId = ?',
+      whereArgs: [word.id],
+    );
 
     final definitions = <WordDefinition>[];
 
@@ -93,11 +98,12 @@ class WordsRepositoryImpl implements WordsRepository {
       final definition = row['definition'] as String;
       final pos = row['pos'] as String;
 
-      final qExamples = await db.rawQuery('''
-        SELECT example FROM example WHERE definitionId = ?
-      ''', [
-        definitionId,
-      ]);
+      final qExamples = await db.query(
+        'example',
+        columns: ['example'],
+        where: 'definitionId = ?',
+        whereArgs: [definitionId],
+      );
 
       final examples = <String>[];
 
@@ -129,14 +135,15 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<void> setWordCardRepetitions(Word word, int repetitions) async {
     final db = await this.db;
 
-    final count = await db.rawUpdate('''
-      UPDATE up.userWords
-      SET repetitions = ?
-      WHERE wordId = ?
-    ''', [
-      repetitions,
-      word.id,
-    ]);
+    final count = await db.update(
+      'up.userWords',
+      {
+        'repetitions': repetitions,
+        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+      },
+      where: 'wordId = ?',
+      whereArgs: [word.id],
+    );
 
     if (count == 0) {
       _addWordToUserWords(word, repetitions);
@@ -198,16 +205,16 @@ class WordsRepositoryImpl implements WordsRepository {
       "insertNewWord: word doesn't exist in the dictionary",
     );
 
-    final result = await db.rawInsert('''
-        INSERT INTO up.userWords(wordId, word, repetitions, lastRepetition, status)
-        VALUES (?, ?, ?, ?, ?)
-      ''', [
-      word.id,
-      word.name,
-      repetitions,
-      DateTime.now().millisecondsSinceEpoch,
-      _WordCardStatusText.learning,
-    ]);
+    final result = await db.insert(
+      'up.userWords',
+      {
+        'wordId': word.id,
+        'word': word.name,
+        'repetitions': repetitions,
+        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+        'status': _WordCardStatusText.learning,
+      },
+    );
 
     assert(result != 0);
   }
@@ -240,10 +247,11 @@ class WordsRepositoryImpl implements WordsRepository {
   /// For hot reload - sqflite connection persists even after hotreload, so I
   /// get an error when attaching another database
   Future<void> _detachAllDb(Database mainConnection) async {
-    final dbs = await mainConnection.rawQuery('''
-      SELECT name FROM pragma_database_list
-      WHERE name <> 'main'
-    ''');
+    final dbs = await mainConnection.query(
+      'pragma_database_list',
+      columns: ['name'],
+      where: "name <> 'main'",
+    );
 
     for (final row in dbs) {
       final name = row['name'];

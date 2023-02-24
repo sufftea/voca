@@ -17,7 +17,6 @@ class AssetsRepositoryImpl implements AssetsRepository {
 
     final exists = await databaseExists(path);
 
-    // TODO: versionning logic
     if (!exists) {
       _copyDatabase(path);
     }
