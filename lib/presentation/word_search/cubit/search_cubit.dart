@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/use_cases/find_words_use_case.dart';
@@ -18,6 +19,7 @@ class SearchCubit extends Cubit<SearchState> {
         status: SearchStatus.idle,
         lastSearch: text,
       ));
+      return;
     } else if (text.length < 3) {
       emit(state.copyWith(
         results: [],

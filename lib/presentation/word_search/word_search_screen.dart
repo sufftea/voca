@@ -38,7 +38,6 @@ class _WordSearchScreenState extends State<WordSearchScreen>
       cubit.refresh();
     }
 
-
     r.pushNamed(
       RouteNames.wordDefinition,
       extra: card,
@@ -96,20 +95,38 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             return buildMessage(t.search.noResults);
           }
 
-          return ListView.builder(
-            itemCount: state.results.length,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 5,
+          return Stack(
+            children: [
+              ListView.builder(
+                itemCount: state.results.length,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                    ),
+                    child: WordListEntry(
+                      card: state.results[index],
+                      onTap: onOpenDefinition,
+                    ),
+                  );
+                },
+              ),
+              if (s == SearchStatus.loading)
+                Container(
+                  color: BaseColors.white50,
+                  alignment: Alignment.center,
+                  child: const SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: BaseColors.mineShaft,
+                      strokeWidth: 5,
+                    ),
+                  ),
                 ),
-                child: WordListEntry(
-                  card: state.results[index],
-                  onTap: onOpenDefinition,
-                ),
-              );
-            },
+            ],
           );
         },
       ),
