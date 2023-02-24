@@ -19,6 +19,7 @@ class BaseColors {
   static const neptune = Color(0xff7EACBA);
   static const bittersweet = Color(0xffFF6060);
   static final bittersweet10 = bittersweet.withOpacity(0.1);
+  static const oldRose = Color(0xFFC88888);
 }
 
 final baseTheme = ThemeData(
@@ -55,6 +56,26 @@ final baseTheme = ThemeData(
         borderRadius: BorderRadius.circular(5),
       )),
       foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
+      textStyle: const MaterialStatePropertyAll(TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeights.medium,
+      )),
+    ),
+  ),
+  //
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ButtonStyle(
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      maximumSize: const MaterialStatePropertyAll(Size.infinite),
+      minimumSize: const MaterialStatePropertyAll(Size.zero),
+      side: const MaterialStatePropertyAll(BorderSide(
+        color: BaseColors.curiousBlue,
+      )),
+      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      )),
+      foregroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
       textStyle: const MaterialStatePropertyAll(TextStyle(
         fontSize: 20,
         fontWeight: FontWeights.medium,

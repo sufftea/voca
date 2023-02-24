@@ -9,9 +9,26 @@ import 'package:voca/data/utils/pos_map.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/domain/entities/word_card_meta.dart';
+import 'package:voca/domain/entities/word_card_user_data.dart';
 import 'package:voca/domain/entities/word_card_short.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
+
+class _WordCardStatusText {
+  static const removed = 'removed';
+  static const learning = 'learning';
+  static const known = 'knon';
+}
+
+const _wordStatusToText = <WordCardStatus, String>{
+  WordCardStatus.learningOrLearned: _WordCardStatusText.learning,
+  WordCardStatus.known: _WordCardStatusText.known,
+  WordCardStatus.unknown: _WordCardStatusText.removed,
+};
+const _textToWordStatus = <String, WordCardStatus>{
+  _WordCardStatusText.removed: WordCardStatus.unknown,
+  _WordCardStatusText.learning: WordCardStatus.learningOrLearned,
+  _WordCardStatusText.known: WordCardStatus.known,
+};
 
 @LazySingleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
@@ -47,12 +64,11 @@ class WordsRepositoryImpl implements WordsRepository {
       final word = row['word'] as String;
       final wordId = row['rowid'] as int;
 
+      final userData = await _fetchUserWordData(wordId);
+
       words.add(WordCardShort(
         word: Word(name: word, id: wordId),
-        cardData: const WordCardMeta(
-          repetitionCount: 3,
-          status: WordCardStatus.learningOrLearned,
-        ),
+        userData: userData,
       ));
     }
 
@@ -98,43 +114,127 @@ class WordsRepositoryImpl implements WordsRepository {
       ));
     }
 
+    final userData = await _fetchUserWordData(word.id);
+
     return WordCard(
       dictionaryEntry: DictionaryEntry(
         definitions: UnmodifiableListView(definitions),
         word: word,
       ),
-      cardData: const WordCardMeta(
-        repetitionCount: 2,
-        status: WordCardStatus.learningOrLearned,
-      ),
+      userData: userData,
     );
   }
 
   @override
-  Future<void> addWordToKnownList(Word word) async {
+  Future<void> setWordCardRepetitions(Word word, int repetitions) async {
     final db = await this.db;
 
-    await db.execute('''
-      INSERT INTO known(wordId, word)
-      VALUES (?, ?)
+    final count = await db.rawUpdate('''
+      UPDATE up.userWords
+      SET repetitions = ?
+      WHERE wordId = ?
     ''', [
+      repetitions,
       word.id,
-      word.name,
     ]);
+
+    if (count == 0) {
+      _addWordToUserWords(word, repetitions);
+    }
+
+    assert(() {
+      if (count > 1) {
+        debugPrint('setWordCardRepetitions: count > 1');
+      }
+
+      return true;
+    }());
   }
 
   @override
-  Future<void> addWordToLearnList(Word word) async {
+  Future<void> setWordCardStatus(
+    Word word,
+    WordCardStatus status,
+  ) async {
     final db = await this.db;
 
-    await db.execute('''
-      INSERT INTO up.learning(wordId, word, lastRepetition) 
-      VALUES (?, ?, ?)
-    ''', [
+    final count = await db.update(
+      'up.userWords',
+      {
+        'status': _wordStatusToText[status],
+        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+      },
+      where: 'wordId = ?',
+      whereArgs: [word.id],
+    );
+
+    if (count == 0) {
+      await _addWordToUserWords(word);
+    }
+
+    assert(() {
+      if (count > 1) {
+        debugPrint('setWordCardStatus: count > 1');
+      }
+
+      return true;
+    }());
+  }
+
+  Future<void> _addWordToUserWords(Word word, [int repetitions = 0]) async {
+    final db = await this.db;
+
+    assert(
+      await () async {
+        final qWords = await db.query(
+          'word',
+          columns: ['rowId, word'],
+          where: 'rowId = ?',
+          whereArgs: [word.id],
+        );
+
+        return qWords.isNotEmpty;
+      }(),
+      "insertNewWord: word doesn't exist in the dictionary",
+    );
+
+    final result = await db.rawInsert('''
+        INSERT INTO up.userWords(wordId, word, repetitions, lastRepetition, status)
+        VALUES (?, ?, ?, ?, ?)
+      ''', [
       word.id,
       word.name,
+      repetitions,
       DateTime.now().millisecondsSinceEpoch,
+      _WordCardStatusText.learning,
     ]);
+
+    assert(result != 0);
+  }
+
+  Future<WordCardUserData> _fetchUserWordData(int wordId) async {
+    final db = await this.db;
+
+    final qUserWords = await db.query(
+      'up.userWords',
+      columns: ['wordId', 'repetitions', 'status'],
+      where: 'wordId = ?',
+      whereArgs: [wordId],
+    );
+
+    if (qUserWords.isNotEmpty) {
+      final row = qUserWords.first;
+
+      return WordCardUserData(
+        repetitionCount: row['repetitions'] as int,
+        status: _textToWordStatus[row['status'] as String]!,
+      );
+    } else {
+      return const WordCardUserData(
+        repetitionCount: 0,
+        status: WordCardStatus.unknown,
+      );
+    }
   }
 
   /// For hot reload - sqflite connection persists even after hotreload, so I
@@ -152,6 +252,8 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   Future<void> _attachUserProgressDb(Database mainConnection) async {
+    debugPrint('attachUserProgressDb');
+
     final upPath = join(
       await getDatabasesPath(),
       'en_user_progress.db',
@@ -160,20 +262,21 @@ class WordsRepositoryImpl implements WordsRepository {
     // wordId - references words in the dictionary db; **not a primary key**.
     final updb = await openDatabase(
       upPath,
-      version: 1,
-      onCreate: (db, version) {
+      version: 4,
+      onUpgrade: (db, _, __) {
+        debugPrint('WordsRepository database onUpgrade()');
+
+        db.execute('''DROP TABLE learning''');
+        db.execute('''DROP TABLE known''');
+
+        // status - see [_WordCardStatusText]
         db.execute('''
-          CREATE TABLE learning (
+          CREATE TABLE userWords (
             wordId INTEGER UNIQUE NOT NULL,
             word TEXT, 
             repetitions INTEGER DEFAULT 0,
-            lastRepetition INTEGER
-          )
-        ''');
-        db.execute('''
-          CREATE TABLE known (
-            wordId INTEGER UNIQUE NOT NULL,
-            word TEXT
+            lastRepetition INTEGER,
+            status TEXT
           )
         ''');
       },

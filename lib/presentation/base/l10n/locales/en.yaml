@@ -30,3 +30,8 @@ rangeSelection:
   knownAmount: "known: $n"
   learningAmount: "learning: $n"
 
+wordDefinition:
+  none: None
+  learning: Learning
+  know: Know
+  reset: reset

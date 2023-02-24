@@ -7,6 +7,7 @@ class AppBarCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.height,
     this.width,
+    this.safeArea = true,
     super.key,
   });
 
@@ -14,6 +15,7 @@ class AppBarCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final double? height;
   final double? width;
+  final bool safeArea;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class AppBarCard extends StatelessWidget {
           ),
         ],
       ),
-      child: SafeArea(child: child),
+      child: safeArea ? SafeArea(child: child) : child,
     );
   }
 }

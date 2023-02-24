@@ -1,5 +1,5 @@
-class WordCardMeta {
-  const WordCardMeta({
+class WordCardUserData {
+  const WordCardUserData({
     required this.repetitionCount,
     required this.status,
   });
@@ -7,11 +7,11 @@ class WordCardMeta {
   final int repetitionCount;
   final WordCardStatus status;
 
-  WordCardMeta copyWith({
+  WordCardUserData copyWith({
     int? repetitionCount,
     WordCardStatus? status,
   }) {
-    return WordCardMeta(
+    return WordCardUserData(
       repetitionCount: repetitionCount ?? this.repetitionCount,
       status: status ?? this.status,
     );
@@ -23,5 +23,5 @@ enum WordCardStatus {
 
   learningOrLearned,
 
-  markedKnown,
+  known,
 }

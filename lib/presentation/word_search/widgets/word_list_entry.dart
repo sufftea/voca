@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slang/builder/utils/string_extensions.dart';
 import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card_user_data.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -37,14 +38,26 @@ class WordListEntry extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            buildRepetitionCounter(context),
+            buildLearningIndicator(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildRepetitionCounter(BuildContext context) {
-    return CardRepetitionIndicator(cardData: card.cardData);
+  Widget buildLearningIndicator() {
+    switch (card.userData.status) {
+      case WordCardStatus.learningOrLearned:
+        return CardRepetitionIndicator(
+          repetitionCount: card.userData.repetitionCount,
+        );
+      case WordCardStatus.known:
+        return const Icon(
+          Icons.check_box_rounded,
+          color: BaseColors.neptune,
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }
