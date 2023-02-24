@@ -44,4 +44,12 @@ class SearchCubit extends Cubit<SearchState> {
       status: words.isEmpty ? SearchStatus.noResults : SearchStatus.idle,
     ));
   }
+
+  Future<void> refresh() async {
+    final text = state.lastSearch;
+
+    if (text != null) {
+      onSearchTextChanged(text);
+    }
+  }
 }
