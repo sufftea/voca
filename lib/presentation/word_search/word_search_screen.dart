@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:voca/domain/entities/word_card_short.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
+import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
@@ -20,6 +23,30 @@ class WordSearchScreen extends StatefulWidget {
 
 class _WordSearchScreenState extends State<WordSearchScreen>
     with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
+  void onOpenDefinition(WordCardShort card) async {
+    final r = GoRouter.of(context);
+
+    final screenLocation = r.location;
+
+    void onReturn() async {
+      final r = GoRouter.of(context);
+      if (r.location != screenLocation) {
+        return;
+      }
+
+      r.removeListener(onReturn);
+      cubit.refresh();
+    }
+
+
+    r.pushNamed(
+      RouteNames.wordDefinition,
+      extra: card,
+    );
+
+    r.addListener(onReturn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +104,10 @@ class _WordSearchScreenState extends State<WordSearchScreen>
                 padding: const EdgeInsets.symmetric(
                   vertical: 5,
                 ),
-                child: WordListEntry(card: state.results[index]),
+                child: WordListEntry(
+                  card: state.results[index],
+                  onTap: onOpenDefinition,
+                ),
               );
             },
           );
