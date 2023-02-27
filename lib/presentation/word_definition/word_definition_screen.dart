@@ -290,8 +290,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
             fontWeight: FontWeights.regular,
           ),
         ),
-
-        // buildExamples(definition),
         for (final example in definition.examples) ...[
           Text(
             '"$example"',

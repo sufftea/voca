@@ -188,6 +188,40 @@ class WordsRepositoryImpl implements WordsRepository {
     }());
   }
 
+  @override
+  Future<List<WordCardShort>> fetchLearningWords() async {
+    final db = await this.db;
+
+    final qWords = await db.query(
+      'up.userWords',
+      columns: [
+        'wordId',
+        'word',
+        'repetitions',
+      ],
+      where: 'status = ?',
+      whereArgs: [_WordCardStatusText.learning],
+    );
+
+    final words = <WordCardShort>[];
+    
+    for (final row in qWords) {
+      final wordId = row['wordId'] as int;
+      final word = row['word'] as String;
+      final repetitions = row['repetitions'] as int;
+
+      words.add(WordCardShort(
+        word: Word(name: word, id: wordId),
+        userData: WordCardUserData(
+          repetitionCount: repetitions,
+          status: WordCardStatus.learningOrLearned,
+        ),
+      ));
+    }
+
+    return words;
+  }
+
   Future<void> _addWordToUserWords(Word word, [int repetitions = 0]) async {
     final db = await this.db;
 

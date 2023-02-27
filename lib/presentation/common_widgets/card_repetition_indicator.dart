@@ -28,7 +28,7 @@ class CardRepetitionIndicator extends StatelessWidget {
                     color: BaseColors.white,
                     border: Border.all(
                       color: BaseColors.curiousBlue,
-                      width: 0.5,
+                      width: 1,
                       strokeAlign: BorderSide.strokeAlignInside,
                     ),
                   ),
