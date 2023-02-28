@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/repositories/assets_repository_impl.dart';
 import 'package:voca/data/utils/pos_map.dart';
+import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
@@ -146,7 +147,10 @@ class WordsRepositoryImpl implements WordsRepository {
     );
 
     if (count == 0) {
-      _addWordToUserWords(word, repetitions);
+      _addWordToUserWords(
+        word,
+        repetitions: repetitions,
+      );
     }
 
     assert(() {
@@ -176,7 +180,10 @@ class WordsRepositoryImpl implements WordsRepository {
     );
 
     if (count == 0) {
-      await _addWordToUserWords(word);
+      await _addWordToUserWords(
+        word,
+        status: status,
+      );
     }
 
     assert(() {
@@ -204,7 +211,7 @@ class WordsRepositoryImpl implements WordsRepository {
     );
 
     final words = <WordCardShort>[];
-    
+
     for (final row in qWords) {
       final wordId = row['wordId'] as int;
       final word = row['word'] as String;
@@ -222,7 +229,48 @@ class WordsRepositoryImpl implements WordsRepository {
     return words;
   }
 
-  Future<void> _addWordToUserWords(Word word, [int repetitions = 0]) async {
+  @override
+  Future<List<WordCardShort>> fetchKnownWords() async {
+    final db = await this.db;
+
+    final qWords = await db.query(
+      'up.userWords',
+      columns: [
+        'wordId',
+        'word',
+        'repetitions',
+      ],
+      where: 'status = ? OR repetitions = ?',
+      whereArgs: [
+        _WordCardStatusText.known,
+        DomainConstants.maxRepetitionCount,
+      ],
+    );
+
+    final words = <WordCardShort>[];
+
+    for (final row in qWords) {
+      final wordId = row['wordId'] as int;
+      final word = row['word'] as String;
+      final repetitions = row['repetitions'] as int;
+
+      words.add(WordCardShort(
+        word: Word(name: word, id: wordId),
+        userData: WordCardUserData(
+          repetitionCount: repetitions,
+          status: WordCardStatus.known,
+        ),
+      ));
+    }
+
+    return words;
+  }
+
+  Future<void> _addWordToUserWords(
+    Word word, {
+    int repetitions = 0,
+    WordCardStatus status = WordCardStatus.learningOrLearned,
+  }) async {
     final db = await this.db;
 
     assert(
@@ -246,7 +294,7 @@ class WordsRepositoryImpl implements WordsRepository {
         'word': word.name,
         'repetitions': repetitions,
         'lastRepetition': DateTime.now().millisecondsSinceEpoch,
-        'status': _WordCardStatusText.learning,
+        'status': _wordStatusToText[status],
       },
     );
 

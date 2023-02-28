@@ -5,6 +5,7 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
+import 'package:voca/presentation/base/utils/go_with_callback.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
@@ -24,26 +25,12 @@ class WordSearchScreen extends StatefulWidget {
 class _WordSearchScreenState extends State<WordSearchScreen>
     with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
   void onOpenDefinition(WordCardShort card) async {
-    final r = GoRouter.of(context);
-
-    final screenLocation = r.location;
-
-    void onReturn() async {
-      final r = GoRouter.of(context);
-      if (r.location != screenLocation) {
-        return;
-      }
-
-      r.removeListener(onReturn);
-      cubit.refresh();
-    }
-
-    r.goNamed(
+    goWithCallback(
+      context,
       RouteNames.wordDefinition,
+      onReturn: cubit.refresh,
       extra: card,
     );
-
-    r.addListener(onReturn);
   }
 
   @override

@@ -4,8 +4,8 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 
-class LearningListButtonsWidget extends StatelessWidget {
-  const LearningListButtonsWidget({super.key});
+class WordListsButtonsWidget extends StatelessWidget {
+  const WordListsButtonsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,7 @@ class LearningListButtonsWidget extends StatelessWidget {
     return Expanded(
       child: OutlinedButton(
         onPressed: () {
-          GoRouter.of(context).goNamed(
-            RouteNames.learningList,
-          );
+          GoRouter.of(context).goNamed(RouteNames.learningList);
         },
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
@@ -82,7 +80,9 @@ class LearningListButtonsWidget extends StatelessWidget {
     final t = Translations.of(context);
     return Expanded(
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          GoRouter.of(context).goNamed(RouteNames.knownList);
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(BaseColors.neptune10),
             alignment: Alignment.center,

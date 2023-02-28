@@ -6,21 +6,21 @@ import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/go_with_callback.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
-import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
-import 'package:voca/presentation/learning_list/cubit/learning_list_state.dart';
+import 'package:voca/presentation/known_words_list/cubit/known_words_list_cubit.dart';
+import 'package:voca/presentation/known_words_list/cubit/known_words_list_state.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 
-class LearningListScreen extends StatefulWidget {
-  const LearningListScreen({super.key});
+class KnownWordsListScreen extends StatefulWidget {
+  const KnownWordsListScreen({super.key});
 
   @override
-  State<LearningListScreen> createState() => _LearningListScreenState();
+  State<KnownWordsListScreen> createState() => _KnownWordsListScreenState();
 }
 
-class _LearningListScreenState extends State<LearningListScreen>
+class _KnownWordsListScreenState extends State<KnownWordsListScreen>
     with
-        StatefulCubitConsumer<LearningListCubit, LearningListState,
-            LearningListScreen> {
+        StatefulCubitConsumer<KnownWordsListCubit, KnownWordsListState,
+            KnownWordsListScreen> {
   @override
   void initState() {
     super.initState();
@@ -46,7 +46,7 @@ class _LearningListScreenState extends State<LearningListScreen>
       child: Row(
         children: [
           Text(
-            t.learningList.header,
+            t.knownList.header,
             style: const TextStyle(
               fontWeight: FontWeights.bold,
               fontSize: 20,
@@ -69,7 +69,7 @@ class _LearningListScreenState extends State<LearningListScreen>
         if (words.isEmpty) {
           final t = Translations.of(context);
           return buildMessage(
-            t.learningList.noWords,
+            t.knownList.noWords,
           );
         }
 
@@ -87,9 +87,8 @@ class _LearningListScreenState extends State<LearningListScreen>
                   onTap: (card) {
                     goWithCallback(
                       context,
-                      RouteNames.learningList_wordDefinition,
+                      RouteNames.knownList_wordDefinition,
                       onReturn: cubit.refresh,
-                      extra: card,
                     );
                   },
                   card: words[index],

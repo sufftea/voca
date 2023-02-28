@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voca/domain/entities/word_card_short.dart';
@@ -5,6 +7,8 @@ import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/home_screen.dart';
+import 'package:voca/presentation/known_words_list/cubit/known_words_list_cubit.dart';
+import 'package:voca/presentation/known_words_list/known_words_list_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
@@ -26,7 +30,9 @@ class RouteNames {
   static const learningRange = 'learningRange';
   static const wordDefinition = 'wordInfo';
   static const learningList = 'learningList';
-  static const learningListWordDefinition = 'learningListDefinition';
+  static const learningList_wordDefinition = 'learningListDefinition';
+  static const knownList = 'knownList';
+  static const knownList_wordDefinition = 'knownListWordDefinition';
 }
 
 final _rootKey = GlobalKey<NavigatorState>();
@@ -119,7 +125,37 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'definition',
-                  name: RouteNames.learningListWordDefinition,
+                  name: RouteNames.learningList_wordDefinition,
+                  pageBuilder: (context, state) {
+                    final wordCard = state.extra as WordCardShort;
+
+                    return fadePageTransition(
+                      context,
+                      state,
+                      cubitProvider<WordDefinitionCubit>(WordDefinitionScreen(
+                        wordCard: wordCard,
+                      )),
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'knownList',
+              name: RouteNames.knownList,
+              pageBuilder: (context, state) {
+                return fadePageTransition(
+                  context,
+                  state,
+                  cubitProvider<KnownWordsListCubit>(
+                    const KnownWordsListScreen(),
+                  ),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'definition',
+                  name: RouteNames.knownList_wordDefinition,
                   pageBuilder: (context, state) {
                     final wordCard = state.extra as WordCardShort;
 

@@ -12,4 +12,5 @@ abstract class WordsRepository {
   Future<void> setWordCardRepetitions(Word word, int repetitions);
 
   Future<List<WordCardShort>> fetchLearningWords();
+  Future<List<WordCardShort>> fetchKnownWords();
 }
