@@ -1,6 +1,7 @@
 common:
   learning: Learning
   known: Known
+  wait: Wait...
 
 home:
   languageIs: "Language: $language"
@@ -44,7 +45,8 @@ settings:
 
 learningList:
   header: Learning list
-  wait: Wait...
   noWords: You don't have any words in the list yet
 
-  
+knownList:
+  header: Known words
+  noWords: You don't have any words in the known list yet
