@@ -31,9 +31,9 @@ class WordRangesGraph extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Row(
         children: [
-          buildLabel(t.rangeSelection.learning, BaseColors.curiousBlue),
+          buildLabel(t.common.learning, BaseColors.curiousBlue),
           const SizedBox(width: 20),
-          buildLabel(t.rangeSelection.known, BaseColors.neptune),
+          buildLabel(t.common.known, BaseColors.neptune),
         ],
       ),
     );

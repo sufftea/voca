@@ -5,6 +5,8 @@ import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/home_screen.dart';
+import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
+import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
 import 'package:voca/presentation/nav_bar/nav_bar_shell.dart';
 import 'package:voca/presentation/settings/settings_screen.dart';
@@ -23,6 +25,8 @@ class RouteNames {
   static const settings = 'settings';
   static const learningRange = 'learningRange';
   static const wordDefinition = 'wordInfo';
+  static const learningList = 'learningList';
+  static const learningListWordDefinition = 'learningListDefinition';
 }
 
 final _rootKey = GlobalKey<NavigatorState>();
@@ -101,6 +105,36 @@ final router = GoRouter(
               const SettingsScreen(),
             );
           },
+          routes: [
+            GoRoute(
+              path: 'learningList',
+              name: RouteNames.learningList,
+              pageBuilder: (context, state) {
+                return fadePageTransition(
+                  context,
+                  state,
+                  cubitProvider<LearningListCubit>(const LearningListScreen()),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'definition',
+                  name: RouteNames.learningListWordDefinition,
+                  pageBuilder: (context, state) {
+                    final wordCard = state.extra as WordCardShort;
+
+                    return fadePageTransition(
+                      context,
+                      state,
+                      cubitProvider<WordDefinitionCubit>(WordDefinitionScreen(
+                        wordCard: wordCard,
+                      )),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     ),

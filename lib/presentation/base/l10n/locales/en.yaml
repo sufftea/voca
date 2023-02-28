@@ -1,3 +1,7 @@
+common:
+  learning: Learning
+  known: Known
+
 home:
   languageIs: "Language: $language"
   discoverBanner:
@@ -24,8 +28,6 @@ search:
   completed: Completed
 
 rangeSelection:
-  learning: Learning
-  known: Known
   selectedRange: "Selected range:"
   knownAmount: "known: $n"
   learningAmount: "learning: $n"
@@ -35,3 +37,14 @@ wordDefinition:
   learning: Learning
   know: Know
   reset: reset
+
+settings:
+  wordLists: Word lists
+  nWordsInList: $n words
+
+learningList:
+  header: Learning list
+  wait: Wait...
+  noWords: You don't have any words in the list yet
+
+  

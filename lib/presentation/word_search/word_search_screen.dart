@@ -38,7 +38,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
       cubit.refresh();
     }
 
-    r.pushNamed(
+    r.goNamed(
       RouteNames.wordDefinition,
       extra: card,
     );

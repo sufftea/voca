@@ -5,10 +5,7 @@ import 'package:voca/domain/entities/word_card_user_data.dart';
 class WordCardShort {
   const WordCardShort({
     required this.word,
-    this.userData = const WordCardUserData(
-      repetitionCount: 0,
-      status: WordCardStatus.unknown,
-    ),
+    required this.userData,
   });
 
   final Word word;
