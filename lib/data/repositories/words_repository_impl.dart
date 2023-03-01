@@ -10,8 +10,6 @@ import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 
 class _WordCardStatusText {
@@ -54,7 +52,7 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<List<WordCardShort>> findWords(String query) async {
+  Future<List<WordCard>> findWords(String query) async {
     final db = await this.db;
 
     final qWords = await db.query(
@@ -64,17 +62,37 @@ class WordsRepositoryImpl implements WordsRepository {
       whereArgs: ['$query%'],
     );
 
-    final words = <WordCardShort>[];
+    final words = <WordCard>[];
 
     for (final row in qWords) {
       final word = row['word'] as String;
       final wordId = row['rowid'] as int;
 
-      final userData = await _fetchUserWordData(wordId);
+      // final userData = await _fetchUserWordData(wordId);
+      final qUserWords = await db.query(
+        'up.userWords',
+        columns: ['wordId', 'repetitions', 'status'],
+        where: 'wordId = ?',
+        whereArgs: [wordId],
+      );
 
-      words.add(WordCardShort(
+      late final int repetitionCount;
+      late final WordCardStatus status;
+
+      if (qUserWords.isNotEmpty) {
+        final row = qUserWords.first;
+
+        repetitionCount = row['repetitions'] as int;
+        status = _textToWordStatus[row['status'] as String]!;
+      } else {
+        repetitionCount = 0;
+        status = WordCardStatus.unknown;
+      }
+
+      words.add(WordCard(
         word: Word(name: word, id: wordId),
-        userData: userData,
+        repetitionCount: repetitionCount,
+        status: status,
       ));
     }
 
@@ -82,7 +100,7 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<WordCard> fetchWordCard(Word word) async {
+  Future<DictionaryEntry> fetchDictionaryEntry(Word word) async {
     final db = await this.db;
 
     final qDefinitions = await db.query(
@@ -121,14 +139,9 @@ class WordsRepositoryImpl implements WordsRepository {
       ));
     }
 
-    final userData = await _fetchUserWordData(word.id);
-
-    return WordCard(
-      dictionaryEntry: DictionaryEntry(
-        definitions: UnmodifiableListView(definitions),
-        word: word,
-      ),
-      userData: userData,
+    return DictionaryEntry(
+      definitions: UnmodifiableListView(definitions),
+      word: word,
     );
   }
 
@@ -196,7 +209,7 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<List<WordCardShort>> fetchLearningWords() async {
+  Future<List<WordCard>> fetchLearningWords() async {
     final db = await this.db;
 
     final qWords = await db.query(
@@ -210,19 +223,17 @@ class WordsRepositoryImpl implements WordsRepository {
       whereArgs: [_WordCardStatusText.learning],
     );
 
-    final words = <WordCardShort>[];
+    final words = <WordCard>[];
 
     for (final row in qWords) {
       final wordId = row['wordId'] as int;
       final word = row['word'] as String;
       final repetitions = row['repetitions'] as int;
 
-      words.add(WordCardShort(
+      words.add(WordCard(
         word: Word(name: word, id: wordId),
-        userData: WordCardUserData(
-          repetitionCount: repetitions,
-          status: WordCardStatus.learningOrLearned,
-        ),
+        repetitionCount: repetitions,
+        status: WordCardStatus.learningOrLearned,
       ));
     }
 
@@ -230,7 +241,7 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<List<WordCardShort>> fetchKnownWords() async {
+  Future<List<WordCard>> fetchKnownWords() async {
     final db = await this.db;
 
     final qWords = await db.query(
@@ -247,19 +258,17 @@ class WordsRepositoryImpl implements WordsRepository {
       ],
     );
 
-    final words = <WordCardShort>[];
+    final words = <WordCard>[];
 
     for (final row in qWords) {
       final wordId = row['wordId'] as int;
       final word = row['word'] as String;
       final repetitions = row['repetitions'] as int;
 
-      words.add(WordCardShort(
+      words.add(WordCard(
         word: Word(name: word, id: wordId),
-        userData: WordCardUserData(
-          repetitionCount: repetitions,
-          status: WordCardStatus.known,
-        ),
+        repetitionCount: repetitions,
+        status: WordCardStatus.known,
       ));
     }
 
@@ -301,31 +310,6 @@ class WordsRepositoryImpl implements WordsRepository {
     assert(result != 0);
   }
 
-  Future<WordCardUserData> _fetchUserWordData(int wordId) async {
-    final db = await this.db;
-
-    final qUserWords = await db.query(
-      'up.userWords',
-      columns: ['wordId', 'repetitions', 'status'],
-      where: 'wordId = ?',
-      whereArgs: [wordId],
-    );
-
-    if (qUserWords.isNotEmpty) {
-      final row = qUserWords.first;
-
-      return WordCardUserData(
-        repetitionCount: row['repetitions'] as int,
-        status: _textToWordStatus[row['status'] as String]!,
-      );
-    } else {
-      return const WordCardUserData(
-        repetitionCount: 0,
-        status: WordCardStatus.unknown,
-      );
-    }
-  }
-
   /// For hot reload - sqflite connection persists even after hotreload, so I
   /// get an error when attaching another database
   Future<void> _detachAllDb(Database mainConnection) async {
@@ -342,8 +326,6 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   Future<void> _attachUserProgressDb(Database mainConnection) async {
-    debugPrint('attachUserProgressDb');
-
     final upPath = join(
       await getDatabasesPath(),
       'en_user_progress.db',
@@ -352,7 +334,7 @@ class WordsRepositoryImpl implements WordsRepository {
     // wordId - references words in the dictionary db; **not a primary key**.
     final updb = await openDatabase(
       upPath,
-      version: 4,
+      version: 1,
       onUpgrade: (db, _, __) {
         debugPrint('WordsRepository database onUpgrade()');
 

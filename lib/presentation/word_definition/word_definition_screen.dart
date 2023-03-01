@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder.dart';
@@ -33,7 +30,7 @@ class WordDefinitionScreen extends StatefulWidget {
     super.key,
   });
 
-  final WordCardShort wordCard;
+  final WordCard wordCard;
 
   @override
   State<WordDefinitionScreen> createState() => _WordDefinitionScreenState();

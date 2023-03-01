@@ -1,23 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:voca/domain/entities/dictionary_entry.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
+import 'package:voca/domain/entities/word.dart';
 
 class WordCard {
-  WordCard({
-    required this.dictionaryEntry,
-    required this.userData,
+  const WordCard({
+    required this.word,
+    required this.repetitionCount,
+    required this.status
   });
-  
-  final DictionaryEntry dictionaryEntry;
-  final WordCardUserData userData;
 
-  WordCard copyWith({
-    DictionaryEntry? dictionaryEntry,
-    WordCardUserData? userData,
-  }) {
-    return WordCard(
-      dictionaryEntry: dictionaryEntry ?? this.dictionaryEntry,
-      userData: userData ?? this.userData,
-    );
-  }
+  final Word word;
+  final int repetitionCount;
+  final WordCardStatus status;
+}
+
+enum WordCardStatus {
+  unknown,
+
+  learningOrLearned,
+
+  known,
 }

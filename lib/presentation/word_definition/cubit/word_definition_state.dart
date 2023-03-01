@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
+import 'package:voca/domain/entities/word_card.dart';
 
 class WordDefinitionState {
   const WordDefinitionState({

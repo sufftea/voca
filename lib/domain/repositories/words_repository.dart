@@ -1,16 +1,15 @@
+import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
 
 abstract class WordsRepository {
-  Future<List<WordCardShort>> findWords(String query);
-  Future<WordCard> fetchWordCard(Word word);
+  Future<List<WordCard>> findWords(String query);
+  Future<DictionaryEntry> fetchDictionaryEntry(Word word);
 
   Future<void> setWordCardStatus(Word word, WordCardStatus status);
 
   Future<void> setWordCardRepetitions(Word word, int repetitions);
 
-  Future<List<WordCardShort>> fetchLearningWords();
-  Future<List<WordCardShort>> fetchKnownWords();
+  Future<List<WordCard>> fetchLearningWords();
+  Future<List<WordCard>> fetchKnownWords();
 }

@@ -1,16 +1,16 @@
 import 'dart:collection';
 
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 
 class KnownWordsListState {
   const KnownWordsListState({
     this.words,
   });
 
-  final UnmodifiableListView<WordCardShort>? words;
+  final UnmodifiableListView<WordCard>? words;
 
   KnownWordsListState copyWith({
-    UnmodifiableListView<WordCardShort>? words,
+    UnmodifiableListView<WordCard>? words,
   }) {
     return KnownWordsListState(
       words: words ?? this.words,

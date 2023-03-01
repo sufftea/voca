@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slang/builder/utils/string_extensions.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/clicable_card.dart';
@@ -14,8 +13,8 @@ class WordListEntry extends StatelessWidget {
     required this.card,
   });
 
-  final WordCardShort card;
-  final void Function(WordCardShort card) onTap;
+  final WordCard card;
+  final void Function(WordCard card) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +42,10 @@ class WordListEntry extends StatelessWidget {
   }
 
   Widget buildLearningIndicator() {
-    switch (card.userData.status) {
+    switch (card.status) {
       case WordCardStatus.learningOrLearned:
         return CardRepetitionIndicator(
-          repetitionCount: card.userData.repetitionCount,
+          repetitionCount: card.repetitionCount,
         );
       case WordCardStatus.known:
         return const Icon(

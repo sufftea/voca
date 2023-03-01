@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/domain/entities/word_card_user_data.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';
 
@@ -13,17 +12,17 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
 
   final WordsRepository _wordsRepository;
 
-  Future<void> onPageOpened(WordCardShort wordCard) async {
+  Future<void> onPageOpened(WordCard wordCard) async {
     emit(state.copyWith(
-      repetitionCount: wordCard.userData.repetitionCount,
-      status: wordCard.userData.status,
+      repetitionCount: wordCard.repetitionCount,
+      status: wordCard.status,
       word: wordCard.word,
     ));
 
-    final card = await _wordsRepository.fetchWordCard(wordCard.word);
+    final dictionaryEntry = await _wordsRepository.fetchDictionaryEntry(wordCard.word);
 
     emit(state.copyWith(
-      definitions: card.dictionaryEntry.definitions,
+      definitions: dictionaryEntry.definitions,
     ));
   }
 
