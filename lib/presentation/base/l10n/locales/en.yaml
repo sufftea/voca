@@ -40,8 +40,7 @@ wordDefinition:
   reset: reset
 
 settings:
-  wordLists: Word lists
-  nWordsInList: $n words
+  words: Words
 
 learningList:
   header: Learning list

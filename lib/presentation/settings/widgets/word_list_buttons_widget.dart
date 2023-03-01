@@ -13,7 +13,7 @@ class WordListsButtonsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          t.settings.wordLists,
+          t.settings.words,
           style: const TextStyle(
             fontSize: 19,
             fontWeight: FontWeights.bold,
@@ -62,14 +62,6 @@ class WordListsButtonsWidget extends StatelessWidget {
                 color: BaseColors.curiousBlue,
               ),
             ),
-            Text(
-              t.settings.nWordsInList(n: 100),
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeights.regular,
-                color: BaseColors.mineShaft,
-              ),
-            ),
           ],
         ),
       ),
@@ -100,14 +92,6 @@ class WordListsButtonsWidget extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeights.bold,
                 color: BaseColors.neptune,
-              ),
-            ),
-            Text(
-              t.settings.nWordsInList(n: 123),
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeights.regular,
-                color: BaseColors.mineShaft,
               ),
             ),
           ],
