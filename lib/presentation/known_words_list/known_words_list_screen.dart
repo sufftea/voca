@@ -89,6 +89,7 @@ class _KnownWordsListScreenState extends State<KnownWordsListScreen>
                       context,
                       RouteNames.knownList_wordDefinition,
                       onReturn: cubit.refresh,
+                      extra: card,
                     );
                   },
                   card: words[index],
