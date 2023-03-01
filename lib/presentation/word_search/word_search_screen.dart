@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
@@ -24,7 +24,7 @@ class WordSearchScreen extends StatefulWidget {
 
 class _WordSearchScreenState extends State<WordSearchScreen>
     with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
-  void onOpenDefinition(WordCardShort card) async {
+  void onOpenDefinition(WordCard card) async {
     goWithCallback(
       context,
       RouteNames.wordDefinition,

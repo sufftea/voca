@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
@@ -73,7 +73,7 @@ final router = GoRouter(
                   name: RouteNames.wordDefinition,
                   parentNavigatorKey: _rootKey,
                   pageBuilder: (context, state) {
-                    final wordCard = state.extra as WordCardShort;
+                    final wordCard = state.extra as WordCard;
 
                     return fadePageTransition(
                       context,
@@ -127,7 +127,7 @@ final router = GoRouter(
                   path: 'definition',
                   name: RouteNames.learningList_wordDefinition,
                   pageBuilder: (context, state) {
-                    final wordCard = state.extra as WordCardShort;
+                    final wordCard = state.extra as WordCard;
 
                     return fadePageTransition(
                       context,
@@ -157,7 +157,7 @@ final router = GoRouter(
                   path: 'definition',
                   name: RouteNames.knownList_wordDefinition,
                   pageBuilder: (context, state) {
-                    final wordCard = state.extra as WordCardShort;
+                    final wordCard = state.extra as WordCard;
 
                     return fadePageTransition(
                       context,

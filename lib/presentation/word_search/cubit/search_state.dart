@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:voca/domain/entities/word_card_short.dart';
+import 'package:voca/domain/entities/word_card.dart';
 
 class SearchState {
   const SearchState({
@@ -8,12 +8,12 @@ class SearchState {
     this.lastSearch,
   });
 
-  final List<WordCardShort> results;
+  final List<WordCard> results;
   final SearchStatus status;
   final String? lastSearch;
 
   SearchState copyWith({
-    List<WordCardShort>? results,
+    List<WordCard>? results,
     SearchStatus? status,
     String? lastSearch,
   }) {
