@@ -3,15 +3,13 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:voca/domain/repositories/assets_repository.dart';
 import 'package:path/path.dart';
 
-@LazySingleton(as: AssetsRepository)
-class AssetsRepositoryImpl implements AssetsRepository {
+@LazySingleton()
+class AssetsManager {
   static const enDictionaryDbName = 'en_dictionary.db';
 
-  @override
-  Future<void> initDatabaseFromAssets() async {
+  Future<void> createDatabaseFromAssets() async {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, enDictionaryDbName);
 
