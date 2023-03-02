@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/domain/repositories/assets_repository.dart';
+import 'package:voca/domain/repositories/database_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
@@ -11,8 +11,8 @@ void main() async {
 
   configureDependencies();
 
-  final assetsRepository = getIt.get<AssetsRepository>();
-  await assetsRepository.initDatabaseFromAssets();
+  final assetsRepository = getIt.get<DatabaseRepository>();
+  await assetsRepository.init();
 
   runApp(TranslationProvider(
     child: MaterialApp.router(

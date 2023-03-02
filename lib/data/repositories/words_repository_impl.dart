@@ -2,9 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:voca/data/repositories/assets_repository_impl.dart';
+import 'package:voca/data/utils/database_manager.dart';
 import 'package:voca/data/utils/pos_map.dart';
 import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
@@ -31,29 +29,13 @@ const _textToWordStatus = <String, WordCardStatus>{
 
 @LazySingleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
-  Database? _db;
-  Future<Database> get db async {
-    if (_db == null) {
-      debugPrint('initializing db');
+  const WordsRepositoryImpl(this._databaseManager);
 
-      _db = await openDatabase(
-        join(await getDatabasesPath(), AssetsRepositoryImpl.enDictionaryDbName),
-      );
-
-      assert(await () async {
-        await _detachAllDb(_db!);
-        return true;
-      }());
-
-      await _attachUserProgressDb(_db!);
-    }
-
-    return _db!;
-  }
+  final DatabaseManager _databaseManager;
 
   @override
   Future<List<WordCard>> findWords(String query) async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final qWords = await db.query(
       'word',
@@ -101,7 +83,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<DictionaryEntry> fetchDictionaryEntry(Word word) async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final qDefinitions = await db.query(
       'definition',
@@ -147,7 +129,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<void> setWordCardRepetitions(Word word, int repetitions) async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final count = await db.update(
       'up.userWords',
@@ -180,7 +162,7 @@ class WordsRepositoryImpl implements WordsRepository {
     Word word,
     WordCardStatus status,
   ) async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final count = await db.update(
       'up.userWords',
@@ -210,7 +192,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<List<WordCard>> fetchLearningWords() async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final qWords = await db.query(
       'up.userWords',
@@ -242,7 +224,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<List<WordCard>> fetchKnownWords() async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     final qWords = await db.query(
       'up.userWords',
@@ -280,7 +262,7 @@ class WordsRepositoryImpl implements WordsRepository {
     int repetitions = 0,
     WordCardStatus status = WordCardStatus.learningOrLearned,
   }) async {
-    final db = await this.db;
+    final db = _databaseManager.db;
 
     assert(
       await () async {
@@ -308,53 +290,5 @@ class WordsRepositoryImpl implements WordsRepository {
     );
 
     assert(result != 0);
-  }
-
-  /// For hot reload - sqflite connection persists even after hotreload, so I
-  /// get an error when attaching another database
-  Future<void> _detachAllDb(Database mainConnection) async {
-    final dbs = await mainConnection.query(
-      'pragma_database_list',
-      columns: ['name'],
-      where: "name <> 'main'",
-    );
-
-    for (final row in dbs) {
-      final name = row['name'];
-      mainConnection.execute('DETACH ?', [name]);
-    }
-  }
-
-  Future<void> _attachUserProgressDb(Database mainConnection) async {
-    final upPath = join(
-      await getDatabasesPath(),
-      'en_user_progress.db',
-    );
-
-    // wordId - references words in the dictionary db; **not a primary key**.
-    final updb = await openDatabase(
-      upPath,
-      version: 1,
-      onUpgrade: (db, _, __) {
-        debugPrint('WordsRepository database onUpgrade()');
-
-        db.execute('''DROP TABLE learning''');
-        db.execute('''DROP TABLE known''');
-
-        // status - see [_WordCardStatusText]
-        db.execute('''
-          CREATE TABLE userWords (
-            wordId INTEGER UNIQUE NOT NULL,
-            word TEXT, 
-            repetitions INTEGER DEFAULT 0,
-            lastRepetition INTEGER,
-            status TEXT
-          )
-        ''');
-      },
-    );
-    await updb.close();
-
-    await mainConnection.execute('ATTACH ? AS up', [upPath]);
   }
 }
