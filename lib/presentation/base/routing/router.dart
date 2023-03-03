@@ -13,6 +13,8 @@ import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
 import 'package:voca/presentation/nav_bar/nav_bar_shell.dart';
+import 'package:voca/presentation/practice/cubit/practice_cubit.dart';
+import 'package:voca/presentation/practice/practice_screen.dart';
 import 'package:voca/presentation/settings/settings_screen.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_cubit.dart';
 import 'package:voca/presentation/word_definition/word_definition_screen.dart';
@@ -33,6 +35,7 @@ class RouteNames {
   static const learningList_wordDefinition = 'learningListDefinition';
   static const knownList = 'knownList';
   static const knownList_wordDefinition = 'knownListWordDefinition';
+  static const practice = 'practice';
 }
 
 final _rootKey = GlobalKey<NavigatorState>();
@@ -89,13 +92,24 @@ final router = GoRouter(
             GoRoute(
               path: 'range',
               name: RouteNames.learningRange,
-              parentNavigatorKey: _rootKey,
               pageBuilder: (context, state) {
                 return fadePageTransition(
                   context,
                   state,
                   cubitProvider<WordRangeListCubit>(
                       const WordRangeListScreen()),
+                );
+              },
+            ),
+            GoRoute(
+              path: 'practice',
+              name: RouteNames.practice,
+              parentNavigatorKey: _rootKey,
+              pageBuilder: (context, state) {
+                return fadePageTransition(
+                  context,
+                  state,
+                  cubitProvider<PracticeCubit>(const PracticeScreen()),
                 );
               },
             ),

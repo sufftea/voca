@@ -1,0 +1,3 @@
+class PracticeState {
+  const PracticeState();
+}
