@@ -10,23 +10,6 @@ import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 
-class _WordCardStatusText {
-  static const removed = 'removed';
-  static const learning = 'learning';
-  static const known = 'knon';
-}
-
-const _wordStatusToText = <WordCardStatus, String>{
-  WordCardStatus.learningOrLearned: _WordCardStatusText.learning,
-  WordCardStatus.known: _WordCardStatusText.known,
-  WordCardStatus.unknown: _WordCardStatusText.removed,
-};
-const _textToWordStatus = <String, WordCardStatus>{
-  _WordCardStatusText.removed: WordCardStatus.unknown,
-  _WordCardStatusText.learning: WordCardStatus.learningOrLearned,
-  _WordCardStatusText.known: WordCardStatus.known,
-};
-
 @LazySingleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
   const WordsRepositoryImpl(this._databaseManager);
@@ -65,7 +48,7 @@ class WordsRepositoryImpl implements WordsRepository {
         final row = qUserWords.first;
 
         repetitionCount = row['repetitions'] as int;
-        status = _textToWordStatus[row['status'] as String]!;
+        status = DatabaseManager.textToWordStatus[row['status'] as String]!;
       } else {
         repetitionCount = 0;
         status = WordCardStatus.unknown;
@@ -167,7 +150,7 @@ class WordsRepositoryImpl implements WordsRepository {
     final count = await db.update(
       'up.userWords',
       {
-        'status': _wordStatusToText[status],
+        'status': DatabaseManager.wordStatusToText[status],
         'lastRepetition': DateTime.now().millisecondsSinceEpoch,
       },
       where: 'wordId = ?',
@@ -202,7 +185,9 @@ class WordsRepositoryImpl implements WordsRepository {
         'repetitions',
       ],
       where: 'status = ?',
-      whereArgs: [_WordCardStatusText.learning],
+      whereArgs: [
+        DatabaseManager.wordStatusToText[WordCardStatus.learningOrLearned],
+      ],
     );
 
     final words = <WordCard>[];
@@ -235,7 +220,7 @@ class WordsRepositoryImpl implements WordsRepository {
       ],
       where: 'status = ? OR repetitions = ?',
       whereArgs: [
-        _WordCardStatusText.known,
+        DatabaseManager.wordStatusToText[WordCardStatus.known],
         DomainConstants.maxRepetitionCount,
       ],
     );
@@ -285,7 +270,7 @@ class WordsRepositoryImpl implements WordsRepository {
         'word': word.name,
         'repetitions': repetitions,
         'lastRepetition': DateTime.now().millisecondsSinceEpoch,
-        'status': _wordStatusToText[status],
+        'status': DatabaseManager.wordStatusToText[status],
       },
     );
 

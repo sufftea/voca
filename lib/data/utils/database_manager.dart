@@ -3,6 +3,13 @@ import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/utils/assets_manager.dart';
+import 'package:voca/domain/entities/word_card.dart';
+
+class _WordCardStatusText {
+  static const removed = 'removed';
+  static const learning = 'learning';
+  static const known = 'knon';
+}
 
 @LazySingleton()
 class DatabaseManager {
@@ -22,6 +29,18 @@ class DatabaseManager {
 
     await _attachUserProgressDb(_db!);
   }
+
+  static const wordStatusToText = <WordCardStatus, String>{
+    WordCardStatus.learningOrLearned: _WordCardStatusText.learning,
+    WordCardStatus.known: _WordCardStatusText.known,
+    WordCardStatus.unknown: _WordCardStatusText.removed,
+  };
+  
+  static const textToWordStatus = <String, WordCardStatus>{
+    _WordCardStatusText.removed: WordCardStatus.unknown,
+    _WordCardStatusText.learning: WordCardStatus.learningOrLearned,
+    _WordCardStatusText.known: WordCardStatus.known,
+  };
 
   /// For hot reload - sqflite connection persists even after hotreload, so I
   /// get an error when attaching another database
