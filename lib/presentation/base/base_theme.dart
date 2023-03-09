@@ -4,6 +4,7 @@ class BaseColors {
   const BaseColors._();
 
   static const white = Colors.white;
+  static const transparent = Colors.transparent;
   static final white10 = Colors.white.withOpacity(0.1);
   static final white50 = Colors.white.withOpacity(0.5);
   static final white80 = Colors.white.withOpacity(0.8);

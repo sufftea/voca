@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/utils/database_manager.dart';
 import 'package:voca/domain/domain_constants.dart';
@@ -46,6 +47,10 @@ class PracticeRepositoryImpl implements PracticeRepository {
     // Filter out the cards that are too soon to repeat
     return cards.where(
       (card) {
+        if (kDebugMode) {
+          return true;
+        }
+
         final diff = DateTime.now().difference(card.lastRepetition!);
         final requiredDiff = repetitionsToDuration[card.repetitionCount]!;
 

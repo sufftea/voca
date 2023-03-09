@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 
+// TODO: remove this and use BaseStyles.appBarDecoration instead
 class AppBarCard extends StatelessWidget {
   const AppBarCard({
     required this.child,
@@ -8,6 +9,7 @@ class AppBarCard extends StatelessWidget {
     this.height,
     this.width,
     this.safeArea = true,
+    this.color,
     super.key,
   });
 
@@ -16,6 +18,7 @@ class AppBarCard extends StatelessWidget {
   final double? height;
   final double? width;
   final bool safeArea;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class AppBarCard extends StatelessWidget {
       width: width,
       padding: padding,
       decoration: BoxDecoration(
-        color: BaseColors.white,
+        color: color ?? BaseColors.white,
         boxShadow: [
           BoxShadow(
             color: BaseColors.black10,

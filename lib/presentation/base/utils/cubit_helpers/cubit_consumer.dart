@@ -17,8 +17,9 @@ mixin CubitConsumer<CubitT extends BlocBase<StateT>, StateT> {
 mixin StatefulCubitConsumer<CubitT extends BlocBase<StateT>, StateT,
     WidgetT extends StatefulWidget> on State<WidgetT> {
   CubitT get cubit => BlocProvider.of(context);
+
   Widget builder(
-    Widget Function(BuildContext, StateT) builder, {
+    Widget Function(BuildContext context, StateT state) builder, {
     bool Function(StateT prev, StateT curr)? buildWhen,
   }) =>
       BlocBuilder<CubitT, StateT>(

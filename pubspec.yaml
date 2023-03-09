@@ -24,6 +24,9 @@ dependencies:
   slang_flutter: ^3.11.0
   sqflite: ^2.2.4+1
   path: ^1.8.2
+  provider: ^6.0.5
+  card_swiper: ^2.0.4
+  flutter_card_swiper: ^2.0.1
 
 flutter_intl:
   enabled: true

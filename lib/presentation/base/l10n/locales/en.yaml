@@ -49,3 +49,12 @@ learningList:
 knownList:
   header: Known words
   noWords: You don't have any words in the known list yet
+
+practice: 
+  seeDefinition: See definition
+  noExamples: No examples
+  examples: Examples
+  knowCheat: Know (cheat)
+  wordsRemembered: "Words remembered:"
+  wordsForgotten: "Words forgotten:"
+  goBack: Go back

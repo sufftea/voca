@@ -18,6 +18,7 @@ class BaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
       color: color ?? BaseColors.concrete,
       elevation: 0,
