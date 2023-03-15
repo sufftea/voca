@@ -58,7 +58,8 @@ class _KnownWordsListScreenState extends State<KnownWordsListScreen>
 
   Widget buildBody() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) => prev.words != curr.words,
+      builder: (context, state) {
         final words = state.words;
         if (words == null) {
           final t = Translations.of(context);

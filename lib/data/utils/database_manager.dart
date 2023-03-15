@@ -15,17 +15,16 @@ class _WordCardStatusText {
 class DatabaseManager {
   Database? _db;
   Database get db =>
-      _db ?? (throw StateError("DatabaseRepository wasn't initialized"));
+      _db ?? (throw StateError("DatabaseManager: call init first"));
 
   Future<void> init() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), AssetsManager.enDictionaryDbName),
     );
 
-    assert(await () async {
+    if (kDebugMode) {
       await _detachAllDb(_db!);
-      return true;
-    }());
+    }
 
     await _attachUserProgressDb(_db!);
   }
@@ -35,14 +34,14 @@ class DatabaseManager {
     WordCardStatus.known: _WordCardStatusText.known,
     WordCardStatus.unknown: _WordCardStatusText.removed,
   };
-  
+
   static const textToWordStatus = <String, WordCardStatus>{
     _WordCardStatusText.removed: WordCardStatus.unknown,
     _WordCardStatusText.learning: WordCardStatus.learningOrLearned,
     _WordCardStatusText.known: WordCardStatus.known,
   };
 
-  /// For hot reload - sqflite connection persists even after hotreload, so I
+  /// For hot restart - sqflite connection persists even after hot restart, so I
   /// get an error when attaching another database
   Future<void> _detachAllDb(Database mainConnection) async {
     final dbs = await mainConnection.query(
@@ -70,17 +69,17 @@ class DatabaseManager {
       onUpgrade: (db, _, __) {
         debugPrint('WordsRepository database onUpgrade()');
 
-        db.execute('''DROP TABLE learning''');
-        db.execute('''DROP TABLE known''');
+        db.execute('''DROP TABLE IF EXISTS learning''');
+        db.execute('''DROP TABLE IF EXISTS known''');
 
         // status - see [_WordCardStatusText]
         db.execute('''
           CREATE TABLE userWords (
             wordId INTEGER UNIQUE NOT NULL,
-            word TEXT, 
+            word TEXT NOT NULL, 
             repetitions INTEGER DEFAULT 0,
-            lastRepetition INTEGER,
-            status TEXT
+            lastRepetition INTEGER NOT NULL,
+            status TEXT NOT NULL
           )
         ''');
       },

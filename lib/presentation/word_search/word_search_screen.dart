@@ -69,7 +69,9 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   Widget buildBody() {
     return Expanded(
       child: builder(
-        (context, state) {
+        buildWhen: (prev, curr) =>
+            prev.status != curr.status || prev.results != curr.results,
+        builder: (context, state) {
           final s = state.status;
 
           final t = Translations.of(context);

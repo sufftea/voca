@@ -31,31 +31,37 @@ class NavBarShell extends StatelessWidget
         child: Row(
           children: [
             Expanded(
-              child: builder((context, state) {
-                return _NavBarButton(
-                  onTap: () {
-                    GoRouter.of(context).goNamed(RouteNames.home);
-                    cubit(context).setTab(NavBarTab.home);
-                  },
-                  icon: Icons.home,
-                  name: t.navBar.home,
-                  active: state.activeTab == NavBarTab.home,
-                );
-              }),
+              child: builder(
+                buildWhen: (prev, curr) => prev.activeTab != curr.activeTab,
+                builder: (context, state) {
+                  return _NavBarButton(
+                    onTap: () {
+                      GoRouter.of(context).goNamed(RouteNames.home);
+                      cubit(context).setTab(NavBarTab.home);
+                    },
+                    icon: Icons.home,
+                    name: t.navBar.home,
+                    active: state.activeTab == NavBarTab.home,
+                  );
+                },
+              ),
             ),
             const SizedBox(width: 5),
             Expanded(
-              child: builder((context, state) {
-                return _NavBarButton(
-                  onTap: () {
-                    GoRouter.of(context).goNamed(RouteNames.settings);
-                    cubit(context).setTab(NavBarTab.settings);
-                  },
-                  icon: Icons.settings,
-                  name: t.navBar.settings,
-                  active: state.activeTab == NavBarTab.settings,
-                );
-              }),
+              child: builder(
+                buildWhen: (prev, curr) => prev.activeTab != curr.activeTab,
+                builder: (context, state) {
+                  return _NavBarButton(
+                    onTap: () {
+                      GoRouter.of(context).goNamed(RouteNames.settings);
+                      cubit(context).setTab(NavBarTab.settings);
+                    },
+                    icon: Icons.settings,
+                    name: t.navBar.settings,
+                    active: state.activeTab == NavBarTab.settings,
+                  );
+                },
+              ),
             )
           ],
         ),

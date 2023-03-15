@@ -48,7 +48,11 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   Widget buildAppBar() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.word != curr.word ||
+          prev.repetitionCount != curr.repetitionCount ||
+          prev.status != curr.status,
+      builder: (context, state) {
         return AppBarCard(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
@@ -70,10 +74,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           ),
         );
       },
-      buildWhen: (prev, curr) =>
-          prev.word != curr.word ||
-          prev.repetitionCount != curr.repetitionCount ||
-          prev.status != curr.status,
     );
   }
 
@@ -188,7 +188,8 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   Widget buildBody() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) => prev.definitions != curr.definitions,
+      builder: (context, state) {
         final definitions = state.definitions;
 
         if (definitions == null) {
@@ -197,7 +198,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
         return WordDefinitionsWidget(definitions: definitions);
       },
-      buildWhen: (prev, curr) => prev.definitions != curr.definitions,
     );
   }
 }
