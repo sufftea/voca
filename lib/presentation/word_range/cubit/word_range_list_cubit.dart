@@ -3,8 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 import 'package:voca/presentation/word_range/cubit/word_range_list_state.dart';
+import 'package:voca/utils/flavors.dart';
 
-@injectable
+@Injectable(env: [Flavors.dev])
 class WordRangeListCubit extends Cubit<LoadingState<WordRrangeListState>> {
   WordRangeListCubit() : super(const LoadingState<WordRrangeListState>.loading());
 

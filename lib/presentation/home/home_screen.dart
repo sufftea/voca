@@ -4,7 +4,6 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
@@ -13,6 +12,7 @@ import 'package:voca/presentation/home/widgets/discover_banner.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
+import 'package:voca/utils/flavors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-    with StatefulCubitConsumer<HomeCubit, LoadingState<HomeState>, HomeScreen> {
+    with StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen> {
   @override
   void initState() {
     super.initState();
@@ -57,8 +57,10 @@ class _HomeScreenState extends State<HomeScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildDiscoverBanner(),
-              const SizedBox(height: 20),
+              if (Flavors.current == Flavors.dev) ...[
+                buildDiscoverBanner(),
+                const SizedBox(height: 20),
+              ],
               buildPracticeBanner(),
             ],
           ),
@@ -69,34 +71,46 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildDiscoverBanner() {
     return builder(
-      (context, state) {
-        return state.maybeMap(
-          orElse: () => DiscoverBanner.placeholder,
-          ready: (a) => DiscoverBanner(wordRange: a.data.selectedWordRange),
-        );
+      buildWhen: (prev, curr) => prev.selectedLanguage != curr.selectedLanguage,
+      builder: (context, state) {
+        if (state.selectedLanguage == null) {
+          return DiscoverBanner.placeholder;
+        }
+
+        return DiscoverBanner(wordRange: state.selectedWordRange!);
       },
     );
   }
 
   Widget buildPracticeBanner() {
-    return builder((context, state) {
-      return state.maybeMap(
-        orElse: () => PracticeBanner.placeholder,
-        ready: (a) => PracticeBanner(
-          todaysGoal: a.data.todaysGoal,
-          todaysGoalCompleted: a.data.todaysGoalCompleted,
-        ),
-      );
-    });
+    return builder(
+      buildWhen: (prev, curr) =>
+          prev.todaysGoal != curr.todaysGoal ||
+          prev.todaysGoalCompleted != curr.todaysGoalCompleted,
+      builder: (context, state) {
+        if (state.todaysGoal == null) {
+          return PracticeBanner.placeholder;
+        }
+
+        return PracticeBanner(
+          todaysGoal: state.todaysGoal!,
+          todaysGoalCompleted: state.todaysGoalCompleted!,
+        );
+      },
+    );
   }
 
   Widget buildAppBar() {
-    return builder((context, state) {
-      return state.maybeMap(
-        orElse: () => buildAppBarLoading(),
-        ready: (a) => buildAppBarReady(a.data),
-      );
-    });
+    return builder(
+      buildWhen: (prev, curr) => prev.selectedLanguage != curr.selectedLanguage,
+      builder: (context, state) {
+        if (state.selectedLanguage == null) {
+          return buildAppBarLoading();
+        }
+
+        return buildAppBarReady(state.selectedLanguage!);
+      },
+    );
   }
 
   Widget buildAppBarLoading() {
@@ -112,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget buildAppBarReady(HomeState state) {
+  Widget buildAppBarReady(String language) {
     return Hero(
       tag: SearchBarHeroData.tag,
       child: Material(
@@ -125,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                buildLanguageButton(state.selectedLanguage),
+                buildLanguageButton(language),
                 const SizedBox(height: 20),
                 buildSearchBar(),
               ],

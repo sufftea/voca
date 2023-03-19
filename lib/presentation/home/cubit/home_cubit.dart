@@ -1,18 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/presentation/base/utils/loading_state/loading_state.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
 
 @injectable
-class HomeCubit extends Cubit<LoadingState<HomeState>> {
-  HomeCubit() : super(const LoadingState.loading());
+class HomeCubit extends Cubit<HomeState> {
+  HomeCubit() : super(const HomeState());
 
   Future<void> onScreenOpened() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-
-    emit(LoadingState.ready(HomeState(
+    emit(HomeState(
       selectedLanguage: 'English',
       nofWordsCurrentlyLearning: 234,
       todaysGoal: 50,
@@ -23,6 +19,6 @@ class HomeCubit extends Cubit<LoadingState<HomeState>> {
         knowNumber: 130,
         learningNumber: 78,
       ),
-    )));
+    ));
   }
 }

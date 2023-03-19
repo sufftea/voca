@@ -60,6 +60,17 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions 'default'
+    productFlavors {
+        development {
+            resValue 'string', 'app_name', 'voca-dev'
+            applicationIdSuffix '.dev'
+        }
+        production {
+            resValue 'string', 'app_name', 'voca'
+        }
+    }
 }
 
 flutter {

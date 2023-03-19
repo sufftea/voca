@@ -100,21 +100,23 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
 
   Widget buildGraph() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.readyData?.ranges != curr.readyData?.ranges ||
+          prev.readyData?.selectedRange != curr.readyData?.selectedRange,
+      builder: (context, state) {
         return state.maybeMap(
           orElse: () => const PlaceholderCard(height: 400),
           ready: (a) => WordRangesGraph(ranges: a.data.ranges),
         );
       },
-      buildWhen: (prev, curr) =>
-          prev.readyData?.ranges != curr.readyData?.ranges ||
-          prev.readyData?.selectedRange != curr.readyData?.selectedRange,
     );
   }
 
   Widget buildRangeSelection() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.readyData?.selectedRange != curr.readyData?.selectedRange,
+      builder: (context, state) {
         return state.maybeMap(
           orElse: () => const PlaceholderCard(height: 50),
           ready: (a) => bulidRangeSelectionReady(
@@ -123,8 +125,6 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
           ),
         );
       },
-      buildWhen: (prev, curr) =>
-          prev.readyData?.selectedRange != curr.readyData?.selectedRange,
     );
   }
 
@@ -152,7 +152,6 @@ class _WordRangeListScreenState extends State<WordRangeListScreen>
             ),
           ),
           RangeSlider(
-            
             values: RangeValues(
               selectedRange.low.toDouble(),
               selectedRange.high.toDouble(),

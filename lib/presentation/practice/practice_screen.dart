@@ -73,7 +73,7 @@ class _PracticeScreenState extends State<PracticeScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               child: buildExamplesArea(),
             ),
             Expanded(
@@ -100,7 +100,9 @@ class _PracticeScreenState extends State<PracticeScreen>
       height: 25,
       child: Center(
         child: builder(
-          (context, state) {
+          buildWhen: (prev, curr) =>
+              prev.index != curr.index || prev.cards != curr.cards,
+          builder: (context, state) {
             final curr = state.index;
             final total = state.cards?.length;
 
@@ -113,8 +115,6 @@ class _PracticeScreenState extends State<PracticeScreen>
               ),
             );
           },
-          buildWhen: (prev, curr) =>
-              prev.index != curr.index || prev.cards != curr.cards,
         ),
       ),
     );
@@ -122,21 +122,22 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildResults() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.forgottenWords != curr.forgottenWords ||
+          prev.rememberedWords != curr.rememberedWords,
+      builder: (context, state) {
         return PracticeResultsCardWidget(
           remembered: state.rememberedWords,
           forgotten: state.forgottenWords,
         );
       },
-      buildWhen: (prev, curr) =>
-          prev.forgottenWords != curr.forgottenWords ||
-          prev.rememberedWords != curr.rememberedWords,
     );
   }
 
   Widget buildCards() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) => prev.cards != curr.cards,
+      builder: (context, state) {
         final cards = state.cards;
 
         if (cards == null) {
@@ -159,13 +160,14 @@ class _PracticeScreenState extends State<PracticeScreen>
           },
         );
       },
-      buildWhen: (prev, curr) => prev.cards != curr.cards,
     );
   }
 
   Widget buildACard(int index) {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.isFlipped != curr.isFlipped || prev.index != curr.index,
+      builder: (context, state) {
         if (state.isFlipped && index == state.index) {
           return buildFlippedCard();
         }
@@ -177,8 +179,6 @@ class _PracticeScreenState extends State<PracticeScreen>
           },
         );
       },
-      buildWhen: (prev, curr) =>
-          prev.isFlipped != curr.isFlipped || prev.index != curr.index,
     );
   }
 
@@ -186,7 +186,8 @@ class _PracticeScreenState extends State<PracticeScreen>
     // Needs rebuild in case the definitions were still loading when the card
     // was flipped. (practically impossible though...)
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) => prev.definitions != curr.definitions,
+      builder: (context, state) {
         return FlippedCardWidget(
           card: state.cards![state.index],
           definitions: state.definitions,
@@ -197,7 +198,6 @@ class _PracticeScreenState extends State<PracticeScreen>
           },
         );
       },
-      buildWhen: (prev, curr) => prev.definitions != curr.definitions,
     );
   }
 
@@ -230,7 +230,9 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildExamplesArea() {
     return builder(
-      (context, state) {
+      buildWhen: (prev, curr) =>
+          prev.definitions != curr.definitions || prev.index != curr.index,
+      builder: (context, state) {
         if (state.index == (state.cards?.length ?? 0)) {
           return buildGoBackButton();
         }
@@ -261,6 +263,7 @@ class _PracticeScreenState extends State<PracticeScreen>
             height: _examplesAreaHeight,
             width: cons.maxWidth,
             child: Swiper(
+              index: 0,
               loop: false,
               viewportFraction: (cons.maxWidth - 40) / cons.maxWidth,
               scale: 0.92,
@@ -270,8 +273,6 @@ class _PracticeScreenState extends State<PracticeScreen>
           );
         });
       },
-      buildWhen: (prev, curr) =>
-          prev.definitions != curr.definitions || prev.index != curr.index,
     );
   }
 

@@ -2,19 +2,19 @@
 import 'package:voca/presentation/entities/word_range.dart';
 
 class HomeState {
-  HomeState({
-    required this.selectedLanguage,
-    required this.todaysGoal,
-    required this.todaysGoalCompleted,
-    required this.nofWordsCurrentlyLearning,
-    required this.selectedWordRange,
+  const HomeState({
+    this.selectedLanguage,
+    this.todaysGoal,
+    this.todaysGoalCompleted,
+    this.nofWordsCurrentlyLearning,
+    this.selectedWordRange,
   });
 
-  final String selectedLanguage;
-  final int todaysGoal;
-  final int todaysGoalCompleted;
-  final int nofWordsCurrentlyLearning;
-  final WordRange selectedWordRange;
+  final String? selectedLanguage;
+  final int? todaysGoal;
+  final int? todaysGoalCompleted;
+  final int? nofWordsCurrentlyLearning;
+  final WordRange? selectedWordRange;
 
   HomeState copyWith({
     String? selectedLanguage,
@@ -27,7 +27,8 @@ class HomeState {
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       todaysGoal: todaysGoal ?? this.todaysGoal,
       todaysGoalCompleted: todaysGoalCompleted ?? this.todaysGoalCompleted,
-      nofWordsCurrentlyLearning: nofWordsCurrentlyLearning ?? this.nofWordsCurrentlyLearning,
+      nofWordsCurrentlyLearning:
+          nofWordsCurrentlyLearning ?? this.nofWordsCurrentlyLearning,
       selectedWordRange: selectedWordRange ?? this.selectedWordRange,
     );
   }
