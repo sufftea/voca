@@ -3,35 +3,39 @@ import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
+import 'package:voca/presentation/base/widgets/base_card.dart';
 
-class WordListsButtonsWidget extends StatelessWidget {
-  const WordListsButtonsWidget({super.key});
+class WordListsBanner extends StatelessWidget {
+  const WordListsBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          t.settings.words,
-          style: const TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeights.bold,
+    return BaseCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            t.settings.words,
+            style: const TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeights.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 100,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              buildLearningButton(context),
-              const SizedBox(width: 10),
-              buildKnownListButton(context),
-            ],
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 70,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                buildLearningButton(context),
+                const SizedBox(width: 10),
+                buildKnownListButton(context),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -57,7 +61,7 @@ class WordListsButtonsWidget extends StatelessWidget {
             Text(
               t.common.learning,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeights.bold,
                 color: BaseColors.curiousBlue,
               ),
@@ -89,7 +93,7 @@ class WordListsButtonsWidget extends StatelessWidget {
             Text(
               t.common.known,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeights.bold,
                 color: BaseColors.neptune,
               ),

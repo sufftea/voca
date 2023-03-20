@@ -44,6 +44,10 @@ wordDefinition:
 
 settings:
   words: Words
+  about:
+    header: About
+    wordNet: WordNet
+    dictionaryFrom: "The dictionary dataset was taken from"
 
 learningList:
   header: Learning list
