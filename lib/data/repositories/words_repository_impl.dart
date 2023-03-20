@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/utils/database_manager.dart';
 import 'package:voca/data/utils/pos_map.dart';
-import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
+import 'package:voca/utils/global_constants.dart';
 
 @LazySingleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
@@ -221,7 +221,7 @@ class WordsRepositoryImpl implements WordsRepository {
       where: 'status = ? OR repetitions = ?',
       whereArgs: [
         DatabaseManager.wordStatusToText[WordCardStatus.known],
-        DomainConstants.maxRepetitionCount,
+        GlobalConstants.maxRepetitionCount,
       ],
     );
 

@@ -5,6 +5,6 @@ import 'injectable_init.config.dart';
 
 final getIt = GetIt.instance;
 @InjectableInit()
-void configureDependencies() => getIt.init(
+Future<void> configureDependencies() => getIt.init(
       environment: Flavors.current,
     );

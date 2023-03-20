@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/utils/database_manager.dart';
-import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
+import 'package:voca/utils/global_constants.dart';
 
 @LazySingleton(as: PracticeRepository)
 class PracticeRepositoryImpl implements PracticeRepository {
@@ -13,7 +12,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
   final DatabaseManager _databaseManager;
 
   static const repetitionsToDuration = <int, Duration>{
-    0: Duration(days: 1),
+    0: Duration(days: 0),
     1: Duration(days: 1),
     2: Duration(days: 2),
     3: Duration(days: 3),
@@ -38,7 +37,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
       where: 'status = ? AND repetitions < ?',
       whereArgs: [
         DatabaseManager.wordStatusToText[WordCardStatus.learningOrLearned],
-        DomainConstants.maxRepetitionCount,
+        GlobalConstants.maxRepetitionCount,
       ],
     );
 
@@ -47,10 +46,6 @@ class PracticeRepositoryImpl implements PracticeRepository {
     // Filter out the cards that are too soon to repeat
     return cards.where(
       (card) {
-        if (kDebugMode) {
-          return true;
-        }
-
         final diff = DateTime.now().difference(card.lastRepetition!);
         final requiredDiff = repetitionsToDuration[card.repetitionCount]!;
 

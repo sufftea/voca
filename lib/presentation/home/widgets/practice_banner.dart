@@ -5,20 +5,23 @@ import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
-import 'package:voca/presentation/home/widgets/todays_goal_progress_bar.dart';
 
 class PracticeBanner extends StatelessWidget {
   const PracticeBanner({
-    required this.todaysGoal,
-    required this.todaysGoalCompleted,
+    required this.cardsForPractice,
+    required this.learningListEmpty,
     super.key,
   });
 
   static const placeholder = PlaceholderOr(
-      real: PracticeBanner(todaysGoal: 0, todaysGoalCompleted: 0));
+    real: PracticeBanner(
+      cardsForPractice: 0,
+      learningListEmpty: false,
+    ),
+  );
 
-  final int todaysGoal;
-  final int todaysGoalCompleted;
+  final bool learningListEmpty;
+  final int cardsForPractice;
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +40,68 @@ class PracticeBanner extends StatelessWidget {
               fontWeight: FontWeights.bold,
             ),
           ),
-          const SizedBox(height: 20),
-          TodaysGoalProgBar(
-            goal: todaysGoal,
-            completed: todaysGoalCompleted,
-          ),
-          const SizedBox(height: 20),
-          FilledButton(
-            onPressed: () {
-              GoRouter.of(context).goNamed(RouteNames.practice);
-            },
-            child: Text(t.home.practiceBanner.practice),
-          ),
+          if (!learningListEmpty) ...[
+            const SizedBox(height: 20),
+            buildCardsForTodayInfo(),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: cardsForPractice == 0
+                  ? null
+                  : () {
+                      GoRouter.of(context).goNamed(RouteNames.practice);
+                    },
+              child: Text(t.home.practiceBanner.practice),
+            ),
+          ] else ...[
+            const SizedBox(height: 20),
+            Text(
+              t.home.practiceBanner.noWordsInLearnList,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeights.semiBold,
+                color: BaseColors.neptune,
+              ),
+            ),
+          ]
         ],
       ),
+    );
+  }
+
+  Widget buildCardsForTodayInfo() {
+    if (cardsForPractice == 0) {
+      return Text(
+        t.home.practiceBanner.noCardsForToday,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeights.bold,
+          color: BaseColors.neptune,
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          t.home.practiceBanner.cardsForToday,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeights.bold,
+          ),
+        ),
+        const SizedBox(width: 5),
+        Text(
+          cardsForPractice.toString(),
+          style: const TextStyle(
+            fontSize: 15,
+            color: BaseColors.curiousBlue,
+            fontWeight: FontWeights.bold,
+          ),
+        ),
+      ],
     );
   }
 }

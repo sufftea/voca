@@ -5,7 +5,7 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/utils/go_with_callback.dart';
+import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
@@ -23,14 +23,12 @@ class WordSearchScreen extends StatefulWidget {
 }
 
 class _WordSearchScreenState extends State<WordSearchScreen>
-    with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
-  void onOpenDefinition(WordCard card) async {
-    goWithCallback(
-      context,
-      RouteNames.wordDefinition,
-      onReturn: cubit.refresh,
-      extra: card,
-    );
+    with
+        StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen>,
+        RouteObserverMixin {
+  @override
+  void onReturnToScreen() {
+    cubit.refresh();
   }
 
   @override
@@ -97,7 +95,10 @@ class _WordSearchScreenState extends State<WordSearchScreen>
                     ),
                     child: WordListEntry(
                       card: state.results[index],
-                      onTap: onOpenDefinition,
+                      onTap: (card) => GoRouter.of(context).goNamed(
+                        RouteNames.wordDefinition,
+                        extra: card,
+                      ),
                     ),
                   );
                 },

@@ -10,9 +10,10 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   final AssetsManager _assetsManager;
   final DatabaseManager _databaseManager;
 
+  @PostConstruct(preResolve: true)
   @override
   Future<void> init() async {
-    _assetsManager.createDatabaseFromAssets();
-    _databaseManager.init();
+    await _assetsManager.createDatabaseFromAssets();
+    await _databaseManager.init();
   }
 }
