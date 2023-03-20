@@ -23,6 +23,7 @@ class BaseColors {
   static const bittersweet = Color(0xffFF6060);
   static final bittersweet10 = bittersweet.withOpacity(0.1);
   static const oldRose = Color(0xFFC88888);
+  static const botticelly = Color(0xffC9DAE8);
 }
 
 final baseTheme = ThemeData(
@@ -48,7 +49,10 @@ final baseTheme = ThemeData(
   //
   filledButtonTheme: FilledButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
+      backgroundColor: mspResolveWith(
+        disabled: BaseColors.botticelly,
+        none: BaseColors.curiousBlue,
+      ),  
       elevation: const MaterialStatePropertyAll(0),
       padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,

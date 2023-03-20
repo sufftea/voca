@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
@@ -10,6 +9,7 @@ import 'package:voca/presentation/base/utils/base_styles.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
+import 'package:voca/utils/global_constants.dart';
 
 class FlippedCardWidget extends StatelessWidget {
   const FlippedCardWidget({
@@ -63,7 +63,7 @@ class FlippedCardWidget extends StatelessWidget {
           const Spacer(),
           PracticeProgressIndicator(
             currRepetitions: card.repetitionCount,
-            totalRepetitions: DomainConstants.maxRepetitionCount,
+            totalRepetitions: GlobalConstants.maxRepetitionCount,
           ),
         ],
       ),

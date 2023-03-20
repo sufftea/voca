@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/utils/go_with_callback.dart';
+import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/known_words_list/cubit/known_words_list_cubit.dart';
 import 'package:voca/presentation/known_words_list/cubit/known_words_list_state.dart';
@@ -19,7 +20,13 @@ class KnownWordsListScreen extends StatefulWidget {
 class _KnownWordsListScreenState extends State<KnownWordsListScreen>
     with
         StatefulCubitConsumer<KnownWordsListCubit, KnownWordsListState,
-            KnownWordsListScreen> {
+            KnownWordsListScreen>,
+        RouteObserverMixin {
+  @override
+  void onReturnToScreen() {
+    cubit.refresh();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -85,10 +92,8 @@ class _KnownWordsListScreenState extends State<KnownWordsListScreen>
                 padding: const EdgeInsets.only(bottom: 5),
                 child: WordListEntry(
                   onTap: (card) {
-                    goWithCallback(
-                      context,
+                    GoRouter.of(context).goNamed(
                       RouteNames.knownList_wordDefinition,
-                      onReturn: cubit.refresh,
                       extra: card,
                     );
                   },
@@ -103,11 +108,14 @@ class _KnownWordsListScreenState extends State<KnownWordsListScreen>
   }
 
   Widget buildMessage(String message) {
-    return Text(
-      message,
-      style: const TextStyle(
-        color: BaseColors.neptune,
-        fontWeight: FontWeights.bold,
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Text(
+        message,
+        style: const TextStyle(
+          color: BaseColors.neptune,
+          fontWeight: FontWeights.bold,
+        ),
       ),
     );
   }

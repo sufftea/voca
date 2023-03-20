@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
+import 'package:voca/utils/global_constants.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({
@@ -67,7 +67,7 @@ class CardWidget extends StatelessWidget {
     return Center(
       child: PracticeProgressIndicator(
         currRepetitions: card.repetitionCount,
-        totalRepetitions: DomainConstants.maxRepetitionCount,
+        totalRepetitions: GlobalConstants.maxRepetitionCount,
       ),
     );
   }

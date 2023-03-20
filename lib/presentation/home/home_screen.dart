@@ -4,6 +4,7 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
+import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
@@ -22,7 +23,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-    with StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen> {
+    with
+        StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen>,
+        RouteObserverMixin {
+
+@override
+  void onReturnToScreen() {
+    cubit.onScreenOpened();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -71,9 +80,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildDiscoverBanner() {
     return builder(
-      buildWhen: (prev, curr) => prev.selectedLanguage != curr.selectedLanguage,
+      buildWhen: (prev, curr) =>
+          prev.selectedWordRange != curr.selectedWordRange,
       builder: (context, state) {
-        if (state.selectedLanguage == null) {
+        if (state.selectedWordRange == null) {
           return DiscoverBanner.placeholder;
         }
 
@@ -85,48 +95,22 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildPracticeBanner() {
     return builder(
       buildWhen: (prev, curr) =>
-          prev.todaysGoal != curr.todaysGoal ||
-          prev.todaysGoalCompleted != curr.todaysGoalCompleted,
+          prev.wordsForPractice != curr.wordsForPractice ||
+          prev.learningListEmpty != curr.learningListEmpty,
       builder: (context, state) {
-        if (state.todaysGoal == null) {
+        if (state.wordsForPractice == null) {
           return PracticeBanner.placeholder;
         }
 
         return PracticeBanner(
-          todaysGoal: state.todaysGoal!,
-          todaysGoalCompleted: state.todaysGoalCompleted!,
+          cardsForPractice: state.wordsForPractice!,
+          learningListEmpty: state.learningListEmpty,
         );
       },
     );
   }
 
   Widget buildAppBar() {
-    return builder(
-      buildWhen: (prev, curr) => prev.selectedLanguage != curr.selectedLanguage,
-      builder: (context, state) {
-        if (state.selectedLanguage == null) {
-          return buildAppBarLoading();
-        }
-
-        return buildAppBarReady(state.selectedLanguage!);
-      },
-    );
-  }
-
-  Widget buildAppBarLoading() {
-    return AppBarCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PlaceholderOr(real: buildLanguageButton('Placeholder text')),
-          const SizedBox(height: 20),
-          const PlaceholderOr(real: SearchBar()),
-        ],
-      ),
-    );
-  }
-
-  Widget buildAppBarReady(String language) {
     return Hero(
       tag: SearchBarHeroData.tag,
       child: Material(
@@ -139,13 +123,22 @@ class _HomeScreenState extends State<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                buildLanguageButton(language),
-                const SizedBox(height: 20),
                 buildSearchBar(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildAppBarLoading() {
+    return AppBarCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          PlaceholderOr(real: SearchBar()),
+        ],
       ),
     );
   }
@@ -156,21 +149,6 @@ class _HomeScreenState extends State<HomeScreen>
       behavior: HitTestBehavior.opaque,
       child: const AbsorbPointer(
         child: SearchBar(),
-      ),
-    );
-  }
-
-  Widget buildLanguageButton(String selectedLanguage) {
-    final t = Translations.of(context);
-
-    return TextButton(
-      onPressed: () {},
-      child: Text(
-        t.home.languageIs(language: selectedLanguage),
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeights.bold,
-        ),
       ),
     );
   }

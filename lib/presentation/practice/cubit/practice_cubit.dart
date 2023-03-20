@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
@@ -35,9 +33,11 @@ class PracticeCubit extends Cubit<PracticeState> {
   }
 
   Future<void> onCardKnown() async {
-    if (kReleaseMode) {
-      await _practiceRepository.incrementCard(state.cards![state.index].word);
+    if (state.index == state.cards!.length) {
+      return;
     }
+
+    await _practiceRepository.incrementCard(state.cards![state.index].word);
 
     emit(state.copyWith(
       index: state.index + 1,
@@ -49,9 +49,7 @@ class PracticeCubit extends Cubit<PracticeState> {
   }
 
   Future<void> onCardUnknown() async {
-    if (kReleaseMode) {
-      await _practiceRepository.resetCard(state.cards![state.index].word);
-    }
+    await _practiceRepository.resetCard(state.cards![state.index].word);
 
     emit(state.copyWith(
       index: state.index + 1,
