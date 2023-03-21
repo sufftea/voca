@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/utils/database_manager.dart';
+import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/data/utils/pos_map.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
@@ -118,7 +119,7 @@ class WordsRepositoryImpl implements WordsRepository {
       'up.userWords',
       {
         'repetitions': repetitions,
-        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+        'lastRepetition': DateTime.now().daysSinceEpoch,
       },
       where: 'wordId = ?',
       whereArgs: [word.id],
@@ -151,7 +152,7 @@ class WordsRepositoryImpl implements WordsRepository {
       'up.userWords',
       {
         'status': DatabaseManager.wordStatusToText[status],
-        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+        'lastRepetition': DateTime.now().daysSinceEpoch,
       },
       where: 'wordId = ?',
       whereArgs: [word.id],
@@ -269,7 +270,7 @@ class WordsRepositoryImpl implements WordsRepository {
         'wordId': word.id,
         'word': word.name,
         'repetitions': repetitions,
-        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+        'lastRepetition': DateTime.now().daysSinceEpoch,
         'status': DatabaseManager.wordStatusToText[status],
       },
     );

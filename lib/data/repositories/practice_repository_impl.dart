@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/utils/database_manager.dart';
+import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
@@ -49,7 +50,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
         final diff = DateTime.now().difference(card.lastRepetition!);
         final requiredDiff = repetitionsToDuration[card.repetitionCount]!;
 
-        return diff > requiredDiff;
+        return diff >= requiredDiff;
       },
     ).toList();
   }
@@ -64,7 +65,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
         lastRepetition = ?
       WHERE wordId = ?
     ''', [
-      DateTime.now().millisecondsSinceEpoch,
+      DateTime.now().daysSinceEpoch,
       word.id,
     ]);
 
@@ -78,7 +79,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
     final count = await db.update(
       'up.userWords',
       {
-        'lastRepetition': DateTime.now().millisecondsSinceEpoch,
+        'lastRepetition': DateTime.now().daysSinceEpoch,
         'repetitions': 0,
       },
       where: 'wordId = ?',
@@ -95,7 +96,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
       final id = row['wordId'] as int;
       final word = row['word'] as String;
       final repetitions = row['repetitions'] as int;
-      final lastRepetition = DateTime.fromMillisecondsSinceEpoch(
+      final lastRepetition = DateTimeExt.fromDaysSinceEpoch(
         row['lastRepetition'] as int,
       );
       final status = DatabaseManager.textToWordStatus[row['status'] as String]!;

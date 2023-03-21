@@ -3,12 +3,14 @@ import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/utils/assets_manager.dart';
+import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/domain/entities/word_card.dart';
+import 'package:voca/utils/flavors.dart';
 
 class _WordCardStatusText {
   static const removed = 'removed';
   static const learning = 'learning';
-  static const known = 'knon';
+  static const known = 'known';
 }
 
 @LazySingleton()
@@ -22,9 +24,7 @@ class DatabaseManager {
       join(await getDatabasesPath(), AssetsManager.enDictionaryDbName),
     );
 
-    if (kDebugMode) {
-      await _detachAllDb(_db!);
-    }
+    await _detachAllDb(_db!);
 
     await _attachUserProgressDb(_db!);
   }
@@ -41,8 +41,6 @@ class DatabaseManager {
     _WordCardStatusText.known: WordCardStatus.known,
   };
 
-  /// For hot restart - sqflite connection persists even after hot restart, so I
-  /// get an error when attaching another database
   Future<void> _detachAllDb(Database mainConnection) async {
     final dbs = await mainConnection.query(
       'pragma_database_list',
@@ -65,15 +63,18 @@ class DatabaseManager {
     // wordId - references words in the dictionary db; **not a primary key**.
     final updb = await openDatabase(
       upPath,
-      version: 1,
-      onUpgrade: (db, _, __) {
-        debugPrint('WordsRepository database onUpgrade()');
+      version: 2,
+      onUpgrade: (db, prev, curr) async {
+        debugPrint('WordsRepository database onUpgrade');
 
-        db.execute('''DROP TABLE IF EXISTS learning''');
-        db.execute('''DROP TABLE IF EXISTS known''');
-
+        if (prev <= 1) {
+          await _updateDb1(db);
+        }
+      },
+      onCreate: (db, version) async {
+        debugPrint('WordsRepository database onCreate');
         // status - see [_WordCardStatusText]
-        db.execute('''
+        await db.execute('''
           CREATE TABLE userWords (
             wordId INTEGER UNIQUE NOT NULL,
             word TEXT NOT NULL, 
@@ -87,5 +88,23 @@ class DatabaseManager {
     await updb.close();
 
     await mainConnection.execute('ATTACH ? AS up', [upPath]);
+  }
+
+  Future<void> _updateDb1(Database db) async {
+    final qUserWords = await db.query('userWords');
+
+    for (final row in qUserWords) {
+      final lastRepetitionMillisecs = row['lastRepetition'] as int;
+      final wordId = row['wordId'] as int;
+
+      db.update(
+        'userWords',
+        {
+          'lastRepetition': millisecondsToDays(lastRepetitionMillisecs),
+        },
+        where: 'wordId = ?',
+        whereArgs: [wordId],
+      );
+    }
   }
 }
