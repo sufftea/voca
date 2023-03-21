@@ -28,6 +28,7 @@ dependencies:
   card_swiper: ^2.0.4
   flutter_card_swiper: ^2.0.1
   url_launcher: ^6.1.10
+  receive_intent: ^0.2.3
 
 flutter_intl:
   enabled: true

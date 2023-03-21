@@ -6,6 +6,7 @@ class SearchBar extends StatelessWidget {
   const SearchBar({
     this.onChanged,
     this.onTap,
+    this.initialValue,
     this.autofocus = false,
     super.key,
   });
@@ -13,12 +14,14 @@ class SearchBar extends StatelessWidget {
   final VoidCallback? onTap;
   final void Function(String)? onChanged;
   final bool autofocus;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
 
-    return TextField(
+    return TextFormField(
+      initialValue: initialValue,
       onTap: onTap,
       onChanged: onChanged,
       autofocus: autofocus,
