@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/router.dart';
+import 'package:voca/presentation/base/routing/route_names.dart';
+import 'package:voca/presentation/base/routing/route_names.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -16,7 +17,12 @@ import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 final k = GlobalKey();
 
 class WordSearchScreen extends StatefulWidget {
-  const WordSearchScreen({super.key});
+  const WordSearchScreen({
+    this.initialSearch,
+    super.key,
+  });
+
+  final String? initialSearch;
 
   @override
   State<WordSearchScreen> createState() => _WordSearchScreenState();
@@ -29,6 +35,16 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   @override
   void onReturnToScreen() {
     cubit.refresh();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    debugPrint('initing search screen. initialSearch: ${widget.initialSearch}');
+    if (widget.initialSearch != null) {
+      cubit.onSearchTextChanged(widget.initialSearch!);
+    }
   }
 
   @override
@@ -55,8 +71,9 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             alignment: Alignment.bottomCenter,
             child: SearchBar(
               onChanged: cubit.onSearchTextChanged,
+              initialValue: widget.initialSearch,
               key: k,
-              autofocus: true,
+              autofocus: widget.initialSearch == null,
             ),
           ),
         ),

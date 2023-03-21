@@ -65,10 +65,12 @@ android {
     productFlavors {
         development {
             resValue 'string', 'app_name', 'voca-dev'
+            resValue 'string', 'add_word', 'voca-dev: add word'
             applicationIdSuffix '.dev'
         }
         production {
             resValue 'string', 'app_name', 'voca'
+            resValue 'string', 'add_word', 'voca: add word'
         }
     }
 }
