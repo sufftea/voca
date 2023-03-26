@@ -1,8 +1,10 @@
 import 'dart:collection';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/data/utils/database_manager.dart';
+import 'package:voca/data/managers/database_manager/database_manager.dart';
+import 'package:voca/data/utils/card_status.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/data/utils/pos_map.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
@@ -49,7 +51,7 @@ class WordsRepositoryImpl implements WordsRepository {
         final row = qUserWords.first;
 
         repetitionCount = row['repetitions'] as int;
-        status = DatabaseManager.textToWordStatus[row['status'] as String]!;
+        status = CardStatus.textToStatus[row['status'] as String]!;
       } else {
         repetitionCount = 0;
         status = WordCardStatus.unknown;
@@ -119,7 +121,7 @@ class WordsRepositoryImpl implements WordsRepository {
       'up.userWords',
       {
         'repetitions': repetitions,
-        'lastRepetition': DateTime.now().daysSinceEpoch,
+        'lastRepetition': clock.now().daysSinceEpoch,
       },
       where: 'wordId = ?',
       whereArgs: [word.id],
@@ -151,8 +153,8 @@ class WordsRepositoryImpl implements WordsRepository {
     final count = await db.update(
       'up.userWords',
       {
-        'status': DatabaseManager.wordStatusToText[status],
-        'lastRepetition': DateTime.now().daysSinceEpoch,
+        'status': CardStatus.statusToText[status],
+        'lastRepetition': clock.now().daysSinceEpoch,
       },
       where: 'wordId = ?',
       whereArgs: [word.id],
@@ -187,7 +189,7 @@ class WordsRepositoryImpl implements WordsRepository {
       ],
       where: 'status = ?',
       whereArgs: [
-        DatabaseManager.wordStatusToText[WordCardStatus.learningOrLearned],
+        CardStatus.statusToText[WordCardStatus.learning],
       ],
     );
 
@@ -201,7 +203,7 @@ class WordsRepositoryImpl implements WordsRepository {
       words.add(WordCard(
         word: Word(name: word, id: wordId),
         repetitionCount: repetitions,
-        status: WordCardStatus.learningOrLearned,
+        status: WordCardStatus.learning,
       ));
     }
 
@@ -221,7 +223,7 @@ class WordsRepositoryImpl implements WordsRepository {
       ],
       where: 'status = ? OR repetitions = ?',
       whereArgs: [
-        DatabaseManager.wordStatusToText[WordCardStatus.known],
+        CardStatus.statusToText[WordCardStatus.known],
         GlobalConstants.maxRepetitionCount,
       ],
     );
@@ -246,7 +248,7 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<void> _addWordToUserWords(
     Word word, {
     int repetitions = 0,
-    WordCardStatus status = WordCardStatus.learningOrLearned,
+    WordCardStatus status = WordCardStatus.learning,
   }) async {
     final db = _databaseManager.db;
 
@@ -270,8 +272,8 @@ class WordsRepositoryImpl implements WordsRepository {
         'wordId': word.id,
         'word': word.name,
         'repetitions': repetitions,
-        'lastRepetition': DateTime.now().daysSinceEpoch,
-        'status': DatabaseManager.wordStatusToText[status],
+        'lastRepetition': clock.now().daysSinceEpoch,
+        'status': CardStatus.statusToText[status],
       },
     );
 

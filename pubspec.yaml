@@ -1,13 +1,12 @@
 name: voca
 description: A new Flutter project.
 
-
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: ">=2.18.6 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,6 +28,8 @@ dependencies:
   flutter_card_swiper: ^2.0.1
   url_launcher: ^6.1.10
   receive_intent: ^0.2.3
+  equatable: ^2.0.5
+  clock: ^1.1.1
 
 flutter_intl:
   enabled: true
@@ -43,7 +44,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
   freezed: ^2.3.2
-  injectable_generator: ^2.1.3
+  injectable_generator: ^2.1.5
+  sqflite_common_ffi: ^2.2.2
 
 flutter:
   generate: true

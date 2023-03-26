@@ -1,5 +1,9 @@
+import 'package:clock/clock.dart';
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/data/utils/database_manager.dart';
+import 'package:voca/data/managers/database_manager/database_manager.dart';
+import 'package:voca/data/managers/database_manager/database_manager_impl.dart';
+import 'package:voca/data/utils/card_status.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
@@ -37,7 +41,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
       ],
       where: 'status = ? AND repetitions < ?',
       whereArgs: [
-        DatabaseManager.wordStatusToText[WordCardStatus.learningOrLearned],
+        CardStatus.statusToText[WordCardStatus.learning],
         GlobalConstants.maxRepetitionCount,
       ],
     );
@@ -47,7 +51,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
     // Filter out the cards that are too soon to repeat
     return cards.where(
       (card) {
-        final diff = DateTime.now().difference(card.lastRepetition!);
+        final diff = clock.now().difference(card.lastRepetition!);
         final requiredDiff = repetitionsToDuration[card.repetitionCount]!;
 
         return diff >= requiredDiff;
@@ -65,7 +69,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
         lastRepetition = ?
       WHERE wordId = ?
     ''', [
-      DateTime.now().daysSinceEpoch,
+      clock.now().daysSinceEpoch,
       word.id,
     ]);
 
@@ -79,7 +83,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
     final count = await db.update(
       'up.userWords',
       {
-        'lastRepetition': DateTime.now().daysSinceEpoch,
+        'lastRepetition': clock.now().daysSinceEpoch,
         'repetitions': 0,
       },
       where: 'wordId = ?',
@@ -99,7 +103,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
       final lastRepetition = DateTimeExt.fromDaysSinceEpoch(
         row['lastRepetition'] as int,
       );
-      final status = DatabaseManager.textToWordStatus[row['status'] as String]!;
+      final status = CardStatus.textToStatus[row['status'] as String]!;
 
       cards.add(WordCard(
         word: Word(name: word, id: id),

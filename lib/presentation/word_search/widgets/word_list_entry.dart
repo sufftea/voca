@@ -43,7 +43,7 @@ class WordListEntry extends StatelessWidget {
 
   Widget buildLearningIndicator() {
     switch (card.status) {
-      case WordCardStatus.learningOrLearned:
+      case WordCardStatus.learning:
         return CardRepetitionIndicator(
           repetitionCount: card.repetitionCount,
         );
