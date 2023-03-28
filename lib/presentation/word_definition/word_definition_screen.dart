@@ -86,7 +86,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       case WordCardStatus.unknown:
         isSelected[0] = true;
         break;
-      case WordCardStatus.learningOrLearned:
+      case WordCardStatus.learning:
         isSelected[1] = true;
         break;
       case WordCardStatus.known:
@@ -145,7 +145,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   Row buildLearningInfo(WordDefinitionState state) {
     final t = Translations.of(context);
-    final learningEnabled = state.status == WordCardStatus.learningOrLearned;
+    final learningEnabled = state.status == WordCardStatus.learning;
     final resetEnabled = (state.repetitionCount ?? 0) > 0 && learningEnabled;
 
     return Row(

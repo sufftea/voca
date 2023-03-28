@@ -35,11 +35,11 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
 
     await _wordsRepository.setWordCardStatus(
       state.word!,
-      WordCardStatus.learningOrLearned,
+      WordCardStatus.learning,
     );
 
     emit(state.copyWith(
-      status: WordCardStatus.learningOrLearned,
+      status: WordCardStatus.learning,
     ));
   }
 
@@ -83,7 +83,7 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
     await _wordsRepository.setWordCardRepetitions(state.word!, 0);
 
     emit(state.copyWith(
-      status: WordCardStatus.learningOrLearned,
+      status: WordCardStatus.learning,
       repetitionCount: 0,
     ));
   }

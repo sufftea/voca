@@ -2,23 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:voca/data/utils/assets_manager.dart';
+import 'package:voca/data/managers/assets_manager/assets_manager.dart';
+import 'package:voca/data/managers/database_manager/database_manager.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
-import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/utils/flavors.dart';
+import 'package:voca/injectable/injectable_init.dart';
 
-class _WordCardStatusText {
-  static const removed = 'removed';
-  static const learning = 'learning';
-  static const known = 'known';
-}
-
-@LazySingleton()
-class DatabaseManager {
+@LazySingleton(as: DatabaseManager, env: [mainEnv])
+class DatabaseManagerImpl implements DatabaseManager {
   Database? _db;
+  @override
   Database get db =>
       _db ?? (throw StateError("DatabaseManager: call init first"));
 
+  @override
   Future<void> init() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), AssetsManager.enDictionaryDbName),
@@ -28,18 +24,6 @@ class DatabaseManager {
 
     await _attachUserProgressDb(_db!);
   }
-
-  static const wordStatusToText = <WordCardStatus, String>{
-    WordCardStatus.learningOrLearned: _WordCardStatusText.learning,
-    WordCardStatus.known: _WordCardStatusText.known,
-    WordCardStatus.unknown: _WordCardStatusText.removed,
-  };
-
-  static const textToWordStatus = <String, WordCardStatus>{
-    _WordCardStatusText.removed: WordCardStatus.unknown,
-    _WordCardStatusText.learning: WordCardStatus.learningOrLearned,
-    _WordCardStatusText.known: WordCardStatus.known,
-  };
 
   Future<void> _detachAllDb(Database mainConnection) async {
     final dbs = await mainConnection.query(
@@ -57,7 +41,7 @@ class DatabaseManager {
   Future<void> _attachUserProgressDb(Database mainConnection) async {
     final upPath = join(
       await getDatabasesPath(),
-      'en_user_progress.db',
+      DatabaseManager.userProgressPath
     );
 
     // wordId - references words in the dictionary db; **not a primary key**.

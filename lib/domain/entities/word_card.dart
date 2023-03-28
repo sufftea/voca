@@ -20,7 +20,7 @@ class WordCard {
 enum WordCardStatus {
   unknown,
 
-  learningOrLearned,
+  learning,
 
   known,
 }

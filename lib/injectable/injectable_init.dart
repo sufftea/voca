@@ -1,10 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/utils/flavors.dart';
 import 'injectable_init.config.dart';
+
+const mainEnv = 'main';
 
 final getIt = GetIt.instance;
 @InjectableInit()
-Future<void> configureDependencies() => getIt.init(
-      environment: Flavors.current,
-    );
+Future<void> configureDependencies() {
+  return getIt.init(environment: mainEnv);
+}
