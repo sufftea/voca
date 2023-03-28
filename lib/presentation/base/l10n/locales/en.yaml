@@ -65,3 +65,6 @@ practice:
   wordsRemembered: "Words remembered:"
   wordsForgotten: "Words forgotten:"
   goBack: Go back
+
+error:
+  somethingWentWrong: Something went wrong...
