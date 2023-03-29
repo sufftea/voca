@@ -6,8 +6,6 @@ import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/home_screen.dart';
-import 'package:voca/presentation/known_words_list/cubit/known_words_list_cubit.dart';
-import 'package:voca/presentation/known_words_list/known_words_list_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
@@ -126,36 +124,6 @@ GoRouter createMainRouter() {
                   GoRoute(
                     path: 'definition',
                     name: RouteNames.learningList_wordDefinition,
-                    pageBuilder: (context, state) {
-                      final wordCard = state.extra as WordCard;
-
-                      return fadePageTransition(
-                        context,
-                        state,
-                        cubitProvider<WordDefinitionCubit>(WordDefinitionScreen(
-                          wordCard: wordCard,
-                        )),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: 'knownList',
-                name: RouteNames.knownList,
-                pageBuilder: (context, state) {
-                  return fadePageTransition(
-                    context,
-                    state,
-                    cubitProvider<KnownWordsListCubit>(
-                      const KnownWordsListScreen(),
-                    ),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'definition',
-                    name: RouteNames.knownList_wordDefinition,
                     pageBuilder: (context, state) {
                       final wordCard = state.extra as WordCard;
 

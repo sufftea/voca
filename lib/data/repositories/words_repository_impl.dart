@@ -177,7 +177,7 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<List<WordCard>> fetchLearningWords() async {
+  Future<List<WordCard>> fetchLearningList() async {
     final db = _databaseManager.db;
 
     final qWords = await db.query(
@@ -210,40 +210,7 @@ class WordsRepositoryImpl implements WordsRepository {
     return words;
   }
 
-  @override
-  Future<List<WordCard>> fetchKnownWords() async {
-    final db = _databaseManager.db;
 
-    final qWords = await db.query(
-      'up.userWords',
-      columns: [
-        'wordId',
-        'word',
-        'repetitions',
-      ],
-      where: 'status = ? OR repetitions = ?',
-      whereArgs: [
-        CardStatus.statusToText[WordCardStatus.known],
-        GlobalConstants.maxRepetitionCount,
-      ],
-    );
-
-    final words = <WordCard>[];
-
-    for (final row in qWords) {
-      final wordId = row['wordId'] as int;
-      final word = row['word'] as String;
-      final repetitions = row['repetitions'] as int;
-
-      words.add(WordCard(
-        word: Word(name: word, id: wordId),
-        repetitionCount: repetitions,
-        status: WordCardStatus.known,
-      ));
-    }
-
-    return words;
-  }
 
   Future<void> _addWordToUserWords(
     Word word, {

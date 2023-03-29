@@ -47,11 +47,6 @@ class WordListEntry extends StatelessWidget {
         return CardRepetitionIndicator(
           repetitionCount: card.repetitionCount,
         );
-      case WordCardStatus.known:
-        return const Icon(
-          Icons.check_box_rounded,
-          color: BaseColors.neptune,
-        );
       default:
         return const SizedBox.shrink();
     }

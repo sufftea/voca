@@ -80,7 +80,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
   Widget buildStatusSettings(WordDefinitionState state) {
     final t = Translations.of(context);
 
-    final isSelected = [false, false, false];
+    final isSelected = [false, false];
 
     switch (state.status) {
       case WordCardStatus.unknown:
@@ -88,9 +88,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
         break;
       case WordCardStatus.learning:
         isSelected[1] = true;
-        break;
-      case WordCardStatus.known:
-        isSelected[2] = true;
         break;
       default:
     }
@@ -102,7 +99,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
         LayoutBuilder(
           builder: (context, constraints) {
             const borderWidth = 2.0;
-            final width = constraints.biggest.width / 3 - borderWidth * 2;
+            final width = constraints.biggest.width / 2 - borderWidth * 2;
 
             return ToggleButtons(
               isSelected: isSelected,
@@ -113,9 +110,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
                     break;
                   case 1:
                     cubit.setWordLearning();
-                    break;
-                  case 2:
-                    cubit.setWordKnown();
                     break;
                 }
               },
@@ -134,7 +128,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
               children: [
                 Text(t.wordDefinition.none),
                 Text(t.wordDefinition.learning),
-                Text(t.wordDefinition.know),
               ],
             );
           },
