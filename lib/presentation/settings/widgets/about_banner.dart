@@ -44,7 +44,7 @@ class AboutBanner extends StatelessWidget {
               fontWeight: FontWeights.regular,
             ),
           ),
-        OutlinedButton.icon(
+        TextButton.icon(
           onPressed: () async {
             await launchUrl(
               _wordNetUrl,
@@ -53,13 +53,15 @@ class AboutBanner extends StatelessWidget {
           },
           style: const ButtonStyle(
             padding: MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 2, horizontal: 4)),
-            textStyle: MaterialStatePropertyAll(
-              TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeights.regular,
-              ),
+              EdgeInsets.symmetric(vertical: 1, horizontal: 1),
             ),
+            minimumSize: MaterialStatePropertyAll(Size.zero),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            textStyle: MaterialStatePropertyAll(TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeights.regular,
+            )),
+            foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
           ),
           icon: const Icon(Icons.link),
           label: Text(t.settings.about.wordNet),

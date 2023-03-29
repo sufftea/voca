@@ -36,7 +36,7 @@ class SearchBar extends StatelessWidget {
         hintText: t.search.lookUpWord,
         hintStyle: const TextStyle(
           fontSize: 15,
-          fontWeight: FontWeights.bold,
+          fontWeight: FontWeights.medium,
           color: BaseColors.neptune,
         ),
         suffixIcon: const Icon(
