@@ -62,7 +62,7 @@ class WordListsBanner extends StatelessWidget {
               t.common.learning,
               style: const TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeights.bold,
+                fontWeight: FontWeights.medium,
                 color: BaseColors.curiousBlue,
               ),
             ),
@@ -94,7 +94,7 @@ class WordListsBanner extends StatelessWidget {
               t.common.known,
               style: const TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeights.bold,
+                fontWeight: FontWeights.medium,
                 color: BaseColors.neptune,
               ),
             ),

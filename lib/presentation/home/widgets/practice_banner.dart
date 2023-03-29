@@ -59,7 +59,7 @@ class PracticeBanner extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeights.semiBold,
+                fontWeight: FontWeights.regular,
                 color: BaseColors.neptune,
               ),
             ),
@@ -76,7 +76,7 @@ class PracticeBanner extends StatelessWidget {
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontSize: 15,
-          fontWeight: FontWeights.bold,
+          fontWeight: FontWeights.regular,
           color: BaseColors.neptune,
         ),
       );
@@ -89,7 +89,7 @@ class PracticeBanner extends StatelessWidget {
           t.home.practiceBanner.cardsForToday,
           style: const TextStyle(
             fontSize: 15,
-            fontWeight: FontWeights.bold,
+            fontWeight: FontWeights.regular,
           ),
         ),
         const SizedBox(width: 5),

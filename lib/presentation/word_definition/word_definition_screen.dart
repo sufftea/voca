@@ -121,7 +121,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
               },
               textStyle: const TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeights.bold,
+                fontWeight: FontWeights.medium,
               ),
               borderColor: BaseColors.neptune,
               borderRadius: BorderRadius.circular(5),

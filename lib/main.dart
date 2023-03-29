@@ -42,7 +42,7 @@ void mainAddWord() async {
     child: search != null
         ? MaterialApp.router(
             theme: baseTheme,
-            routerConfig: createAddWordRouter(search!),
+            routerConfig: createAddWordRouter(search),
           )
         : MaterialApp(
             theme: baseTheme,
