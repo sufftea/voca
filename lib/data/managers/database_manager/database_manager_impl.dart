@@ -4,7 +4,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/managers/assets_manager/assets_manager.dart';
 import 'package:voca/data/managers/database_manager/database_manager.dart';
+import 'package:voca/data/utils/card_status.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/injectable/injectable_init.dart';
 
 @LazySingleton(as: DatabaseManager, env: [mainEnv])
@@ -39,20 +41,21 @@ class DatabaseManagerImpl implements DatabaseManager {
   }
 
   Future<void> _attachUserProgressDb(Database mainConnection) async {
-    final upPath = join(
-      await getDatabasesPath(),
-      DatabaseManager.userProgressPath
-    );
+    final upPath =
+        join(await getDatabasesPath(), DatabaseManager.userProgressPath);
 
     // wordId - references words in the dictionary db; **not a primary key**.
     final updb = await openDatabase(
       upPath,
-      version: 2,
+      version: 3,
       onUpgrade: (db, prev, curr) async {
         debugPrint('WordsRepository database onUpgrade');
 
         if (prev <= 1) {
           await _updateDb1(db);
+        }
+        if (prev <= 3) {
+          await _updateDb2(db);
         }
       },
       onCreate: (db, version) async {
@@ -90,5 +93,16 @@ class DatabaseManagerImpl implements DatabaseManager {
         whereArgs: [wordId],
       );
     }
+  }
+
+  Future<void> _updateDb2(Database db) async {
+    db.update(
+      'userWords',
+      {
+        'status': CardStatus.statusToText[WordCardStatus.unknown],
+      },
+      where: 'status = ?',
+      whereArgs: ['known'],
+    );
   }
 }

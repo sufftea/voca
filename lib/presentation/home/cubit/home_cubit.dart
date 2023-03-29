@@ -19,7 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
     final wordsForPractice =
         (await _practiceRepository.createPracticeList()).length;
     final learningListEmpty =
-        (await _wordsRepository.fetchLearningWords()).isEmpty;
+        (await _wordsRepository.fetchLearningList()).isEmpty;
 
     emit(HomeState(
       wordsForPractice: wordsForPractice,

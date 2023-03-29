@@ -23,17 +23,7 @@ class WordListsBanner extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            height: 70,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                buildLearningButton(context),
-                const SizedBox(width: 10),
-                buildKnownListButton(context),
-              ],
-            ),
-          ),
+          buildLearningButton(context),
         ],
       ),
     );
@@ -42,64 +32,30 @@ class WordListsBanner extends StatelessWidget {
   Widget buildLearningButton(BuildContext context) {
     final t = Translations.of(context);
 
-    return Expanded(
-      child: OutlinedButton(
-        onPressed: () {
-          GoRouter.of(context).goNamed(RouteNames.learningList);
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
-            alignment: Alignment.center,
-            side: const MaterialStatePropertyAll(BorderSide(
-              width: 2,
+    return OutlinedButton(
+      onPressed: () {
+        GoRouter.of(context).goNamed(RouteNames.learningList);
+      },
+      style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
+          alignment: Alignment.center,
+          side: const MaterialStatePropertyAll(BorderSide(
+            width: 2,
+            color: BaseColors.curiousBlue,
+          ))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            t.common.learning,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeights.medium,
               color: BaseColors.curiousBlue,
-            ))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              t.common.learning,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeights.medium,
-                color: BaseColors.curiousBlue,
-              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildKnownListButton(BuildContext context) {
-    final t = Translations.of(context);
-    return Expanded(
-      child: OutlinedButton(
-        onPressed: () {
-          GoRouter.of(context).goNamed(RouteNames.knownList);
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(BaseColors.neptune10),
-            alignment: Alignment.center,
-            side: const MaterialStatePropertyAll(BorderSide(
-              width: 2,
-              color: BaseColors.neptune,
-            ))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              t.common.known,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeights.medium,
-                color: BaseColors.neptune,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -43,23 +43,6 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
     ));
   }
 
-  Future<void> setWordKnown() async {
-    assert(state.word != null, 'Call onPageOpened first');
-
-    emit(state.copyWith(
-      status: null,
-    ));
-
-    await _wordsRepository.setWordCardStatus(
-      state.word!,
-      WordCardStatus.known,
-    );
-
-    emit(state.copyWith(
-      status: WordCardStatus.known,
-    ));
-  }
-
   Future<void> setWordUnknown() async {
     assert(state.word != null, 'Call onPageOpened first');
 

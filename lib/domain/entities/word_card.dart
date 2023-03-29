@@ -21,6 +21,4 @@ enum WordCardStatus {
   unknown,
 
   learning,
-
-  known,
 }

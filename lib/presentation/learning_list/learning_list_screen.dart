@@ -9,6 +9,7 @@ import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_state.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
+import 'package:voca/utils/flavors.dart';
 
 class LearningListScreen extends StatefulWidget {
   const LearningListScreen({super.key});
@@ -43,6 +44,12 @@ class _LearningListScreenState extends State<LearningListScreen>
           buildBody(),
         ],
       ),
+      floatingActionButton: Flavors.current == Flavors.dev
+          ? FilledButton(
+              onPressed: () => cubit.debugPopulate(),
+              child: const Text('debugPopulate'),
+            )
+          : null,
     );
   }
 
