@@ -47,7 +47,7 @@ settings:
   about:
     header: About
     wordNet: WordNet
-    dictionaryFrom: "The dictionary dataset was taken from"
+    dictionaryFrom: "The dictionary dataset is from"
 
 learningList:
   header: Learning list
