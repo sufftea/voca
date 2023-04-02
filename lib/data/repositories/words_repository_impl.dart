@@ -73,8 +73,8 @@ class WordsRepositoryImpl implements WordsRepository {
     final q = await db.rawQuery('''
       SELECT definitionId, definition, pos, frequency, example FROM definition 
       LEFT JOIN example USING(definitionId) 
-      WHERE wordId = ? AND example LIKE ?
-    ''', [word.id, '%${word.name}%']);
+      WHERE wordId = ?
+    ''', [word.id]);
 
     /// definitionId : example list
     final exampleMap = <int, List<String>>{};

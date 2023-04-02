@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +8,7 @@ import 'package:path/path.dart';
 import 'package:voca/data/managers/assets_manager/assets_manager.dart';
 
 const _enDictionaryVersionKey = 'en_dictionary_version';
-const _lastDictVersion = 1;
+const _lastDictVersion = 2;
 
 @LazySingleton()
 class AssetsManagerImpl implements AssetsManager {
