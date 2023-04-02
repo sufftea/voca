@@ -8,6 +8,7 @@ import 'package:voca/data/utils/card_status.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/injectable/injectable_init.dart';
+import 'package:voca/utils/flavors.dart';
 
 @LazySingleton(as: DatabaseManager, env: [mainEnv])
 class DatabaseManagerImpl implements DatabaseManager {
@@ -47,16 +48,9 @@ class DatabaseManagerImpl implements DatabaseManager {
     // wordId - references words in the dictionary db; **not a primary key**.
     final updb = await openDatabase(
       upPath,
-      version: 3,
+      version: Flavors.current == Flavors.production ? 1 : 1,
       onUpgrade: (db, prev, curr) async {
         debugPrint('WordsRepository database onUpgrade');
-
-        if (prev <= 1) {
-          await _updateDb1(db);
-        }
-        if (prev <= 3) {
-          await _updateDb2(db);
-        }
       },
       onCreate: (db, version) async {
         debugPrint('WordsRepository database onCreate');
@@ -75,34 +69,5 @@ class DatabaseManagerImpl implements DatabaseManager {
     await updb.close();
 
     await mainConnection.execute('ATTACH ? AS up', [upPath]);
-  }
-
-  Future<void> _updateDb1(Database db) async {
-    final qUserWords = await db.query('userWords');
-
-    for (final row in qUserWords) {
-      final lastRepetitionMillisecs = row['lastRepetition'] as int;
-      final wordId = row['wordId'] as int;
-
-      db.update(
-        'userWords',
-        {
-          'lastRepetition': millisecondsToDays(lastRepetitionMillisecs),
-        },
-        where: 'wordId = ?',
-        whereArgs: [wordId],
-      );
-    }
-  }
-
-  Future<void> _updateDb2(Database db) async {
-    db.update(
-      'userWords',
-      {
-        'status': CardStatus.statusToText[WordCardStatus.unknown],
-      },
-      where: 'status = ?',
-      whereArgs: ['known'],
-    );
   }
 }

@@ -25,13 +25,22 @@ to add the word to the app in a quicker way.
 This is the most basic MVP, consider this Alpha access. It's already useable but lots of improvements & features are on the way. 
 Bug reports & feature requests are welcome. When this gets a bit more mature I'll upload it to the stores. 
 
-## Initialize project
+## Commands
+**Initialize project**
 ```
 flutter packages pub get
 flutter pub run slang
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
 Then pick a development or production configuration in vscode - some (unfinished) features are disabled in prod.
+
+**Tests**
+
+Run this once before testing:
+```
+test/scripts/update_test_db.sh 
+```
+
 
 ## Sources
 Wordnet: https://wordnet.princeton.edu/

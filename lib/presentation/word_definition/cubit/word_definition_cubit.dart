@@ -1,7 +1,13 @@
+import 'dart:collection';
+
+import 'package:clock/clock.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
+import 'package:voca/presentation/base/utils/sort_definitions.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';
 
 @injectable
@@ -19,10 +25,11 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
       word: wordCard.word,
     ));
 
-    final dictionaryEntry = await _wordsRepository.fetchDictionaryEntry(wordCard.word);
+    final dictionaryEntry =
+        await _wordsRepository.fetchDictionaryEntry(wordCard.word);
 
     emit(state.copyWith(
-      definitions: dictionaryEntry.definitions,
+      definitions: sortDefinitions(dictionaryEntry.definitions),
     ));
   }
 

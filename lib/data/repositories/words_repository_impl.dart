@@ -11,7 +11,6 @@ import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
-import 'package:voca/utils/global_constants.dart';
 
 @LazySingleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
@@ -25,7 +24,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
     final qWords = await db.query(
       'word',
-      columns: ['rowid', 'word'],
+      columns: ['wordId', 'word'],
       where: 'word LIKE ?',
       whereArgs: ['$query%'],
     );
@@ -34,7 +33,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
     for (final row in qWords) {
       final word = row['word'] as String;
-      final wordId = row['rowid'] as int;
+      final wordId = row['wordId'] as int;
 
       // final userData = await _fetchUserWordData(wordId);
       final qUserWords = await db.query(
@@ -71,39 +70,45 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<DictionaryEntry> fetchDictionaryEntry(Word word) async {
     final db = _databaseManager.db;
 
-    final qDefinitions = await db.query(
-      'definition',
-      columns: ['rowId', 'definition', 'pos'],
-      where: 'wordId = ?',
-      whereArgs: [word.id],
-    );
+    final q = await db.rawQuery('''
+      SELECT definitionId, definition, pos, frequency, example FROM definition 
+      LEFT JOIN example USING(definitionId) 
+      WHERE wordId = ? AND example LIKE ?
+    ''', [word.id, '%${word.name}%']);
+
+    /// definitionId : example list
+    final exampleMap = <int, List<String>>{};
+
+    for (final row in q) {
+      final defId = row['definitionId'] as int;
+      final example = row['example'] as String?;
+
+      final currExamples = exampleMap[defId] ?? (exampleMap[defId] = []);
+
+      if (example != null) {
+        currExamples.add(example);
+      }
+    }
 
     final definitions = <WordDefinition>[];
+    final defIdSet = <int>{};
 
-    for (final row in qDefinitions) {
-      final definitionId = row['rowid'] as int;
+    for (final row in q) {
+      final defId = row['definitionId'] as int;
+
+      if (!defIdSet.add(defId)) {
+        continue;
+      }
+
       final definition = row['definition'] as String;
       final pos = row['pos'] as String;
-
-      final qExamples = await db.query(
-        'example',
-        columns: ['example'],
-        where: 'definitionId = ?',
-        whereArgs: [definitionId],
-      );
-
-      final examples = <String>[];
-
-      for (final row in qExamples) {
-        final example = row['example'] as String;
-
-        examples.add(example);
-      }
+      final frequency = row['frequency'] as int;
 
       definitions.add(WordDefinition(
         definition: definition,
-        examples: UnmodifiableListView(examples),
+        examples: UnmodifiableListView(exampleMap[defId]!),
         pos: posMap[pos]!,
+        frequency: frequency,
       ));
     }
 
@@ -210,8 +215,6 @@ class WordsRepositoryImpl implements WordsRepository {
     return words;
   }
 
-
-
   Future<void> _addWordToUserWords(
     Word word, {
     int repetitions = 0,
@@ -223,8 +226,8 @@ class WordsRepositoryImpl implements WordsRepository {
       await () async {
         final qWords = await db.query(
           'word',
-          columns: ['rowId, word'],
-          where: 'rowId = ?',
+          columns: ['wordId, word'],
+          where: 'wordId = ?',
           whereArgs: [word.id],
         );
 
