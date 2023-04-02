@@ -29,17 +29,13 @@ class WordDefinitionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create sets of definitions for each part of speech
-    final posDefinitions = <List<WordDefinition>>[];
+    final posDefinitions = <PartOfSpeech, List<WordDefinition>>{};
 
-    PartOfSpeech? currPos;
     for (final definition in definitions) {
-      if (definition.pos != currPos) {
-        currPos = definition.pos;
-        posDefinitions.add([]);
-      }
+      final curr = posDefinitions[definition.pos] ??
+          (posDefinitions[definition.pos] = []);
 
-      posDefinitions.last.add(definition);
+      curr.add(definition);
     }
 
     return SingleChildScrollView(
@@ -50,10 +46,10 @@ class WordDefinitionsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final definitions in posDefinitions) ...[
-            buildPosName(definitions),
+          for (final entry in posDefinitions.entries) ...[
+            buildPosName(entry.key),
             const SizedBox(height: 10),
-            ...buildDefinitionsForPos(definitions),
+            ...buildDefinitionsForPos(entry.value),
           ],
         ],
       ),
@@ -72,7 +68,7 @@ class WordDefinitionsWidget extends StatelessWidget {
               child: Text(
                 (i + 1).toString(),
                 style: const TextStyle(
-                  fontSize: 19,
+                  fontSize: 15,
                   color: BaseColors.curiousBlue,
                   fontWeight: FontWeights.extraBold,
                 ),
@@ -88,9 +84,9 @@ class WordDefinitionsWidget extends StatelessWidget {
     ];
   }
 
-  Widget buildPosName(List<WordDefinition> definitions) {
+  Widget buildPosName(PartOfSpeech pos) {
     return Text(
-      mapPos(definitions.first.pos),
+      mapPos(pos),
       style: const TextStyle(
         fontSize: 19,
         fontWeight: FontWeights.bold,

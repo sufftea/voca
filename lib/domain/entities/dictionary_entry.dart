@@ -18,10 +18,12 @@ class WordDefinition {
     required this.definition,
     required this.examples,
     required this.pos,
+    required this.frequency,
   });
 
   final String definition;
   final PartOfSpeech pos;
+  final int frequency;
   final UnmodifiableListView<String> examples;
 }
 

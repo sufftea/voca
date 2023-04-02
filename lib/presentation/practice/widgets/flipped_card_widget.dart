@@ -74,16 +74,12 @@ class FlippedCardWidget extends StatelessWidget {
     final definitions = this.definitions;
 
     if (definitions == null) {
-      return buildLoadingDefinitions();
+      return WordDefinitionsWidget.placeholder;
     }
 
     return WordDefinitionsWidget(
       definitions: definitions,
     );
-  }
-
-  Widget buildLoadingDefinitions() {
-    return const Placeholder();
   }
 
   Widget buildButtons(BuildContext context) {
