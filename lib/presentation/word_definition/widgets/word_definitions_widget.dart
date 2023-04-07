@@ -122,7 +122,7 @@ class WordDefinitionsWidget extends StatelessWidget {
 }
 
 class _WordDefinitionsPlaceholder extends StatelessWidget {
-  const _WordDefinitionsPlaceholder({super.key});
+  const _WordDefinitionsPlaceholder();
 
   @override
   Widget build(BuildContext context) {

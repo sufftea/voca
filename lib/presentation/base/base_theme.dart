@@ -18,6 +18,7 @@ class BaseColors {
   static const concrete = Color(0xfff2f2f2);
   static const curiousBlue = Color(0xff1E88E5);
   static final curiousBlue10 = curiousBlue.withOpacity(0.1);
+  static final curiousBlue30 = curiousBlue.withOpacity(0.30);
   static const neptune = Color(0xff7EACBA);
   static final neptune10 = neptune.withOpacity(0.1);
   static const bittersweet = Color(0xffFF6060);
@@ -29,6 +30,20 @@ class BaseColors {
 final baseTheme = ThemeData(
   useMaterial3: true,
   primarySwatch: Colors.blue,
+
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: BaseColors.curiousBlue,
+    onPrimary: BaseColors.white,
+    secondary: BaseColors.neptune,
+    onSecondary: BaseColors.white,
+    error: BaseColors.bittersweet,
+    onError: BaseColors.white,
+    background: BaseColors.white,
+    onBackground: BaseColors.mineShaft,
+    surface: BaseColors.concrete,
+    onSurface: BaseColors.mineShaft,
+  ),
   //
   textTheme: Typography.blackMountainView.apply(
     bodyColor: BaseColors.mineShaft,
@@ -52,7 +67,7 @@ final baseTheme = ThemeData(
       backgroundColor: mspResolveWith(
         disabled: BaseColors.botticelly,
         none: BaseColors.curiousBlue,
-      ),  
+      ),
       elevation: const MaterialStatePropertyAll(0),
       padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,

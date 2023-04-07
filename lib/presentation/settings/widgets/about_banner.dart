@@ -55,6 +55,7 @@ class AboutBanner extends StatelessWidget {
             padding: MaterialStatePropertyAll(
               EdgeInsets.symmetric(vertical: 2, horizontal: 0),
             ),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             minimumSize: MaterialStatePropertyAll(Size.zero),
             textStyle: MaterialStatePropertyAll(TextStyle(
               fontSize: 15,

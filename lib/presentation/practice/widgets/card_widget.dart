@@ -19,8 +19,6 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
-
     return Container(
       decoration: BoxDecoration(
         color: BaseColors.curiousBlue,
