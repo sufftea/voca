@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:receive_intent/receive_intent.dart';
 import 'package:voca/injectable/injectable_init.dart';
 import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/global_cubit_provider.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/add_word_router.dart';
 import 'package:voca/presentation/base/routing/routers/main_router.dart';
@@ -16,9 +17,11 @@ void main() async {
   await configureDependencies();
 
   runApp(TranslationProvider(
-    child: MaterialApp.router(
-      theme: baseTheme,
-      routerConfig: createMainRouter(),
+    child: GlobalCubitProvider(
+      child: MaterialApp.router(
+        theme: baseTheme,
+        routerConfig: createMainRouter(),
+      ),
     ),
   ));
 }

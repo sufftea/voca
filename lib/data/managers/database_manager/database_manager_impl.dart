@@ -4,9 +4,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/managers/assets_manager/assets_manager.dart';
 import 'package:voca/data/managers/database_manager/database_manager.dart';
-import 'package:voca/data/utils/card_status.dart';
-import 'package:voca/data/utils/days_since_epoch.dart';
-import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/injectable/injectable_init.dart';
 import 'package:voca/utils/flavors.dart';
 

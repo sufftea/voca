@@ -48,6 +48,10 @@ settings:
     header: About
     wordNet: WordNet
     dictionaryFrom: "The dictionary dataset is from"
+  notifications:
+    header: Notifications
+    dailyReminders: Receive daily reminders
+    atTime: At ${time}
 
 learningList:
   header: Learning list
@@ -68,3 +72,10 @@ practice:
 
 error:
   somethingWentWrong: Something went wrong...
+
+notifications:
+  dailyReminder: 
+    channelName: Daily reminders
+    channelDescription: Be reminded to refresh your vocabulary
+    title: ⏰ Daily reminder
+    body: Time to refresh your vocabulary

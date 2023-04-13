@@ -4,7 +4,6 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
-import 'package:voca/presentation/base/widgets/placeholder.dart';
 import 'package:voca/presentation/common_widgets/card_repetition_indicator.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_cubit.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';

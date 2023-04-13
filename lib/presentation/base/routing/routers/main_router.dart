@@ -4,7 +4,6 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/routing/route_names.dart';
 import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
-import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/home_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
@@ -38,7 +37,7 @@ GoRouter createMainRouter() {
               return fadePageTransition(
                 context,
                 state,
-                cubitProvider<HomeCubit>(const HomeScreen()),
+                const HomeScreen(),
               );
             },
             routes: [

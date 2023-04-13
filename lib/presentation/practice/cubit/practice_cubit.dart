@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/base/utils/sort_definitions.dart';
