@@ -7,6 +7,7 @@ import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/common_widgets/card_repetition_indicator.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_cubit.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';
+import 'package:voca/presentation/word_definition/widgets/confirm_reset_dialog.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
 
 class WordDefinitionScreen extends StatefulWidget {
@@ -30,6 +31,19 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     super.initState();
 
     cubit.onPageOpened(widget.wordCard);
+  }
+
+  Future<void> _onResetPressed() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return const ConfirmResetDialog();
+      },
+    );
+
+    if (confirmed ?? false) {
+      await cubit.resetWord();
+    }
   }
 
   @override
@@ -142,39 +156,50 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
     return Row(
       children: [
-        Opacity(
-          opacity: learningEnabled ? 1 : 0.3,
-          child: CardRepetitionIndicator(
-            repetitionCount: state.repetitionCount!,
-          ),
-        ),
+        buildRepetitionIndicator(learningEnabled, state),
         const Spacer(),
-        TextButton(
-          onPressed: resetEnabled ? () => cubit.resetWord() : null,
-          style: ButtonStyle(
-            foregroundColor: mspResolveWith(
-              none: BaseColors.bittersweet,
-              disabled: BaseColors.oldRose,
-            ),
-            overlayColor: MaterialStatePropertyAll(
-              BaseColors.bittersweet10,
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            textStyle: const MaterialStatePropertyAll(TextStyle(
-              fontSize: 16,
-            )),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.refresh_rounded),
-              const SizedBox(width: 5),
-              Text(
-                t.wordDefinition.reset,
-              ),
-            ],
-          ),
-        ),
+        buildResetButton(resetEnabled),
       ],
+    );
+  }
+
+  Widget buildRepetitionIndicator(
+    bool learningEnabled,
+    WordDefinitionState state,
+  ) {
+    return Opacity(
+      opacity: learningEnabled ? 1 : 0.3,
+      child: CardRepetitionIndicator(
+        repetitionCount: state.repetitionCount!,
+      ),
+    );
+  }
+
+  Widget buildResetButton(bool resetEnabled) {
+    return TextButton(
+      onPressed: resetEnabled ? _onResetPressed : null,
+      style: ButtonStyle(
+        foregroundColor: mspResolveWith(
+          none: BaseColors.bittersweet,
+          disabled: BaseColors.oldRose,
+        ),
+        overlayColor: MaterialStatePropertyAll(
+          BaseColors.bittersweet10,
+        ),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        textStyle: const MaterialStatePropertyAll(TextStyle(
+          fontSize: 16,
+        )),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.refresh_rounded),
+          const SizedBox(width: 5),
+          Text(
+            t.wordDefinition.reset,
+          ),
+        ],
+      ),
     );
   }
 

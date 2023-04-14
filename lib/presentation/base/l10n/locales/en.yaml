@@ -41,6 +41,11 @@ wordDefinition:
   learning: Learning
   know: Know
   reset: reset
+  resetDialog:
+    yes: Yes
+    cancel: Cancel
+    title: Are you sure?
+    body: This will reset the progress on this card.
 
 settings:
   words: Words
