@@ -57,6 +57,7 @@ class _LearningListScreenState extends State<LearningListScreen>
     final t = Translations.of(context);
     return AppBarCard(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             t.learningList.header,
@@ -64,6 +65,26 @@ class _LearningListScreenState extends State<LearningListScreen>
               fontWeight: FontWeights.bold,
               fontSize: 20,
             ),
+          ),
+          const Spacer(),
+          builder(
+            buildWhen: (prev, curr) => prev.words?.length != curr.words?.length,
+            builder: (context, state) {
+              final length = state.words?.length;
+
+              if (length == null) {
+                return const SizedBox.shrink();
+              }
+
+              return Text(
+                length.toString(),
+                style: const TextStyle(
+                  color: BaseColors.curiousBlue,
+                  fontWeight: FontWeights.light,
+                  fontSize: 20,
+                ),
+              );
+            },
           ),
         ],
       ),
