@@ -26,7 +26,11 @@ class WordsRepositoryImpl implements WordsRepository {
       'word',
       columns: ['wordId', 'word'],
       where: 'word LIKE ?',
-      whereArgs: ['$query%'],
+      whereArgs: [
+        query.replaceAll('', '%'),
+      ],
+      orderBy: "(word like '%$query') + (word like '$query%') DESC",
+      limit: 100,
     );
 
     final words = <WordCard>[];
