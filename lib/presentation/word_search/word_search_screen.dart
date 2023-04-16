@@ -110,6 +110,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
                     ),
                     child: WordListEntry(
                       card: state.results[index],
+                      searchedWord: state.lastSearch ?? '',
                       onTap: (card) => GoRouter.of(context).goNamed(
                         RouteNames.wordDefinition,
                         extra: card,

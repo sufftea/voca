@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:slang/builder/utils/string_extensions.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -11,9 +10,11 @@ class WordListEntry extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.card,
+    this.searchedWord = '',
   });
 
   final WordCard card;
+  final String searchedWord;
   final void Function(WordCard card) onTap;
 
   @override
@@ -24,21 +25,50 @@ class WordListEntry extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Expanded(
-              child: Text(
-                card.word.name.capitalize(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeights.bold,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            buildWord(context),
             buildLearningIndicator(),
           ],
         ),
       ),
     );
+  }
+
+  Expanded buildWord(BuildContext context) {
+    return Expanded(
+      child: RichText(
+        text: TextSpan(
+          children: buildWordSpans(),
+          style: DefaultTextStyle.of(context).style.merge(
+                const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeights.bold,
+                ),
+              ),
+        ),
+      ),
+    );
+  }
+
+  List<InlineSpan> buildWordSpans() {
+    var queryLetter = searchedWord.characters.iterator..moveNext();
+    final textSpans = <InlineSpan>[];
+
+    for (final letter in card.word.name.characters) {
+      if (letter == queryLetter.current && queryLetter.isNotEmpty) {
+        textSpans.add(TextSpan(
+          text: letter,
+          style: const TextStyle(
+            color: BaseColors.curiousBlue,
+          ),
+        ));
+
+        !queryLetter.moveNext();
+      } else {
+        textSpans.add(TextSpan(text: letter));
+      }
+    }
+
+    return textSpans;
   }
 
   Widget buildLearningIndicator() {

@@ -1,13 +1,22 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
+import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 
 final _wordNetUrl = Uri.parse('https://wordnet.princeton.edu/');
 
 class AboutBanner extends StatelessWidget {
   const AboutBanner({super.key});
+
+  Future<void> onWordNetTap() async {
+    await launchUrl(
+      _wordNetUrl,
+      mode: LaunchMode.externalApplication,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,46 +35,33 @@ class AboutBanner extends StatelessWidget {
               fontWeight: FontWeights.bold,
             ),
           ),
-          bulidWordNetCitation(),
+          bulidWordNetCitation(context),
         ],
       ),
     );
   }
 
-  Wrap bulidWordNetCitation() {
-    return Wrap(
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        for (final word in (t.settings.about.dictionaryFrom).split(' '))
-          Text(
-            '$word ',
-            style: const TextStyle(
+  Widget bulidWordNetCitation(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style.merge(const TextStyle(
               fontSize: 15,
               fontWeight: FontWeights.regular,
-            ),
-          ),
-        TextButton(
-          onPressed: () async {
-            await launchUrl(
-              _wordNetUrl,
-              mode: LaunchMode.externalApplication,
-            );
-          },
-          style: const ButtonStyle(
-            padding: MaterialStatePropertyAll(
-              EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: MaterialStatePropertyAll(Size.zero),
-            textStyle: MaterialStatePropertyAll(TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeights.medium,
             )),
-            foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
+        children: [
+          TextSpan(
+            text: t.settings.about.dictionaryFrom,
           ),
-          child: Text(t.settings.about.wordNet),
-        ),
-      ],
+          TextSpan(
+            text: t.settings.about.wordNet,
+            style: const TextStyle(
+              color: BaseColors.curiousBlue,
+              fontWeight: FontWeights.medium,
+            ),
+            recognizer: TapGestureRecognizer()..onTap = onWordNetTap,
+          ),
+        ],
+      ),
     );
   }
 }

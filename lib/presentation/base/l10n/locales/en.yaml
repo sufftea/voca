@@ -52,7 +52,7 @@ settings:
   about:
     header: About
     wordNet: WordNet
-    dictionaryFrom: "The dictionary dataset is from"
+    dictionaryFrom: "The dictionary dataset is from "
   notifications:
     header: Notifications
     dailyReminders: Receive daily reminders
