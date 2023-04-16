@@ -111,51 +111,45 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     }
 
     // TODO: can I remove the column?
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            const borderWidth = 2.0;
-            final width = constraints.biggest.width / 2 - borderWidth * 2;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const borderWidth = 2.0;
+        final width = constraints.biggest.width / 2 - borderWidth * 2;
 
-            return ToggleButtons(
-              isSelected: isSelected,
-              onPressed: (index) {
-                switch (index) {
-                  case 0:
-                    cubit.setWordUnknown();
-                    break;
-                  case 1:
-                    cubit.setWordLearning();
-                    break;
-                }
-              },
-              textStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeights.medium,
-              ),
-              borderColor: BaseColors.neptune,
-              borderRadius: BorderRadius.circular(5),
-              borderWidth: borderWidth,
-              color: BaseColors.neptune,
-              fillColor: BaseColors.curiousBlue10,
-              selectedBorderColor: BaseColors.curiousBlue,
-              constraints: BoxConstraints(minWidth: width, minHeight: 35),
-              selectedColor: BaseColors.curiousBlue,
-              children: [
-                Text(t.wordDefinition.none),
-                Text(t.wordDefinition.learning),
-              ],
-            );
+        return ToggleButtons(
+          isSelected: isSelected,
+          onPressed: (index) {
+            switch (index) {
+              case 0:
+                cubit.setWordUnknown();
+                break;
+              case 1:
+                cubit.setWordLearning();
+                break;
+            }
           },
-        ),
-      ],
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeights.medium,
+          ),
+          borderColor: BaseColors.neptune,
+          borderRadius: BorderRadius.circular(5),
+          borderWidth: borderWidth,
+          color: BaseColors.neptune,
+          fillColor: BaseColors.curiousBlue10,
+          selectedBorderColor: BaseColors.curiousBlue,
+          constraints: BoxConstraints(minWidth: width, minHeight: 35),
+          selectedColor: BaseColors.curiousBlue,
+          children: [
+            Text(t.wordDefinition.none),
+            Text(t.wordDefinition.learning),
+          ],
+        );
+      },
     );
   }
 
   Row buildLearningInfo(WordDefinitionState state) {
-    final t = Translations.of(context);
     final learningEnabled = state.status == WordCardStatus.learning;
     final resetEnabled = (state.repetitionCount ?? 0) > 0 && learningEnabled;
 

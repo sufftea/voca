@@ -31,7 +31,7 @@ class WordsRepositoryImpl implements WordsRepository {
       whereArgs: [
         query.replaceAll('', '%'),
       ],
-      orderBy: "(word like '%$query') + (word like '$query%') DESC",
+      orderBy: "2*(word like '$query%') + (word like '%$query') DESC",
       limit: 100,
     );
 
