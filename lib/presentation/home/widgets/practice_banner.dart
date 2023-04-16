@@ -45,9 +45,9 @@ class PracticeBanner extends StatelessWidget {
             ),
           ),
           if (!learningListEmpty) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             buildCardsForTodayInfo(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             FilledButton(
               onPressed: switch (cardsForPractice) {
                 0 => null,
@@ -56,7 +56,7 @@ class PracticeBanner extends StatelessWidget {
               child: Text(t.home.practiceBanner.practice),
             ),
           ] else ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Text(
               t.home.practiceBanner.noWordsInLearnList,
               textAlign: TextAlign.center,

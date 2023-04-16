@@ -5,6 +5,8 @@ import 'package:voca/presentation/base/routing/route_names.dart';
 import 'package:voca/presentation/base/routing/transitions.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/home/home_screen.dart';
+import 'package:voca/presentation/inverse_practice/cubit/inverse_practice_cubit.dart';
+import 'package:voca/presentation/inverse_practice/inverse_practice_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/cubit/nav_bar_cubit.dart';
@@ -78,6 +80,20 @@ GoRouter createMainRouter() {
                     context,
                     state,
                     cubitProvider<PracticeCubit>(const PracticeScreen()),
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'inverse',
+                name: RouteNames.inversePractice,
+                parentNavigatorKey: _rootKey,
+                pageBuilder: (context, state) {
+                  return fadePageTransition(
+                    context,
+                    state,
+                    cubitProvider<InversePracticeCubit>(
+                      const InversePracticeScreen(),
+                    ),
                   );
                 },
               ),

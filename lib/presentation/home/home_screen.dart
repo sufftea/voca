@@ -7,6 +7,7 @@ import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
+import 'package:voca/presentation/home/widgets/inverse_practice_banner.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
 import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
@@ -80,6 +81,12 @@ class _HomeScreenState extends State<HomeScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildPracticeBanner(),
+          const SizedBox(height: 20),
+          InversePracticeBanner(
+            onStartPressed: () {
+              // GoRouter.of(context).goNamed(RouteNames.inversePractice);
+            },
+          ),
         ],
       ),
     );

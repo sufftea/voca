@@ -5,22 +5,18 @@ common:
 
 home:
   languageIs: "Language: $language"
-  discoverBanner:
-    header: Discover words you don't know yet
-    nofWordsToUncover:
-      zero: No words to uncover in this range
-      one: 1 word to uncover in this range
-      many: $n words to uncover in this range
-      other: $n words to uncover in this range
-    discoverNew: Discover new
   practiceBanner:
     header: Practice with spaced repetition
     practice: Practice
     cardsForToday: "Cards for today:"
     noCardsForToday: You've completed all the cards for today
-    noWordsInLearnList: You don't have any words in your learning list. Add the 
+    noWordsInLearnList: You don't have any words in your learning list. Add the
       words you want to memorize to practice them.
-
+  invercePracticeBanner:
+    header: Inverse practice
+    description: The other way around - you get the definition and need to remember the word.
+      Card progress doesn't change.
+    start: Start
 navBar:
   home: Home
   settings: Settings
@@ -80,7 +76,7 @@ error:
   somethingWentWrong: Something went wrong...
 
 notifications:
-  dailyReminder: 
+  dailyReminder:
     channelName: Daily reminders
     channelDescription: Be reminded to refresh your vocabulary
     title: ⏰ Daily reminder

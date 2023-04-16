@@ -1,0 +1,3 @@
+class InversePracticeState {
+  const InversePracticeState();
+}
