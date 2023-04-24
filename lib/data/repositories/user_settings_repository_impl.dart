@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voca/domain/domain_constants.dart';
+import 'package:voca/domain/entities/app_theme.dart' as domain;
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
 
 @LazySingleton(as: UserSettingsRepository, env: [mainEnv])
 class UserSettingsRepositoryImpl extends UserSettingsRepository {
@@ -46,20 +46,27 @@ class UserSettingsRepositoryImpl extends UserSettingsRepository {
   }
 
   @override
-  Future<void> setTheme(String themeCode) async {
-    await _prefs.setString(_Keys.appThemeCode, themeCode);
+  Future<void> setTheme(domain.AppTheme theme) async {
+    _prefs.setString(_Keys.appThemeName, theme.themeName);
+    _prefs.setBool(_Keys.isDarkTheme, theme.dark);
   }
 
   @override
-  Future<String?> getTheme() async {
-    return _prefs.getString(_Keys.appThemeCode);
+  Future<domain.AppTheme?> getTheme() async {
+    final name = _prefs.getString(_Keys.appThemeName);
+    final dark = _prefs.getBool(_Keys.isDarkTheme);
+
+    if (name == null || dark == null) return null;
+
+    return domain.AppTheme(themeName: name, dark: dark);
   }
 }
 
 class _Keys {
   static const repetitionCount = 'repetitionCount';
   static const crashlyticsCollectionAccepted = 'crashlyticsCollectionAccepted';
-  static const appThemeCode = 'appThemeCode';
+  static const appThemeName = 'appThemeCode';
+  static const isDarkTheme = 'isDarkTheme';
 }
 
 sealed class UserSettingsException implements Exception {}

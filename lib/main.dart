@@ -43,15 +43,14 @@ void main() async {
 
   final router = MainRouter();
 
-  final theme = ThemeMapper.fromData(
-    await getIt.get<UserSettingsRepository>().getTheme(),
-  );
+  final theme = await getIt.get<UserSettingsRepository>().getTheme();
+  final themeName = ThemeMapper.fromData(theme);
 
   runApp(AppDependencies(
-    theme: theme,
+    theme: themeName,
     builder: (context) {
       return MaterialApp.router(
-        theme: context.watch<ThemeNotifier>().themeData,
+        theme: context.watch<ThemeNotifier>().compose(),
         routerConfig: router.config(),
       );
     },
@@ -72,14 +71,13 @@ void mainAddWord() async {
 
   final router = AddWordRouter();
 
-  final theme = ThemeMapper.fromData(
-    await getIt.get<UserSettingsRepository>().getTheme(),
-  );
+  final theme = await getIt.get<UserSettingsRepository>().getTheme();
+  final themeName = ThemeMapper.fromData(theme);
 
   runApp(AppDependencies(
-    theme: theme,
+    theme: themeName,
     builder: (context) {
-      final themeData = context.watch<ThemeNotifier>().themeData;
+      final themeData = context.watch<ThemeNotifier>().compose();
 
       if (search == null) {
         return MaterialApp(
