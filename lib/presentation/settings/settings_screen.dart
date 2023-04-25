@@ -6,7 +6,7 @@ import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
 import 'package:voca/presentation/settings/widgets/about_banner.dart';
-import 'package:voca/presentation/settings/widgets/notifications_banner.dart';
+import 'package:voca/presentation/settings/widgets/misc_banner.dart';
 import 'package:voca/presentation/settings/widgets/word_lists_banner.dart';
 
 @RoutePage()
@@ -55,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   children: [
                     WordListsBanner(),
                     SizedBox(height: 10),
-                    NotificationsBanner(),
+                    MiscBanner(),
                     SizedBox(height: 10),
                     AboutBanner(),
                   ],

@@ -8,14 +8,22 @@
             "name": "voca - development",
             "request": "launch",
             "type": "dart",
-            "args": ["--flavor", "development", "--dart-define", "FLAVOR=dev"]
+            "args": [
+                "--flavor",
+                "development",
+                "--dart-define-from-file=./environments/dev.json",
+            ]
         },
         {
             "name": "voca - production",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "args": ["--flavor", "production", "--dart-define", "FLAVOR=production"]
+            "args": [
+                "--flavor",
+                "production",
+                "--dart-define-from-file=./environments/prod.json",
+            ]
         }
     ]
 }

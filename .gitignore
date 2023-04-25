@@ -47,3 +47,9 @@ app.*.map.json
 lib/presentation/base/l10n/gen
 *.freezed.dart
 *.config.dart
+
+# firebase keys
+environments/dev.json
+environments/prod.json
+android/app/src/development/google-services.json
+android/app/src/production/google-services.json

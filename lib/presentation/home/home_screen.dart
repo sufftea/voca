@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
@@ -6,7 +7,9 @@ import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
+import 'package:voca/presentation/home/cubit/home_events.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
+import 'package:voca/presentation/home/widgets/crashlytics_dialog.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
 import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
@@ -27,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
+    cubit.eventStream.listen(cubitEventListener);
     cubit.onScreenOpened();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -37,11 +41,29 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
+  void cubitEventListener(HomeEvent event) {
+    final _ = switch (event) {
+      RequestCrashlyticsPermission() => showCrashlyticsDialog(),
+    };
+  }
+
+  Future<void> showCrashlyticsDialog() async {
+    final accepted = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return const CrashlyticsDialog();
+      },
+    );
+
+    cubit.onCrashlyticsAccepted(accepted: accepted);
+  }
+
   void routeListener() {
     final currPath = AutoRouterDelegate.of(context).urlState.path;
 
     if (currPath == homeUrl) {
-      cubit.onScreenOpened();
+      cubit.refresh();
     }
   }
 

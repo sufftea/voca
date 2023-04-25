@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:voca/domain/repositories/user_data_repository.dart';
 import 'package:voca/presentation/notifications/notifications_manager.dart';
 import 'package:voca/presentation/settings/cubit/settings_events.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
@@ -11,9 +13,11 @@ import 'package:voca/presentation/settings/cubit/settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(
     this._notificationsManager,
+    this._userDataRepository,
   ) : super(const SettingsState());
 
   final NotificationsManager _notificationsManager;
+  final UserDataRepository _userDataRepository;
 
   Stream<SettingsExceptionEvent> get exceptionEvents =>
       _exceptionEventsController.stream;
@@ -26,9 +30,13 @@ class SettingsCubit extends Cubit<SettingsState> {
     final notifScheduledAt =
         await _notificationsManager.practiceReminderController.scheduledAt();
 
+    final crashReportsEnabled =
+        await _userDataRepository.isCrashlyticsCollectionAccepted();
+   
     emit(state.copyWith(
       practiceRemindersEnabled: _notificationsManager.practiceReminderEnabled,
       reminderShowAt: notifScheduledAt,
+      crashlyticsEnabled: crashReportsEnabled,
     ));
   }
 
@@ -88,6 +96,15 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(
       practiceRemindersEnabled: _notificationsManager.practiceReminderEnabled,
     ));
+  }
+
+  Future<void> onSetCrashReports(bool enabled) async {
+    emit(state.copyWith(
+      crashlyticsEnabled: enabled,
+    ));
+    
+    await _userDataRepository.setCrashlyticsCollectionAccepted(enabled);
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(enabled);
   }
 
   @override
