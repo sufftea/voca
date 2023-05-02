@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:voca/domain/entities/word.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/route_names.dart';
@@ -8,6 +10,7 @@ import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
+import 'package:voca/presentation/word_search/widgets/add_word_button.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
@@ -30,9 +33,14 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     with
         StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen>,
         RouteObserverMixin {
+  // Because GoRouter can't return a value from a screen...
+  Word? lastWordOpened;
+
   @override
   void onReturnToScreen() {
-    cubit.refresh();
+    if (lastWordOpened != null) {
+      cubit.refreshWord(lastWordOpened!);
+    }
   }
 
   @override
@@ -101,21 +109,13 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             children: [
               ListView.builder(
                 itemCount: state.results.length,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 5,
                     ),
-                    child: WordListEntry(
-                      card: state.results[index],
-                      searchedWord: state.lastSearch ?? '',
-                      onTap: (card) => GoRouter.of(context).goNamed(
-                        RouteNames.wordDefinition,
-                        extra: card,
-                      ),
-                    ),
+                    child: buildEntry(state, index, context),
                   );
                 },
               ),
@@ -136,6 +136,40 @@ class _WordSearchScreenState extends State<WordSearchScreen>
           );
         },
       ),
+    );
+  }
+
+  Widget buildEntry(SearchState state, int index, BuildContext context) {
+    final card = state.results[index];
+
+    return Row(
+      children: [
+        Expanded(
+          child: WordListEntry(
+            card: card,
+            searchedWord: state.lastSearch ?? '',
+            onTap: (card) {
+              GoRouter.of(context).goNamed(
+                RouteNames.wordDefinition,
+                extra: card,
+              );
+
+              lastWordOpened = card.word;
+            },
+          ),
+        ),
+        builder(
+          buildWhen: (prev, curr) => prev.results != curr.results,
+          builder: (context, state) {
+            return AddWordButton(
+              onAddWord: () async {
+                await cubit.onAddWord(card.word);
+              },
+              isAdded: card.status == WordCardStatus.learning,
+            );
+          },
+        ),
+      ],
     );
   }
 

@@ -19,15 +19,19 @@ class WordListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClickableCard(
-      onTap: () => onTap(card),
-      child: BaseCard(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            buildWord(context),
-            buildLearningIndicator(),
-          ],
+    return SizedBox(
+      height: 50,
+      child: ClickableCard(
+        onTap: () => onTap(card),
+        child: BaseCard(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              buildWord(context),
+              const SizedBox(width: 5),
+              buildLearningIndicator(),
+            ],
+          ),
         ),
       ),
     );

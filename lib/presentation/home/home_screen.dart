@@ -25,8 +25,7 @@ class _HomeScreenState extends State<HomeScreen>
     with
         StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen>,
         RouteObserverMixin {
-
-@override
+  @override
   void onReturnToScreen() {
     cubit.onScreenOpened();
   }
@@ -53,6 +52,20 @@ class _HomeScreenState extends State<HomeScreen>
           buildBody(),
           buildAppBar(),
         ],
+      ),
+      floatingActionButton: IconButton(
+        onPressed: () {
+          GoRouter.of(context).goNamed(RouteNames.wordSearch);
+        },
+        style: ButtonStyle(
+          elevation: const MaterialStatePropertyAll(5),
+          shadowColor: const MaterialStatePropertyAll(BaseColors.black),
+          foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
+          backgroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
+          overlayColor: MaterialStatePropertyAll(BaseColors.white10),
+          iconSize: const MaterialStatePropertyAll(40),
+        ),
+        icon: const Icon(Icons.add),
       ),
     );
   }

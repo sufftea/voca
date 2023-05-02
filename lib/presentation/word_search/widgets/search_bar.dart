@@ -33,7 +33,7 @@ class SearchBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide.none,
         ),
-        hintText: t.search.lookUpWord,
+        hintText: t.search.enterWord,
         hintStyle: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.medium,

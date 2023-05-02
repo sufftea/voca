@@ -36,38 +36,59 @@ class WordsRepositoryImpl implements WordsRepository {
     final words = <WordCard>[];
 
     for (final row in qWords) {
-      final word = row['word'] as String;
+      final wordName = row['word'] as String;
       final wordId = row['wordId'] as int;
 
-      // final userData = await _fetchUserWordData(wordId);
+      final word = Word(id: wordId, name: wordName);
+
+      final card = await fetchWordCard(word);
+
+      if (card == null) {
+        assert(card != null);
+        return words;
+      }
+
+      words.add(card);
+    }
+
+    return words;
+  }
+
+  @override
+  Future<WordCard?> fetchWordCard(Word word) async {
+    final db = _databaseManager.db;
+
+    try {
       final qUserWords = await db.query(
         'up.userWords',
         columns: ['wordId', 'repetitions', 'status'],
         where: 'wordId = ?',
-        whereArgs: [wordId],
+        whereArgs: [word.id],
       );
 
-      late final int repetitionCount;
-      late final WordCardStatus status;
-
-      if (qUserWords.isNotEmpty) {
-        final row = qUserWords.first;
-
-        repetitionCount = row['repetitions'] as int;
-        status = CardStatus.textToStatus[row['status'] as String]!;
-      } else {
-        repetitionCount = 0;
-        status = WordCardStatus.unknown;
+      if (qUserWords.isEmpty) {
+        return WordCard(
+          word: word,
+          repetitionCount: 0,
+          status: WordCardStatus.unknown,
+        );
       }
 
-      words.add(WordCard(
-        word: Word(name: word, id: wordId),
-        repetitionCount: repetitionCount,
-        status: status,
-      ));
-    }
+      assert(qUserWords.length == 1);
 
-    return words;
+      final wordEntry = qUserWords.first;
+      final repetitions = wordEntry['repetitions'] as int;
+      final status = CardStatus.textToStatus[wordEntry['status'] as String]!;
+
+      return WordCard(
+        word: word,
+        repetitionCount: repetitions,
+        status: status,
+      );
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
   }
 
   @override
