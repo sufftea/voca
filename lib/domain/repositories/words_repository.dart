@@ -5,6 +5,7 @@ import 'package:voca/domain/entities/word_card.dart';
 abstract class WordsRepository {
   Future<List<WordCard>> findWords(String query);
   Future<DictionaryEntry> fetchDictionaryEntry(Word word);
+  Future<WordCard?> fetchWordCard(Word word);
 
   Future<void> setWordCardStatus(Word word, WordCardStatus status);
 

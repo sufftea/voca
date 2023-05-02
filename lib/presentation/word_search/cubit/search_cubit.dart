@@ -1,5 +1,9 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:voca/domain/entities/word.dart';
+import 'package:voca/domain/entities/word_card.dart';
+import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/domain/use_cases/find_words_use_case.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
 
@@ -7,9 +11,11 @@ import 'package:voca/presentation/word_search/cubit/search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit(
     this._findWordsUseCase,
+    this._wordsRepository,
   ) : super(const SearchState());
 
   final FindWordsUseCase _findWordsUseCase;
+  final WordsRepository _wordsRepository;
 
   Future<void> onSearchTextChanged(String text) async {
     if (text.isEmpty) {
@@ -46,11 +52,32 @@ class SearchCubit extends Cubit<SearchState> {
     ));
   }
 
+  Future<void> onAddWord(Word word) async {
+    await _wordsRepository.setWordCardStatus(word, WordCardStatus.learning);
+
+    await refreshWord(word);
+  }
+
   Future<void> refresh() async {
     final text = state.lastSearch;
 
     if (text != null) {
       onSearchTextChanged(text);
     }
+  }
+
+  Future<void> refreshWord(Word word) async {
+    final updatedCard = await _wordsRepository.fetchWordCard(word);
+
+    if (updatedCard == null) {
+      assert(updatedCard != null);
+      return;
+    }
+
+    emit(state.copyWith(
+      results: state.results
+          .map((card) => card.word == word ? updatedCard : card)
+          .toList(),
+    ));
   }
 }
