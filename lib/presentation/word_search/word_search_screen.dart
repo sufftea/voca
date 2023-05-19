@@ -11,7 +11,7 @@ import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
 import 'package:voca/presentation/word_search/widgets/add_word_button.dart';
-import 'package:voca/presentation/word_search/widgets/search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 
@@ -75,7 +75,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
         child: AppBarCard(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: SearchBar(
+            child: MySearchBar(
               onChanged: cubit.onSearchTextChanged,
               initialValue: widget.initialSearch,
               key: k,

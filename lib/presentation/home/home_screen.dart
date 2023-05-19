@@ -10,7 +10,7 @@ import 'package:voca/presentation/home/cubit/home_cubit.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
 import 'package:voca/presentation/home/widgets/discover_banner.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
-import 'package:voca/presentation/word_search/widgets/search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 import 'package:voca/utils/flavors.dart';
 
@@ -53,19 +53,14 @@ class _HomeScreenState extends State<HomeScreen>
           buildAppBar(),
         ],
       ),
-      floatingActionButton: IconButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           GoRouter.of(context).goNamed(RouteNames.wordSearch);
         },
-        style: ButtonStyle(
-          elevation: const MaterialStatePropertyAll(5),
-          shadowColor: const MaterialStatePropertyAll(BaseColors.black),
-          foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
-          backgroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
-          overlayColor: MaterialStatePropertyAll(BaseColors.white10),
-          iconSize: const MaterialStatePropertyAll(40),
+        child: const Icon(
+          Icons.add_rounded,
+          size: 30,
         ),
-        icon: const Icon(Icons.add),
       ),
     );
   }
@@ -145,11 +140,11 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget buildAppBarLoading() {
-    return AppBarCard(
+    return const AppBarCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          PlaceholderOr(real: SearchBar()),
+        children: [
+          PlaceholderOr(real: MySearchBar()),
         ],
       ),
     );
@@ -160,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen>
       onPointerDown: (_) => onSearchBarTap(),
       behavior: HitTestBehavior.opaque,
       child: const AbsorbPointer(
-        child: SearchBar(),
+        child: MySearchBar(),
       ),
     );
   }
