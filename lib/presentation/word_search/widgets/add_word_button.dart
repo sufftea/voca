@@ -43,7 +43,7 @@ class _AddWordButtonState extends State<AddWordButton> {
           iconSize: MaterialStatePropertyAll(30),
           maximumSize: MaterialStatePropertyAll(Size.square(50)),
         ),
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.add_rounded),
       );
     }
 

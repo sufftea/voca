@@ -22,6 +22,8 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<List<WordCard>> findWords(String query) async {
     final db = _databaseManager.db;
 
+    
+    query = query.trim();
     final qWords = await db.query(
       'word',
       columns: ['wordId', 'word'],
