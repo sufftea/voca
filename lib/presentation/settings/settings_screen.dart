@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -8,6 +9,7 @@ import 'package:voca/presentation/settings/widgets/about_banner.dart';
 import 'package:voca/presentation/settings/widgets/notifications_banner.dart';
 import 'package:voca/presentation/settings/widgets/word_lists_banner.dart';
 
+@RoutePage()
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -33,11 +35,11 @@ class _SettingsScreenState extends State<SettingsScreen>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               buildAppBar(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
+                  children: [
                     SizedBox(height: 10),
                     WordListsBanner(),
                     SizedBox(height: 10),

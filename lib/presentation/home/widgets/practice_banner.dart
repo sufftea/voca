@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/route_names.dart';
+import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 
@@ -45,11 +45,12 @@ class PracticeBanner extends StatelessWidget {
             buildCardsForTodayInfo(),
             const SizedBox(height: 20),
             FilledButton(
-              onPressed: cardsForPractice == 0
-                  ? null
-                  : () {
-                      GoRouter.of(context).goNamed(RouteNames.practice);
-                    },
+              onPressed: switch (cardsForPractice) {
+                0 => null,
+                _ => () {
+                    AutoRouter.of(context).root.push(const PracticeRoute());
+                  }
+              },
               child: Text(t.home.practiceBanner.practice),
             ),
           ] else ...[

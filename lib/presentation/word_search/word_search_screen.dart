@@ -1,12 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/route_names.dart';
+import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
@@ -17,6 +15,7 @@ import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 
 final k = GlobalKey();
 
+@RoutePage()
 class WordSearchScreen extends StatefulWidget {
   const WordSearchScreen({
     this.initialSearch,
@@ -30,24 +29,11 @@ class WordSearchScreen extends StatefulWidget {
 }
 
 class _WordSearchScreenState extends State<WordSearchScreen>
-    with
-        StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen>,
-        RouteObserverMixin {
-  // Because GoRouter can't return a value from a screen...
-  Word? lastWordOpened;
-
-  @override
-  void onReturnToScreen() {
-    if (lastWordOpened != null) {
-      cubit.refreshWord(lastWordOpened!);
-    }
-  }
-
+    with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
   @override
   void initState() {
     super.initState();
 
-    debugPrint('initing search screen. initialSearch: ${widget.initialSearch}');
     if (widget.initialSearch != null) {
       cubit.onSearchTextChanged(widget.initialSearch!);
     }
@@ -149,12 +135,14 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             card: card,
             searchedWord: state.lastSearch ?? '',
             onTap: (card) {
-              GoRouter.of(context).goNamed(
-                RouteNames.wordDefinition,
-                extra: card,
-              );
-
-              lastWordOpened = card.word;
+              AutoRouter.of(context).root.push(
+                    WordDefinitionRoute(
+                      wordCard: card,
+                      onWordStatusChange: (status) {
+                        cubit.onWordStatusUpdate(card.word, status);
+                      },
+                    ),
+                  );
             },
           ),
         ),

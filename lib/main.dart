@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:receive_intent/receive_intent.dart';
 import 'package:voca/injectable/injectable_init.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/global_cubit_provider.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/routers/add_word_router.dart';
-import 'package:voca/presentation/base/routing/routers/main_router.dart';
+import 'package:voca/presentation/base/routing/routers/main/add_word_router.dart';
+import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/error/error_screen.dart';
 
 void main() async {
@@ -16,11 +17,13 @@ void main() async {
 
   await configureDependencies();
 
+  final router = MainRouter();
+
   runApp(TranslationProvider(
     child: GlobalCubitProvider(
       child: MaterialApp.router(
         theme: baseTheme,
-        routerConfig: createMainRouter(),
+        routerConfig: router.config(),
       ),
     ),
   ));
@@ -41,11 +44,21 @@ void mainAddWord() async {
     }
   }
 
+  final router = AddWordRouter();
+
+  final delegate = router.delegate(
+    deepLinkBuilder: (deepLink) {
+      return DeepLink([
+        WordSearchRoute(initialSearch: search),
+      ]);
+    },
+  );
+
   runApp(TranslationProvider(
     child: search != null
         ? MaterialApp.router(
             theme: baseTheme,
-            routerConfig: createAddWordRouter(search),
+            routerDelegate: delegate,
           )
         : MaterialApp(
             theme: baseTheme,
