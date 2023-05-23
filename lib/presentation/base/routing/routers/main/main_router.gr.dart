@@ -50,12 +50,6 @@ abstract class _$MainRouter extends RootStackRouter {
         child: const SettingsScreen(),
       );
     },
-    ErrorRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ErrorScreen(),
-      );
-    },
     WordDefinitionRoute.name: (routeData) {
       final args = routeData.argsAs<WordDefinitionRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -178,20 +172,6 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ErrorScreen]
-class ErrorRoute extends PageRouteInfo<void> {
-  const ErrorRoute({List<PageRouteInfo>? children})
-      : super(
-          ErrorRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ErrorRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -18,6 +18,7 @@ Route<T> Function<T>(
 
     return PageRouteBuilder(
       settings: page,
+      transitionsBuilder: TransitionsBuilders.fadeIn,
       pageBuilder: (context, animation, secondaryAnimation) {
         return cubitProvider<CubitT>(child);
       },
@@ -39,6 +40,7 @@ Route<T> Function<T>(
   ) {
     return PageRouteBuilder(
       settings: page,
+      transitionsBuilder: TransitionsBuilders.fadeIn,
       pageBuilder: (context, animation, secondaryAnimation) {
         return child;
       },

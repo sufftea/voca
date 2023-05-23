@@ -38,23 +38,17 @@ class _HomeScreenState extends State<HomeScreen>
       backgroundColor: BaseColors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        verticalDirection: VerticalDirection.up,
+        // verticalDirection: VerticalDirection.up,
         children: [
+          const SafeArea(child: SizedBox.shrink()),
+          buildSearchBar(),
           buildBody(),
-          buildAppBar(),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onOpenSearch,
-        child: const Icon(
-          Icons.add_rounded,
-          size: 30,
-        ),
       ),
     );
   }
 
-  Expanded buildBody() {
+  Widget buildBody() {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -88,21 +82,18 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget buildAppBar() {
-    return Hero(
-      tag: SearchBarHeroData.tag,
-      child: Material(
-        type: MaterialType.transparency,
-        child: AppBarCard(
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            reverse: true,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                buildSearchBar(),
-              ],
+  Widget buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Hero(
+        tag: SearchBarHeroData.tag,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Listener(
+            onPointerDown: (_) => onOpenSearch(),
+            behavior: HitTestBehavior.opaque,
+            child: const AbsorbPointer(
+              child: MySearchBar(),
             ),
           ),
         ),
@@ -117,16 +108,6 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           PlaceholderOr(real: MySearchBar()),
         ],
-      ),
-    );
-  }
-
-  Listener buildSearchBar() {
-    return Listener(
-      onPointerDown: (_) => onOpenSearch(),
-      behavior: HitTestBehavior.opaque,
-      child: const AbsorbPointer(
-        child: MySearchBar(),
       ),
     );
   }

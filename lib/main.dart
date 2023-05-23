@@ -46,19 +46,18 @@ void mainAddWord() async {
 
   final router = AddWordRouter();
 
-  final delegate = router.delegate(
-    deepLinkBuilder: (deepLink) {
-      return DeepLink([
-        WordSearchRoute(initialSearch: search),
-      ]);
-    },
-  );
-
   runApp(TranslationProvider(
     child: search != null
         ? MaterialApp.router(
             theme: baseTheme,
-            routerDelegate: delegate,
+            // routerDelegate: delegate,
+            routerConfig: router.config(
+              deepLinkBuilder: (deepLink) {
+                return DeepLink([
+                  WordSearchRoute(initialSearch: search),
+                ]);
+              },
+            ),
           )
         : MaterialApp(
             theme: baseTheme,

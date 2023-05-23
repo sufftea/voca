@@ -24,38 +24,32 @@ part 'main_router.gr.dart';
 class MainRouter extends _$MainRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(
-          initial: true,
+        CustomRoute(
           page: TabBarShellRoute.page,
+          initial: true,
           children: [
-            AutoRoute(
+            CustomRoute(
               page: HomeTabRoute.page,
               children: [
-                // AutoRoute(page: HomeRoute.page),
                 CustomRoute(
                   page: HomeRoute.page,
-                  transitionsBuilder: TransitionsBuilders.fadeIn,
                   customRouteBuilder: routeBuilder(),
                 ),
               ],
             ),
-            AutoRoute(
+            CustomRoute(
               page: SettingsTabRoute.page,
               children: [
-                // AutoRoute(page: SettingsRoute.page),
                 CustomRoute(
                   page: SettingsRoute.page,
-                  transitionsBuilder: TransitionsBuilders.fadeIn,
                   customRouteBuilder: routeBuilder(),
                 ),
                 CustomRoute(
                   page: LearningListRoute.page,
-                  transitionsBuilder: TransitionsBuilders.fadeIn,
                   customRouteBuilder: cubitRouteBuilder<LearningListCubit>(),
                 ),
                 CustomRoute(
                   page: WordDefinitionRoute.page,
-                  transitionsBuilder: TransitionsBuilders.fadeIn,
                   customRouteBuilder: cubitRouteBuilder<WordDefinitionCubit>(),
                 ),
               ],
@@ -64,17 +58,14 @@ class MainRouter extends _$MainRouter {
         ),
         CustomRoute(
           page: WordSearchRoute.page,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
           customRouteBuilder: cubitRouteBuilder<SearchCubit>(),
         ),
         CustomRoute(
           page: WordDefinitionRoute.page,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
           customRouteBuilder: cubitRouteBuilder<WordDefinitionCubit>(),
         ),
         CustomRoute(
           page: PracticeRoute.page,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
           customRouteBuilder: cubitRouteBuilder<PracticeCubit>(),
         ),
       ];

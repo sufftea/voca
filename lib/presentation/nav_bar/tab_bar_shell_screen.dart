@@ -13,7 +13,7 @@ class TabBarShellScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-
+    TransitionsBuilders.fadeIn;
     return AutoTabsRouter(
       routes: const [
         HomeRoute(),
@@ -24,155 +24,64 @@ class TabBarShellScreen extends StatelessWidget {
 
         return Scaffold(
           body: child,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: router.activeIndex,
-            onDestinationSelected: (index) {
-              router.setActiveIndex(index);
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              AutoRouter.of(context).push(WordSearchRoute());
             },
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'home',
+            child: const Icon(
+              Icons.add_rounded,
+              size: 30,
+            ),
+          ),
+          bottomNavigationBar: DecoratedBox(
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: BaseColors.black25,
+                blurRadius: 10,
               ),
-              NavigationDestination(
-                icon: Icon(Icons.settings),
-                label: 'settings',
+            ]),
+            child: NavigationBar(
+              height: 70,
+              indicatorColor: BaseColors.neptune,
+              surfaceTintColor: BaseColors.white,
+              backgroundColor: BaseColors.white,
+              elevation: 0,
+              indicatorShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-            ],
+              selectedIndex: router.activeIndex,
+              onDestinationSelected: (index) {
+                debugPrint('onDestinationSelected; $index');
+                if (router.activeIndex == index) {
+                  final tabRouter =
+                      router.childControllers[index] as StackRouter;
+                  tabRouter.popUntilRoot();
+                  return;
+                }
+
+                /*
+                childControllers.pages
+                routeCollection.routesMap
+                 */
+
+                router.setActiveIndex(index);
+              },
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.home),
+                  label: t.navBar.home,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.settings),
+                  label: t.navBar.settings,
+                ),
+              ],
+            ),
           ),
         );
       },
-    );
-
-    // return AutoTabsScaffold(
-    //   homeIndex: 0,
-    //   routes: const [
-    //     HomeRoute(),
-    //     SettingsRoute(),
-    //   ],
-    //   bottomNavigationBuilder: (context, tabsRouter) {
-    //     final router = AutoTabsRouter.of(context);
-
-    //     return Row(
-    //       children: [
-    //         Expanded(
-    //           child: _NavBarButton(
-    //             onTap: () {
-    //               router.setActiveIndex(0);
-    //             },
-    //             icon: Icons.home,
-    //             name: t.navBar.home,
-    //             active: tabsRouter.activeIndex == 0,
-    //           ),
-    //         ),
-    //         const SizedBox(width: 5),
-    //         Expanded(
-    //           child: _NavBarButton(
-    //             onTap: () {
-    //               router.setActiveIndex(1);
-    //             },
-    //             icon: Icons.settings,
-    //             name: t.navBar.settings,
-    //             active: tabsRouter.activeIndex == 1,
-    //           ),
-    //         )
-    //       ],
-    //     );
-    //   },
-    // );
-
-    // return AutoTabsRouter.builder(
-    //   routes: routes,
-    //   builder: builder,
-    // );
-
-    // return Scaffold(
-    //   bottomNavigationBar: AppBarCard(
-    //     height: 60,
-    //     padding: const EdgeInsets.all(5),
-    //     child: Row(
-    //       children: [
-    //         Expanded(
-    //           child: builder(
-    //             buildWhen: (prev, curr) => prev.activeTab != curr.activeTab,
-    //             builder: (context, state) {
-    //               return _NavBarButton(
-    //                 onTap: () {
-    //                   GoRouter.of(context).goNamed(RouteNames.home);
-    //                   cubit(context).setTab(NavBarTab.home);
-    //                 },
-    //                 icon: Icons.home,
-    //                 name: t.navBar.home,
-    //                 active: state.activeTab == NavBarTab.home,
-    //               );
-    //             },
-    //           ),
-    //         ),
-    //         const SizedBox(width: 5),
-    //         Expanded(
-    //           child: builder(
-    //             buildWhen: (prev, curr) => prev.activeTab != curr.activeTab,
-    //             builder: (context, state) {
-    //               return _NavBarButton(
-    //                 onTap: () {
-    //                   GoRouter.of(context).goNamed(RouteNames.settings);
-    //                   cubit(context).setTab(NavBarTab.settings);
-    //                 },
-    //                 icon: Icons.settings,
-    //                 name: t.navBar.settings,
-    //                 active: state.activeTab == NavBarTab.settings,
-    //               );
-    //             },
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
-  }
-}
-
-class _NavBarButton extends StatelessWidget {
-  const _NavBarButton({
-    required this.icon,
-    required this.name,
-    required this.active,
-    required this.onTap,
-  });
-
-  final VoidCallback onTap;
-  final IconData icon;
-  final String name;
-  final bool active;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilledButton(
-      onPressed: onTap,
-      style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-        backgroundColor: MaterialStatePropertyAll(
-          active ? BaseColors.mercury : BaseColors.white,
-        ),
-        foregroundColor: const MaterialStatePropertyAll(BaseColors.mineShaft),
-        overlayColor: MaterialStatePropertyAll(BaseColors.mineShaft10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 24,
-          ),
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeights.bold,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -8,7 +8,7 @@ class AddWordRouter extends MainRouter {
   @override
   List<AutoRoute> get routes => [
         CustomRoute(
-          initial: true,
+          // initial: true,
           page: WordSearchRoute.page,
           customRouteBuilder: cubitRouteBuilder<SearchCubit>(),
         ),

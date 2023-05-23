@@ -43,24 +43,24 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BaseColors.white,
-      body: Column(
-        verticalDirection: VerticalDirection.up,
+      body: Stack(
+        // verticalDirection: VerticalDirection.up,
         children: [
           buildBody(),
-          buildAppBar(),
+          buildSearchBar(),
         ],
       ),
     );
   }
 
-  Widget buildAppBar() {
-    return Hero(
-      tag: SearchBarHeroData.tag,
-      child: Material(
-        type: MaterialType.transparency,
-        child: AppBarCard(
-          child: Align(
-            alignment: Alignment.bottomCenter,
+  Widget buildSearchBar() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Hero(
+          tag: SearchBarHeroData.tag,
+          child: Material(
+            type: MaterialType.transparency,
             child: MySearchBar(
               onChanged: cubit.onSearchTextChanged,
               initialValue: widget.initialSearch,
@@ -74,54 +74,52 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   }
 
   Widget buildBody() {
-    return Expanded(
-      child: builder(
-        buildWhen: (prev, curr) =>
-            prev.status != curr.status || prev.results != curr.results,
-        builder: (context, state) {
-          final s = state.status;
+    return builder(
+      buildWhen: (prev, curr) =>
+          prev.status != curr.status || prev.results != curr.results,
+      builder: (context, state) {
+        final s = state.status;
 
-          final t = Translations.of(context);
+        final t = Translations.of(context);
 
-          if (s == SearchStatus.needsMoreLetters) {
-            return buildMessage(t.search.enterNLetters);
-          }
+        if (s == SearchStatus.needsMoreLetters) {
+          return buildMessage(t.search.enterNLetters);
+        }
 
-          if (s == SearchStatus.noResults) {
-            return buildMessage(t.search.noResults);
-          }
+        if (s == SearchStatus.noResults) {
+          return buildMessage(t.search.noResults);
+        }
 
-          return Stack(
-            children: [
-              ListView.builder(
-                itemCount: state.results.length,
-                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    child: buildEntry(state, index, context),
-                  );
-                },
-              ),
-              if (s == SearchStatus.loading)
-                Container(
-                  color: BaseColors.white50,
-                  alignment: Alignment.center,
-                  child: const SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator(
-                      color: BaseColors.mineShaft,
-                      strokeWidth: 5,
-                    ),
+        return Stack(
+          children: [
+            ListView.builder(
+              itemCount: state.results.length,
+              padding: const EdgeInsets.only(left: 20, top: 100, bottom: 10),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                  ),
+                  child: buildEntry(state, index, context),
+                );
+              },
+            ),
+            if (s == SearchStatus.loading)
+              Container(
+                color: BaseColors.white50,
+                alignment: Alignment.center,
+                child: const SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: BaseColors.mineShaft,
+                    strokeWidth: 5,
                   ),
                 ),
-            ],
-          );
-        },
-      ),
+              ),
+          ],
+        );
+      },
     );
   }
 

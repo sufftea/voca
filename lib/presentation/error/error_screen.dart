@@ -1,8 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
-@RoutePage()
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({super.key});
 

@@ -48,6 +48,7 @@ wordDefinition:
     body: This will reset the progress on this card.
 
 settings:
+  header: Settings
   words: Words
   about:
     header: About

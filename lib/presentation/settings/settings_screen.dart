@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
@@ -28,19 +29,31 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildAppBar(),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    t.settings.header,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeights.bold,
+                    ),
+                  ),
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 10),
                     WordListsBanner(),
                     SizedBox(height: 10),
                     NotificationsBanner(),
@@ -51,18 +64,6 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildAppBar() {
-    return const AppBarCard(
-      child: Text(
-        'Settings',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeights.bold,
         ),
       ),
     );
