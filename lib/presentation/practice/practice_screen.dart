@@ -63,7 +63,6 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   void onGoBack() {
     AutoRouter.of(context).pop();
-    // GoRouter.of(context).pop();
   }
 
   @override

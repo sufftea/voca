@@ -73,20 +73,5 @@ class SearchCubit extends Cubit<SearchState> {
               card.word == word ? card.copyWith(status: newStatus) : card)
           .toList(),
     ));
-
-    // Do I really need to verify this here?
-    
-    // final updatedCard = await _wordsRepository.fetchWordCard(word);
-
-    // if (updatedCard == null) {
-    //   assert(updatedCard != null);
-    //   return;
-    // }
-
-    // emit(state.copyWith(
-    //   results: state.results
-    //       .map((card) => card.word == word ? updatedCard : card)
-    //       .toList(),
-    // ));
   }
 }

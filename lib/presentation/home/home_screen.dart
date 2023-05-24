@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen>
       backgroundColor: BaseColors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        // verticalDirection: VerticalDirection.up,
         children: [
           const SafeArea(child: SizedBox.shrink()),
           buildSearchBar(),

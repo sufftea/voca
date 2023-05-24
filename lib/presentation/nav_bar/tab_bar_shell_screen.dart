@@ -61,11 +61,6 @@ class TabBarShellScreen extends StatelessWidget {
                   return;
                 }
 
-                /*
-                childControllers.pages
-                routeCollection.routesMap
-                 */
-
                 router.setActiveIndex(index);
               },
               destinations: [

@@ -5,7 +5,6 @@ import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
 import 'package:voca/presentation/word_search/widgets/add_word_button.dart';
@@ -44,7 +43,6 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     return Scaffold(
       backgroundColor: BaseColors.white,
       body: Stack(
-        // verticalDirection: VerticalDirection.up,
         children: [
           buildBody(),
           buildSearchBar(),

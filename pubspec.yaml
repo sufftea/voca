@@ -33,13 +33,6 @@ dependencies:
   awesome_notifications: ^0.7.4+1
   auto_route: ^7.1.0
 
-# flutter_intl:
-#   enabled: true
-#   class_name: Intls
-#   main_locale: en
-#   arb_dir: lib/presentation/base/l10n
-#   output_dir: lib/presentation/base/l10n/gen
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

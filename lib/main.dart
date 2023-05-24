@@ -50,7 +50,6 @@ void mainAddWord() async {
     child: search != null
         ? MaterialApp.router(
             theme: baseTheme,
-            // routerDelegate: delegate,
             routerConfig: router.config(
               deepLinkBuilder: (deepLink) {
                 return DeepLink([

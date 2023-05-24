@@ -1,4 +1,3 @@
-// DUH..
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,13 +8,11 @@ Route<T> Function<T>(
   Widget,
   AutoRoutePage<T>,
 ) cubitRouteBuilder<CubitT extends BlocBase>() {
-
   Route<T> builder<T>(
     BuildContext context,
     Widget child,
     AutoRoutePage<T> page,
   ) {
-
     return PageRouteBuilder(
       settings: page,
       transitionsBuilder: TransitionsBuilders.fadeIn,
