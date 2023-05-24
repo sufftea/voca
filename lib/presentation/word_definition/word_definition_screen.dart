@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
@@ -10,13 +11,17 @@ import 'package:voca/presentation/word_definition/cubit/word_definition_state.da
 import 'package:voca/presentation/word_definition/widgets/confirm_reset_dialog.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
 
+@RoutePage()
 class WordDefinitionScreen extends StatefulWidget {
   const WordDefinitionScreen({
     required this.wordCard,
+    this.onWordStatusChange,
     super.key,
   });
 
   final WordCard wordCard;
+
+  final Function(WordCardStatus status)? onWordStatusChange;
 
   @override
   State<WordDefinitionScreen> createState() => _WordDefinitionScreenState();

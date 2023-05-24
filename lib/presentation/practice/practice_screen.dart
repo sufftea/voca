@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:go_router/go_router.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
@@ -26,6 +26,7 @@ class SwipeCardData {
   final int index;
 }
 
+@RoutePage()
 class PracticeScreen extends StatefulWidget {
   const PracticeScreen({super.key});
 
@@ -61,7 +62,7 @@ class _PracticeScreenState extends State<PracticeScreen>
   }
 
   void onGoBack() {
-    GoRouter.of(context).pop();
+    AutoRouter.of(context).pop();
   }
 
   @override

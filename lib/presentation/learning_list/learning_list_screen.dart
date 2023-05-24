@@ -1,16 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/routing/route_names.dart';
+import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/utils/route_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_state.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 import 'package:voca/utils/flavors.dart';
 
+@RoutePage()
 class LearningListScreen extends StatefulWidget {
   const LearningListScreen({super.key});
 
@@ -21,13 +21,7 @@ class LearningListScreen extends StatefulWidget {
 class _LearningListScreenState extends State<LearningListScreen>
     with
         StatefulCubitConsumer<LearningListCubit, LearningListState,
-            LearningListScreen>,
-        RouteObserverMixin {
-  @override
-  void onReturnToScreen() {
-    cubit.refresh();
-  }
-
+            LearningListScreen> {
   @override
   void initState() {
     super.initState();
@@ -120,10 +114,12 @@ class _LearningListScreenState extends State<LearningListScreen>
                 padding: const EdgeInsets.only(bottom: 5),
                 child: WordListEntry(
                   onTap: (card) {
-                    GoRouter.of(context).goNamed(
-                      RouteNames.learningList_wordDefinition,
-                      extra: card,
-                    );
+                    AutoRouter.of(context).push(WordDefinitionRoute(
+                      wordCard: card,
+                      onWordStatusChange: (status) async {
+                        await cubit.refresh();
+                      },
+                    ));
                   },
                   card: words[index],
                 ),

@@ -52,15 +52,16 @@ class FlippedCardWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(
-            card.word.name,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeights.bold,
-              color: BaseColors.white,
+          Expanded(
+            child: Text(
+              card.word.name,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeights.bold,
+                color: BaseColors.white,
+              ),
             ),
           ),
-          const Spacer(),
           PracticeProgressIndicator(
             currRepetitions: card.repetitionCount,
             totalRepetitions: GlobalConstants.maxRepetitionCount,
