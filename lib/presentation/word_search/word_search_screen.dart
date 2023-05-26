@@ -29,13 +29,23 @@ class WordSearchScreen extends StatefulWidget {
 
 class _WordSearchScreenState extends State<WordSearchScreen>
     with StatefulCubitConsumer<SearchCubit, SearchState, WordSearchScreen> {
+  late final searchBarFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
 
     if (widget.initialSearch != null) {
       cubit.onSearchTextChanged(widget.initialSearch!);
+    } else {
+      searchBarFocusNode.requestFocus();
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchBarFocusNode.dispose();
   }
 
   @override
@@ -52,18 +62,45 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   }
 
   Widget buildSearchBar() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Hero(
-          tag: SearchBarHeroData.tag,
-          child: Material(
-            type: MaterialType.transparency,
-            child: MySearchBar(
-              onChanged: cubit.onSearchTextChanged,
-              initialValue: widget.initialSearch,
-              key: k,
-              autofocus: widget.initialSearch == null,
+    return Positioned(
+      top: 0,
+      right: 0,
+      left: 0,
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Hero(
+            tag: SearchBarHeroData.tag,
+            flightShuttleBuilder: (
+              flightContext,
+              animation,
+              flightDirection,
+              fromHeroContext,
+              toHeroContext,
+            ) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (context, _) {
+                  return Material(
+                    type: MaterialType.transparency,
+                    child: MySearchBar(
+                      initialValue: widget.initialSearch,
+                      key: k,
+                      focusNode: searchBarFocusNode,
+                      elevation: animation.value,
+                    ),
+                  );
+                },
+              );
+            },
+            child: Material(
+              type: MaterialType.transparency,
+              child: MySearchBar(
+                onChanged: cubit.onSearchTextChanged,
+                initialValue: widget.initialSearch,
+                key: k,
+                focusNode: searchBarFocusNode,
+              ),
             ),
           ),
         ),
@@ -92,7 +129,12 @@ class _WordSearchScreenState extends State<WordSearchScreen>
           children: [
             ListView.builder(
               itemCount: state.results.length,
-              padding: const EdgeInsets.only(left: 20, top: 100, bottom: 10),
+              padding: EdgeInsets.only(
+                left: 20,
+                top: 80 + MediaQuery.of(context).padding.top,
+                bottom: 10,
+              ),
+              clipBehavior: Clip.none,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
@@ -131,6 +173,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             card: card,
             searchedWord: state.lastSearch ?? '',
             onTap: (card) {
+              searchBarFocusNode.unfocus();
               AutoRouter.of(context).root.push(
                     WordDefinitionRoute(
                       wordCard: card,
@@ -148,6 +191,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             return AddWordButton(
               onAddWord: () async {
                 await cubit.onAddWord(card.word);
+                searchBarFocusNode.unfocus();
               },
               isAdded: card.status == WordCardStatus.learning,
             );
@@ -157,14 +201,22 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     );
   }
 
-  Padding buildMessage(String message) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Text(
-        message,
-        style: const TextStyle(
-          fontWeight: FontWeights.bold,
-          color: BaseColors.neptune,
+  Widget buildMessage(String message) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 120,
+        ),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontWeight: FontWeights.bold,
+            color: BaseColors.neptune,
+          ),
         ),
       ),
     );

@@ -23,6 +23,10 @@ class PracticeBanner extends StatelessWidget {
   final bool learningListEmpty;
   final int cardsForPractice;
 
+  void onPracticeButtonPressed(BuildContext context) async {
+    await AutoRouter.of(context).root.push(const PracticeRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
@@ -47,9 +51,7 @@ class PracticeBanner extends StatelessWidget {
             FilledButton(
               onPressed: switch (cardsForPractice) {
                 0 => null,
-                _ => () {
-                    AutoRouter.of(context).root.push(const PracticeRoute());
-                  }
+                _ => () => onPracticeButtonPressed(context),
               },
               child: Text(t.home.practiceBanner.practice),
             ),
