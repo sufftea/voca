@@ -15,7 +15,7 @@ class BaseColors {
   static const grey = Color(0xff8b8b8b);
   static final mineShaft10 = mineShaft.withOpacity(0.10);
   static const mercury = Color(0xffE9E9E9);
-  static const concrete = Color(0xfff2f2f2);
+  static const concrete = Color(0xfff0f0f0);
   static const curiousBlue = Color(0xff1E88E5);
   static final curiousBlue10 = curiousBlue.withOpacity(0.1);
   static final curiousBlue30 = curiousBlue.withOpacity(0.30);

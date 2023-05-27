@@ -21,11 +21,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen> {
+  late final String homeUrl;
+
   @override
   void initState() {
     super.initState();
 
     cubit.onScreenOpened();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final routerDel = AutoRouterDelegate.of(context);
+
+      homeUrl = routerDel.urlState.path;
+      routerDel.addListener(routeListener);
+    });
+  }
+
+  void routeListener() {
+    final currPath = AutoRouterDelegate.of(context).urlState.path;
+
+    if (currPath == homeUrl) {
+      cubit.onScreenOpened();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    AutoRouterDelegate.of(context).removeListener(routeListener);
   }
 
   void onOpenSearch() {
@@ -36,29 +60,27 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BaseColors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SafeArea(child: SizedBox.shrink()),
-          buildSearchBar(),
-          buildBody(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SafeArea(child: SizedBox.shrink()),
+            buildSearchBar(),
+            buildBody(),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildBody() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              buildPracticeBanner(),
-            ],
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          buildPracticeBanner(),
+        ],
       ),
     );
   }
@@ -84,19 +106,31 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Hero(
-        tag: SearchBarHeroData.tag,
-        child: Material(
+      child: Builder(builder: (context) {
+        final tabIndex = context.watchTabsRouter.activeIndex;
+
+        final searchBar = Material(
           type: MaterialType.transparency,
           child: Listener(
             onPointerDown: (_) => onOpenSearch(),
             behavior: HitTestBehavior.opaque,
             child: const AbsorbPointer(
-              child: MySearchBar(),
+              child: MySearchBar(
+                elevation: 0,
+              ),
             ),
           ),
-        ),
-      ),
+        );
+
+        if (tabIndex == 0) {
+          return Hero(
+            tag: SearchBarHeroData.tag,
+            child: searchBar,
+          );
+        } else {
+          return searchBar;
+        }
+      }),
     );
   }
 

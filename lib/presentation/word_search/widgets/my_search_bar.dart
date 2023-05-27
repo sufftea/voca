@@ -7,16 +7,18 @@ class MySearchBar extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.initialValue,
-    this.autofocus = false,
-    this.shadow = true,
+    this.focusNode,
+    this.elevation = 1.0,
     super.key,
   });
 
   final VoidCallback? onTap;
   final void Function(String)? onChanged;
-  final bool autofocus;
   final String? initialValue;
-  final bool shadow;
+  final FocusNode? focusNode;
+
+  /// Must be from 0.0 to 1.0
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -24,44 +26,47 @@ class MySearchBar extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
         boxShadow: [
-          if (shadow)
-            BoxShadow(
-              color: BaseColors.black25,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            )
+          BoxShadow(
+            color: BaseColors.black25,
+            blurRadius: 5 * elevation,
+            offset: const Offset(0, 2) * elevation,
+          )
         ],
       ),
       child: TextFormField(
         initialValue: initialValue,
         onTap: onTap,
         onChanged: onChanged,
-        autofocus: autofocus,
+        focusNode: focusNode,
         decoration: InputDecoration(
+          hintText: t.search.enterWord,
           contentPadding: const EdgeInsets.all(10),
           filled: true,
           fillColor: BaseColors.concrete,
-          border: OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(color: BaseColors.curiousBlue)),
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide.none,
+            borderSide: const BorderSide(color: BaseColors.curiousBlue),
           ),
-          hintText: t.search.enterWord,
           hintStyle: const TextStyle(
             fontSize: 15,
-            fontWeight: FontWeights.medium,
+            fontWeight: FontWeights.regular,
             color: BaseColors.neptune,
           ),
           suffixIcon: const Icon(
             Icons.search,
-            color: BaseColors.neptune,
+            color: BaseColors.curiousBlue,
             size: 18,
           ),
         ),
         style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.bold,
-          color: BaseColors.neptune,
+          color: BaseColors.curiousBlue,
         ),
       ),
     );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
+import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 
 @RoutePage()
 class TabBarShellScreen extends StatelessWidget {
@@ -13,7 +15,7 @@ class TabBarShellScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    TransitionsBuilders.fadeIn;
+
     return AutoTabsRouter(
       routes: const [
         HomeRoute(),
@@ -23,7 +25,7 @@ class TabBarShellScreen extends StatelessWidget {
         final router = AutoTabsRouter.of(context);
 
         return Scaffold(
-          body: child,
+          body: buildChildWithHiddenSearchBar(child),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
@@ -38,7 +40,7 @@ class TabBarShellScreen extends StatelessWidget {
           bottomNavigationBar: DecoratedBox(
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                color: BaseColors.black25,
+                color: BaseColors.black10,
                 blurRadius: 10,
               ),
             ]),
@@ -53,7 +55,6 @@ class TabBarShellScreen extends StatelessWidget {
               ),
               selectedIndex: router.activeIndex,
               onDestinationSelected: (index) {
-                debugPrint('onDestinationSelected; $index');
                 if (router.activeIndex == index) {
                   final tabRouter =
                       router.childControllers[index] as StackRouter;
@@ -78,5 +79,40 @@ class TabBarShellScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Stack buildChildWithHiddenSearchBar(Widget child) {
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        buildHiddenSearchBar(),
+        child,
+      ],
+    );
+  }
+
+  Widget buildHiddenSearchBar() {
+    return Builder(builder: (context) {
+      final index = context.watchTabsRouter.activeIndex;
+
+      if (index == 0) {
+        return const SizedBox.shrink();
+      }
+
+      return const Positioned(
+        top: -80,
+        right: 20,
+        left: 20,
+        child: Hero(
+          tag: SearchBarHeroData.tag,
+          child: Material(
+            type: MaterialType.transparency,
+            child: MySearchBar(
+              elevation: 0,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
