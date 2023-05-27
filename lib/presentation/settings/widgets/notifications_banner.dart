@@ -60,47 +60,49 @@ class _NotificationsBannerState extends State<NotificationsBanner>
         children: [
           buildHeader(context),
           const SizedBox(height: 5),
-          buildDailyReminders(),
-          const SizedBox(height: 5),
-          buildTimeButton(context),
+          Row(
+            children: [
+              buildCheckBox(),
+              const SizedBox(width: 10),
+              buildText(),
+              buildTimeButton(context),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget buildDailyReminders() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        builder(
-          buildWhen: (prev, curr) =>
-              prev.practiceRemindersEnabled != curr.practiceRemindersEnabled,
-          builder: (context, state) {
-            return Container(
-              height: 20,
-              width: 20,
-              alignment: Alignment.center,
-              child: Checkbox(
-                value: state.practiceRemindersEnabled,
-                tristate: state.practiceRemindersEnabled == null,
-                onChanged: state.practiceRemindersEnabled == null
-                    ? null
-                    : _onCheckBoxPressed,
-              ),
-            );
-          },
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            t.settings.notifications.dailyReminders,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeights.regular,
-            ),
+  Widget buildCheckBox() {
+    return builder(
+      buildWhen: (prev, curr) =>
+          prev.practiceRemindersEnabled != curr.practiceRemindersEnabled,
+      builder: (context, state) {
+        return Container(
+          height: 20,
+          width: 20,
+          alignment: Alignment.center,
+          child: Checkbox(
+            value: state.practiceRemindersEnabled,
+            tristate: state.practiceRemindersEnabled == null,
+            onChanged: state.practiceRemindersEnabled == null
+                ? null
+                : _onCheckBoxPressed,
           ),
+        );
+      },
+    );
+  }
+
+  Expanded buildText() {
+    return Expanded(
+      child: Text(
+        t.settings.notifications.dailyReminders,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeights.regular,
         ),
-      ],
+      ),
     );
   }
 
