@@ -32,6 +32,8 @@ class PracticeReminderNotificationController {
       schedule: NotificationCalendar(
         hour: showAt.hour,
         minute: showAt.minute,
+        second: 0,
+        millisecond: 0,
         repeats: true,
       ),
     );
