@@ -5,6 +5,8 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/routing/cubit_route_builder.dart';
 import 'package:voca/presentation/error/error_screen.dart';
 import 'package:voca/presentation/home/home_screen.dart';
+import 'package:voca/presentation/inverse_practice/cubit/inverse_practice_cubit.dart';
+import 'package:voca/presentation/inverse_practice/inverse_practice_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';
 import 'package:voca/presentation/nav_bar/tab_bar_shell_screen.dart';
@@ -67,6 +69,10 @@ class MainRouter extends _$MainRouter {
         CustomRoute(
           page: PracticeRoute.page,
           customRouteBuilder: cubitRouteBuilder<PracticeCubit>(),
+        ),
+        CustomRoute(
+          page: InversePracticeRoute.page,
+          customRouteBuilder: cubitRouteBuilder<InversePracticeCubit>(),
         ),
       ];
 }

@@ -50,15 +50,10 @@ abstract class _$MainRouter extends RootStackRouter {
         child: const SettingsScreen(),
       );
     },
-    WordDefinitionRoute.name: (routeData) {
-      final args = routeData.argsAs<WordDefinitionRouteArgs>();
+    InversePracticeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: WordDefinitionScreen(
-          wordCard: args.wordCard,
-          onWordStatusChange: args.onWordStatusChange,
-          key: args.key,
-        ),
+        child: const InversePracticeScreen(),
       );
     },
     SettingsTabRoute.name: (routeData) {
@@ -77,6 +72,17 @@ abstract class _$MainRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TabBarShellScreen(),
+      );
+    },
+    WordDefinitionRoute.name: (routeData) {
+      final args = routeData.argsAs<WordDefinitionRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WordDefinitionScreen(
+          wordCard: args.wordCard,
+          onWordStatusChange: args.onWordStatusChange,
+          key: args.key,
+        ),
       );
     },
   };
@@ -177,46 +183,17 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [WordDefinitionScreen]
-class WordDefinitionRoute extends PageRouteInfo<WordDefinitionRouteArgs> {
-  WordDefinitionRoute({
-    required WordCard wordCard,
-    dynamic Function(WordCardStatus)? onWordStatusChange,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          WordDefinitionRoute.name,
-          args: WordDefinitionRouteArgs(
-            wordCard: wordCard,
-            onWordStatusChange: onWordStatusChange,
-            key: key,
-          ),
+/// [InversePracticeScreen]
+class InversePracticeRoute extends PageRouteInfo<void> {
+  const InversePracticeRoute({List<PageRouteInfo>? children})
+      : super(
+          InversePracticeRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'WordDefinitionRoute';
+  static const String name = 'InversePracticeRoute';
 
-  static const PageInfo<WordDefinitionRouteArgs> page =
-      PageInfo<WordDefinitionRouteArgs>(name);
-}
-
-class WordDefinitionRouteArgs {
-  const WordDefinitionRouteArgs({
-    required this.wordCard,
-    this.onWordStatusChange,
-    this.key,
-  });
-
-  final WordCard wordCard;
-
-  final dynamic Function(WordCardStatus)? onWordStatusChange;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'WordDefinitionRouteArgs{wordCard: $wordCard, onWordStatusChange: $onWordStatusChange, key: $key}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -259,4 +236,47 @@ class TabBarShellRoute extends PageRouteInfo<void> {
   static const String name = 'TabBarShellRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WordDefinitionScreen]
+class WordDefinitionRoute extends PageRouteInfo<WordDefinitionRouteArgs> {
+  WordDefinitionRoute({
+    required WordCard wordCard,
+    dynamic Function(WordCardStatus)? onWordStatusChange,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WordDefinitionRoute.name,
+          args: WordDefinitionRouteArgs(
+            wordCard: wordCard,
+            onWordStatusChange: onWordStatusChange,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'WordDefinitionRoute';
+
+  static const PageInfo<WordDefinitionRouteArgs> page =
+      PageInfo<WordDefinitionRouteArgs>(name);
+}
+
+class WordDefinitionRouteArgs {
+  const WordDefinitionRouteArgs({
+    required this.wordCard,
+    this.onWordStatusChange,
+    this.key,
+  });
+
+  final WordCard wordCard;
+
+  final dynamic Function(WordCardStatus)? onWordStatusChange;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WordDefinitionRouteArgs{wordCard: $wordCard, onWordStatusChange: $onWordStatusChange, key: $key}';
+  }
 }

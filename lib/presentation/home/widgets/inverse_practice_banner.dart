@@ -1,15 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
+import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 
 class InversePracticeBanner extends StatelessWidget {
   const InversePracticeBanner({
-    required this.onStartPressed,
     super.key,
   });
 
-  final VoidCallback onStartPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,10 @@ class InversePracticeBanner extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 15),
-          FilledButton(
-            onPressed: onStartPressed,
+          OutlinedButton(
+            onPressed: () {
+              context.router.root.push(const InversePracticeRoute());
+            },
             child: Text(t.home.invercePracticeBanner.start),
           ),
         ],

@@ -74,6 +74,7 @@ class CardWidget extends StatelessWidget {
     return Center(
       child: Text(
         card.word.name,
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: BaseColors.white,
           fontSize: 20,

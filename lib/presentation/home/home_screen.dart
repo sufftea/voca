@@ -82,11 +82,7 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           buildPracticeBanner(),
           const SizedBox(height: 20),
-          InversePracticeBanner(
-            onStartPressed: () {
-              // GoRouter.of(context).goNamed(RouteNames.inversePractice);
-            },
-          ),
+          const InversePracticeBanner(),
         ],
       ),
     );
