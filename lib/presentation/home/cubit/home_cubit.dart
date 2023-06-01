@@ -4,7 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
-import 'package:voca/domain/repositories/user_data_repository.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/entities/word_range.dart';
 import 'package:voca/presentation/home/cubit/home_events.dart';
@@ -20,7 +20,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   final PracticeRepository _practiceRepository;
   final WordsRepository _wordsRepository;
-  final UserDataRepository _userDataRepository;
+  final UserSettingsRepository _userDataRepository;
 
   final _eventController = StreamController<HomeEvent>.broadcast();
   Stream<HomeEvent> get eventStream => _eventController.stream;

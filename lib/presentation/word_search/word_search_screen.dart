@@ -35,17 +35,37 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   void initState() {
     super.initState();
 
+    initStateAsync();
+  }
+
+  Future<void> initStateAsync() async {
     if (widget.initialSearch != null) {
-      cubit.onSearchTextChanged(widget.initialSearch!);
+      await cubit.onSearchTextChanged(widget.initialSearch!);
     } else {
       searchBarFocusNode.requestFocus();
     }
+
+    await cubit.onScreenOpened();
   }
 
   @override
   void dispose() {
     super.dispose();
     searchBarFocusNode.dispose();
+  }
+
+  Future<void> openWordDefinition(card) async {
+    searchBarFocusNode.unfocus();
+
+    AutoRouter.of(context).root.push(
+          WordDefinitionRoute(
+            wordCard: card,
+            onCardDataChange: () {
+              debugPrint('search screen. updating word');
+              cubit.onWordUpdate(card.word);
+            },
+          ),
+        );
   }
 
   @override
@@ -111,55 +131,63 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   Widget buildBody() {
     return builder(
       buildWhen: (prev, curr) =>
-          prev.status != curr.status || prev.results != curr.results,
+          prev.status != curr.status ||
+          prev.results != curr.results ||
+          prev.maxRepetitionCount != curr.maxRepetitionCount,
       builder: (context, state) {
-        final s = state.status;
-
         final t = Translations.of(context);
-
-        if (s == SearchStatus.needsMoreLetters) {
-          return buildMessage(t.search.enterNLetters);
-        }
-
-        if (s == SearchStatus.noResults) {
-          return buildMessage(t.search.noResults);
-        }
-
-        return Stack(
-          children: [
-            ListView.builder(
-              itemCount: state.results.length,
-              padding: EdgeInsets.only(
-                left: 20,
-                top: 80 + MediaQuery.of(context).padding.top,
-                bottom: 10,
-              ),
-              clipBehavior: Clip.none,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                  ),
-                  child: buildEntry(state, index, context),
-                );
-              },
-            ),
-            if (s == SearchStatus.loading)
-              Container(
-                color: BaseColors.white50,
-                alignment: Alignment.center,
-                child: const SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: CircularProgressIndicator(
-                    color: BaseColors.mineShaft,
-                    strokeWidth: 5,
-                  ),
-                ),
-              ),
-          ],
-        );
+debugPrint('rebuilding search results.');
+        return switch (state.status) {
+          SearchStatus.needsMoreLetters => buildMessage(t.search.enterNLetters),
+          SearchStatus.noResults => buildMessage(t.search.noResults),
+          SearchStatus.idle => buildSearchResults(state, context, false),
+          SearchStatus.loading => buildSearchResults(state, context, true),
+        };
       },
+    );
+  }
+
+  Stack buildSearchResults(
+    SearchState state,
+    BuildContext context,
+    bool loading,
+  ) {
+    return Stack(
+      children: [
+        ListView.builder(
+          itemCount: state.results.length,
+          padding: EdgeInsets.only(
+            left: 20,
+            top: 80 + MediaQuery.of(context).padding.top,
+            bottom: 10,
+          ),
+          clipBehavior: Clip.none,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 5,
+              ),
+              child: buildEntry(state, index, context),
+            );
+          },
+        ),
+        if (loading) buildLoadingOverlay(),
+      ],
+    );
+  }
+
+  Container buildLoadingOverlay() {
+    return Container(
+      color: BaseColors.white50,
+      alignment: Alignment.center,
+      child: const SizedBox(
+        width: 25,
+        height: 25,
+        child: CircularProgressIndicator(
+          color: BaseColors.mineShaft,
+          strokeWidth: 5,
+        ),
+      ),
     );
   }
 
@@ -172,30 +200,16 @@ class _WordSearchScreenState extends State<WordSearchScreen>
           child: WordListEntry(
             card: card,
             searchedWord: state.lastSearch ?? '',
-            onTap: (card) {
-              searchBarFocusNode.unfocus();
-              AutoRouter.of(context).root.push(
-                    WordDefinitionRoute(
-                      wordCard: card,
-                      onWordStatusChange: (status) {
-                        cubit.onWordStatusUpdate(card.word, status);
-                      },
-                    ),
-                  );
-            },
+            maxRepetitionCount: state.maxRepetitionCount,
+            onTap: openWordDefinition,
           ),
         ),
-        builder(
-          buildWhen: (prev, curr) => prev.results != curr.results,
-          builder: (context, state) {
-            return AddWordButton(
-              onAddWord: () async {
-                await cubit.onAddWord(card.word);
-                searchBarFocusNode.unfocus();
-              },
-              isAdded: card.status == WordCardStatus.learning,
-            );
+        AddWordButton(
+          onAddWord: () async {
+            await cubit.onAddWord(card.word);
+            searchBarFocusNode.unfocus();
           },
+          isAdded: card.status == WordCardStatus.learning,
         ),
       ],
     );

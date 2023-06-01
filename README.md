@@ -39,11 +39,11 @@ flutter pub run build_runner build --delete-conflicting-outputs
 Unfortunately, you will need to use your own api key.
 1. Fill in the blanks in `environments/template.json`
 2. Put the google-services.json file in `android/app/src/development`
-3. `flutter run --flavor development ----dart-define-from-file=./environments/dev.json` (or similarly for production)
+3. `flutter run --flavor development --dart-define-from-file=./environments/dev.json` (or similarly for production)
 
 OR
 
-You can try to remove firebase initialization in `main.dart`. The project only uses crashlytics for now so it should still work.
+You can try to just remove the firebase initialization in `main.dart`. I only use crashlytics currently, so it should still work.
 
 **Tests**
 

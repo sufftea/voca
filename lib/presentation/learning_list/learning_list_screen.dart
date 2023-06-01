@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
@@ -29,6 +30,15 @@ class _LearningListScreenState extends State<LearningListScreen>
     cubit.onScreenOpened();
   }
 
+  void onListEntryTap(WordCard card) {
+    AutoRouter.of(context).push(WordDefinitionRoute(
+      wordCard: card,
+      onCardDataChange: () async {
+        await cubit.refresh();
+      },
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +51,7 @@ class _LearningListScreenState extends State<LearningListScreen>
       floatingActionButton: Flavors.current == Flavors.dev
           ? FilledButton(
               onPressed: () => cubit.debugPopulate(),
-              child: const Text('debugPopulate'),
+              child: const Text('debug test'),
             )
           : null,
     );
@@ -87,7 +97,9 @@ class _LearningListScreenState extends State<LearningListScreen>
 
   Widget buildBody() {
     return builder(
-      buildWhen: (prev, curr) => prev.words != curr.words,
+      buildWhen: (prev, curr) =>
+          prev.words != curr.words ||
+          prev.maxRepetitionCount != curr.maxRepetitionCount,
       builder: (context, state) {
         final words = state.words;
         if (words == null) {
@@ -113,14 +125,8 @@ class _LearningListScreenState extends State<LearningListScreen>
               return Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: WordListEntry(
-                  onTap: (card) {
-                    AutoRouter.of(context).push(WordDefinitionRoute(
-                      wordCard: card,
-                      onWordStatusChange: (status) async {
-                        await cubit.refresh();
-                      },
-                    ));
-                  },
+                  maxRepetitionCount: state.maxRepetitionCount,
+                  onTap: onListEntryTap,
                   card: words[index],
                 ),
               );

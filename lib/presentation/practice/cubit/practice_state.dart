@@ -11,6 +11,7 @@ class PracticeState {
     this.index = 0,
     this.isFlipped = false,
     this.definitions,
+    this.maxRepetitionCount = 0,
     this.rememberedWords = 0,
     this.forgottenWords = 0,
   });
@@ -19,6 +20,7 @@ class PracticeState {
   final int index;
   final bool isFlipped;
   final UnmodifiableListView<WordDefinition>? definitions;
+  final int maxRepetitionCount;
 
   final int rememberedWords;
   final int forgottenWords;
@@ -28,6 +30,7 @@ class PracticeState {
     int? index,
     bool? isFlipped,
     UnmodifiableListView<WordDefinition>? definitions,
+    int? maxRepetitionCount,
     int? rememberedWords,
     int? forgottenWords,
   }) {
@@ -36,6 +39,7 @@ class PracticeState {
       index: index ?? this.index,
       isFlipped: isFlipped ?? this.isFlipped,
       definitions: definitions ?? this.definitions,
+      maxRepetitionCount: maxRepetitionCount ?? this.maxRepetitionCount,
       rememberedWords: rememberedWords ?? this.rememberedWords,
       forgottenWords: forgottenWords ?? this.forgottenWords,
     );

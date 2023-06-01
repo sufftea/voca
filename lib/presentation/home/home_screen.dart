@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
+import 'package:voca/presentation/base/utils/navigation_observer_mixin.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder_or.dart';
 import 'package:voca/presentation/home/cubit/home_cubit.dart';
@@ -23,28 +24,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-    with StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen> {
-  late final String homeUrl;
-
+    with
+        StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen>,
+        NavigationObserverMixin {
   @override
   void initState() {
     super.initState();
 
     cubit.eventStream.listen(cubitEventListener);
     cubit.onScreenOpened();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final routerDel = AutoRouterDelegate.of(context);
-
-      homeUrl = routerDel.urlState.path;
-      routerDel.addListener(routeListener);
-    });
   }
 
   void cubitEventListener(HomeEvent event) {
     final _ = switch (event) {
       RequestCrashlyticsPermission() => showCrashlyticsDialog(),
     };
+  }
+
+  @override
+  void onNavigatedHere() {
+    cubit.refresh();
   }
 
   Future<void> showCrashlyticsDialog() async {
@@ -57,21 +56,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
 
     cubit.onCrashlyticsAccepted(accepted: accepted);
-  }
-
-  void routeListener() {
-    final currPath = AutoRouterDelegate.of(context).urlState.path;
-
-    if (currPath == homeUrl) {
-      cubit.refresh();
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    AutoRouterDelegate.of(context).removeListener(routeListener);
   }
 
   void onOpenSearch() {

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/base/utils/sort_definitions.dart';
 import 'package:voca/presentation/practice/cubit/practice_state.dart';
@@ -15,17 +16,23 @@ class PracticeCubit extends Cubit<PracticeState> {
   PracticeCubit(
     this._practiceRepository,
     this._wordsRepository,
+    this._userSettingsRepository,
   ) : super(const PracticeState());
 
   final PracticeRepository _practiceRepository;
   final WordsRepository _wordsRepository;
+  final UserSettingsRepository _userSettingsRepository;
 
   Future<void> onScreenOpened() async {
     final cards = await _practiceRepository.createPracticeList();
     cards.shuffle(_random);
 
+    final maxRepetitionCount =
+        await _userSettingsRepository.getRepetitionCount();
+
     emit(state.copyWith(
       cards: UnmodifiableListView(cards),
+      maxRepetitionCount: maxRepetitionCount,
     ));
 
     await _loadDefinitions();

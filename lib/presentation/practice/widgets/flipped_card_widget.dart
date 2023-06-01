@@ -9,18 +9,19 @@ import 'package:voca/presentation/base/utils/base_styles.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
-import 'package:voca/utils/global_constants.dart';
 
 class FlippedCardWidget extends StatelessWidget {
   const FlippedCardWidget({
     required this.card,
     required this.definitions,
     required this.onKnowPressed,
+    required this.maxRepetitionCount,
     super.key,
   });
 
   final VoidCallback onKnowPressed;
   final WordCard card;
+  final int maxRepetitionCount;
   final UnmodifiableListView<WordDefinition>? definitions;
 
   @override
@@ -62,9 +63,11 @@ class FlippedCardWidget extends StatelessWidget {
               ),
             ),
           ),
-          PracticeProgressIndicator(
-            currRepetitions: card.repetitionCount,
-            totalRepetitions: GlobalConstants.maxRepetitionCount,
+          Expanded(
+            child: PracticeProgressIndicator(
+              currRepetitions: card.repetitionCount,
+              maxRepetitionCount: maxRepetitionCount,
+            ),
           ),
         ],
       ),

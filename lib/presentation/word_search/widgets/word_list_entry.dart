@@ -10,17 +10,19 @@ class WordListEntry extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.card,
+    required this.maxRepetitionCount,
     this.searchedWord = '',
   });
 
   final WordCard card;
   final String searchedWord;
+  final int maxRepetitionCount;
   final void Function(WordCard card) onTap;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      // height: 50,
       child: ClickableCard(
         onTap: () => onTap(card),
         child: BaseCard(
@@ -29,7 +31,7 @@ class WordListEntry extends StatelessWidget {
             children: [
               buildWord(context),
               const SizedBox(width: 5),
-              buildLearningIndicator(),
+              buildProgressIndicator(),
             ],
           ),
         ),
@@ -75,11 +77,17 @@ class WordListEntry extends StatelessWidget {
     return textSpans;
   }
 
-  Widget buildLearningIndicator() {
+  Widget buildProgressIndicator() {
     switch (card.status) {
       case WordCardStatus.learning:
-        return CardRepetitionIndicator(
-          repetitionCount: card.repetitionCount,
+        return Expanded(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: CardRepetitionIndicator(
+              repetitionCount: card.repetitionCount,
+              maxRepetitionCount: maxRepetitionCount,
+            ),
+          ),
         );
       default:
         return const SizedBox.shrink();
