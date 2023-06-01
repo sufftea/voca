@@ -22,17 +22,28 @@ Memorize new words with spaced repetition
 to add the word to the app in a quicker way.
 
 ## Project status
-This is the most basic MVP, consider this Alpha access. It's already useable but lots of improvements & features are on the way. 
-Bug reports & feature requests are welcome. When this gets a bit more mature I'll upload it to the stores. 
+It works but lots of improvements & features are on the way. 
+Bug reports & feature requests are welcome.
 
-## Commands
+## Contributing
+It's pretty tricky...
+
 **Initialize project**
 ```
 flutter packages pub get
 flutter pub run slang
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
-Then pick a development or production configuration in vscode - some (unfinished) features are disabled in prod.
+**Configure firebase**
+
+Unfortunately, you will need to use your own api key.
+1. Fill in the blanks in `environments/template.json`
+2. Put the google-services.json file in `android/app/src/development`
+3. `flutter run --flavor development ----dart-define-from-file=./environments/dev.json` (or similarly for production)
+
+OR
+
+You can try to remove firebase initialization in `main.dart`. The project only uses crashlytics for now so it should still work.
 
 **Tests**
 
@@ -44,5 +55,3 @@ test/scripts/update_test_db.sh
 
 ## Sources
 Wordnet: https://wordnet.princeton.edu/
-
-Words by frequency of use dataset: https://www.kaggle.com/datasets/wheelercode/dictionary-word-frequency?resource=download

@@ -18,8 +18,15 @@ home:
     practice: Practice
     cardsForToday: "Cards for today:"
     noCardsForToday: You've completed all the cards for today
-    noWordsInLearnList: You don't have any words in your learning list. Add the 
+    noWordsInLearnList: You don't have any words in your learning list. Add the
       words you want to memorize to practice them.
+  crashlyticsPermission:
+    header: Send crash reports?
+    body: Automatic crash reports will help me <accent>find and fix 
+      bugs</accent> faster. <accent>No personal information</accent> is being 
+      sent. You will be able to change this in settings any time.
+    allow: Allow
+    deny: Deny
 
 navBar:
   home: Home
@@ -54,10 +61,10 @@ settings:
     header: About
     wordNet: WordNet
     dictionaryFrom: "The dictionary dataset is from "
-  notifications:
-    header: Notifications
+  misc:
     dailyReminders: Receive daily reminders
     atTime: At ${time}
+    crashReports: Send crash reports
 
 learningList:
   header: Learning list
@@ -80,7 +87,7 @@ error:
   somethingWentWrong: Something went wrong...
 
 notifications:
-  dailyReminder: 
+  dailyReminder:
     channelName: Daily reminders
     channelDescription: Be reminded to refresh your vocabulary
     title: ⏰ Daily reminder

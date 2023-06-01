@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/utils/cubit_helpers/cubit_provider.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 
 final _wordNetUrl = Uri.parse('https://wordnet.princeton.edu/');
@@ -47,7 +46,7 @@ class AboutBanner extends StatelessWidget {
         style: DefaultTextStyle.of(context).style.merge(const TextStyle(
               fontSize: 15,
               fontWeight: FontWeights.regular,
-            )),
+            )), 
         children: [
           TextSpan(
             text: t.settings.about.dictionaryFrom,

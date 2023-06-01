@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
-import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
 
-class NotificationsBanner extends StatefulWidget {
-  const NotificationsBanner({super.key});
+class NotificationCheckbox extends StatefulWidget {
+  const NotificationCheckbox({super.key});
 
   @override
-  State<NotificationsBanner> createState() => _NotificationsBannerState();
+  State<NotificationCheckbox> createState() => _NotificationCheckboxState();
 }
 
-class _NotificationsBannerState extends State<NotificationsBanner>
+class _NotificationCheckboxState extends State<NotificationCheckbox>
     with
         StatefulCubitConsumer<SettingsCubit, SettingsState,
-            NotificationsBanner> {
+            NotificationCheckbox> {
   Future<TimeOfDay?> _showTimePicker(
     BuildContext context, {
     required TimeOfDay currSelected,
@@ -28,7 +27,7 @@ class _NotificationsBannerState extends State<NotificationsBanner>
     );
   }
 
-  Future<void> _onCheckBoxPressed(bool? enabled) async {
+  Future<void> onCheckBoxPressed(bool? enabled) async {
     if (enabled == null) {
       return;
     } else if (enabled) {
@@ -38,7 +37,7 @@ class _NotificationsBannerState extends State<NotificationsBanner>
     }
   }
 
-  Future<void> _onTimeButtonPressed(SettingsState state) async {
+  Future<void> onTimeButtonPressed(SettingsState state) async {
     final time = await _showTimePicker(
       context,
       currSelected: state.reminderShowAt,
@@ -53,23 +52,13 @@ class _NotificationsBannerState extends State<NotificationsBanner>
 
   @override
   Widget build(BuildContext context) {
-    return BaseCard(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          buildHeader(context),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              buildCheckBox(),
-              const SizedBox(width: 10),
-              buildText(),
-              buildTimeButton(context),
-            ],
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        buildCheckBox(),
+        const SizedBox(width: 10),
+        buildText(),
+        buildTimeButton(context),
+      ],
     );
   }
 
@@ -87,7 +76,7 @@ class _NotificationsBannerState extends State<NotificationsBanner>
             tristate: state.practiceRemindersEnabled == null,
             onChanged: state.practiceRemindersEnabled == null
                 ? null
-                : _onCheckBoxPressed,
+                : onCheckBoxPressed,
           ),
         );
       },
@@ -97,7 +86,7 @@ class _NotificationsBannerState extends State<NotificationsBanner>
   Expanded buildText() {
     return Expanded(
       child: Text(
-        t.settings.notifications.dailyReminders,
+        t.settings.misc.dailyReminders,
         style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.regular,
@@ -115,7 +104,7 @@ class _NotificationsBannerState extends State<NotificationsBanner>
         builder(builder: (context, state) {
           return FilledButton(
             onPressed: state.practiceRemindersEnabled ?? false
-                ? () => _onTimeButtonPressed(state)
+                ? () => onTimeButtonPressed(state)
                 : null,
             style: ButtonStyle(
               overlayColor: mspResolveWith(none: BaseColors.botticelly),
@@ -133,24 +122,12 @@ class _NotificationsBannerState extends State<NotificationsBanner>
                 ),
               ),
             ),
-            child: Text(t.settings.notifications.atTime(
+            child: Text(t.settings.misc.atTime(
               time: state.reminderShowAt.format(context),
             )),
           );
         }),
       ],
-    );
-  }
-
-  Widget buildHeader(BuildContext context) {
-    final t = Translations.of(context);
-
-    return Text(
-      t.settings.notifications.header,
-      style: const TextStyle(
-        fontSize: 19,
-        fontWeight: FontWeights.bold,
-      ),
     );
   }
 }

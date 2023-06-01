@@ -50,17 +50,6 @@ abstract class _$MainRouter extends RootStackRouter {
         child: const SettingsScreen(),
       );
     },
-    WordDefinitionRoute.name: (routeData) {
-      final args = routeData.argsAs<WordDefinitionRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: WordDefinitionScreen(
-          wordCard: args.wordCard,
-          onWordStatusChange: args.onWordStatusChange,
-          key: args.key,
-        ),
-      );
-    },
     SettingsTabRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -77,6 +66,17 @@ abstract class _$MainRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TabBarShellScreen(),
+      );
+    },
+    WordDefinitionRoute.name: (routeData) {
+      final args = routeData.argsAs<WordDefinitionRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WordDefinitionScreen(
+          wordCard: args.wordCard,
+          onWordStatusChange: args.onWordStatusChange,
+          key: args.key,
+        ),
       );
     },
   };
@@ -177,6 +177,48 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SettingsTabRouterScreen]
+class SettingsTabRoute extends PageRouteInfo<void> {
+  const SettingsTabRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingsTabRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsTabRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeTabRouterScreen]
+class HomeTabRoute extends PageRouteInfo<void> {
+  const HomeTabRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeTabRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeTabRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TabBarShellScreen]
+class TabBarShellRoute extends PageRouteInfo<void> {
+  const TabBarShellRoute({List<PageRouteInfo>? children})
+      : super(
+          TabBarShellRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TabBarShellRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [WordDefinitionScreen]
 class WordDefinitionRoute extends PageRouteInfo<WordDefinitionRouteArgs> {
   WordDefinitionRoute({
@@ -217,46 +259,4 @@ class WordDefinitionRouteArgs {
   String toString() {
     return 'WordDefinitionRouteArgs{wordCard: $wordCard, onWordStatusChange: $onWordStatusChange, key: $key}';
   }
-}
-
-/// generated route for
-/// [SettingsTabRouterScreen]
-class SettingsTabRoute extends PageRouteInfo<void> {
-  const SettingsTabRoute({List<PageRouteInfo>? children})
-      : super(
-          SettingsTabRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SettingsTabRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [HomeTabRouterScreen]
-class HomeTabRoute extends PageRouteInfo<void> {
-  const HomeTabRoute({List<PageRouteInfo>? children})
-      : super(
-          HomeTabRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeTabRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [TabBarShellScreen]
-class TabBarShellRoute extends PageRouteInfo<void> {
-  const TabBarShellRoute({List<PageRouteInfo>? children})
-      : super(
-          TabBarShellRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TabBarShellRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
