@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/utils/global_constants.dart';
 
 class CardRepetitionIndicator extends StatelessWidget {
   const CardRepetitionIndicator({
     required this.repetitionCount,
+    required this.maxRepetitionCount,
     super.key,
   });
 
   final int repetitionCount;
+  final int maxRepetitionCount;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      runSpacing: 3,
+      spacing: 5,
       children: [
-        for (var i = 0; i < GlobalConstants.maxRepetitionCount; ++i) ...[
-          if (i != 0) const SizedBox(width: 5),
+        for (var i = 0; i < maxRepetitionCount; ++i)
           Container(
             width: 20,
             height: 10,
@@ -33,7 +35,6 @@ class CardRepetitionIndicator extends StatelessWidget {
                     ),
                   ),
           ),
-        ]
       ],
     );
   }

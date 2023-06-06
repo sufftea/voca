@@ -3,30 +3,28 @@ import 'package:injectable/injectable.dart';
 import 'package:voca/data/managers/database_manager/database_manager.dart';
 import 'package:voca/data/utils/card_status.dart';
 import 'package:voca/data/utils/days_since_epoch.dart';
+import 'package:voca/data/utils/get_repetition_interval.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
-import 'package:voca/utils/global_constants.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 
 @LazySingleton(as: PracticeRepository)
 class PracticeRepositoryImpl implements PracticeRepository {
-  const PracticeRepositoryImpl(this._databaseManager);
+  const PracticeRepositoryImpl(
+    this._databaseManager,
+    this._userSettingsRepository,
+  );
 
   final DatabaseManager _databaseManager;
-
-  static const repetitionsToDuration = <int, Duration>{
-    0: Duration(days: 0),
-    1: Duration(days: 1),
-    2: Duration(days: 2),
-    3: Duration(days: 3),
-    4: Duration(days: 5),
-    5: Duration(days: 7),
-    6: Duration(days: 10),
-  };
+  final UserSettingsRepository _userSettingsRepository;
 
   @override
   Future<List<WordCard>> createPracticeList() async {
     final db = _databaseManager.db;
+
+    final maxRepetitionCount =
+        await _userSettingsRepository.getRepetitionCount();
 
     final qCards = await db.query(
       'up.userWords',
@@ -40,7 +38,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
       where: 'status = ? AND repetitions < ?',
       whereArgs: [
         CardStatus.statusToText[WordCardStatus.learning],
-        GlobalConstants.maxRepetitionCount,
+        maxRepetitionCount,
       ],
     );
 
@@ -50,7 +48,7 @@ class PracticeRepositoryImpl implements PracticeRepository {
     return cards.where(
       (card) {
         final diff = clock.now().difference(card.lastRepetition!);
-        final requiredDiff = repetitionsToDuration[card.repetitionCount]!;
+        final requiredDiff = getRepetitionInterval(card.repetitionCount);
 
         return diff >= requiredDiff;
       },

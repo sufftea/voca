@@ -1,10 +1,10 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/entities/word_card.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_state.dart';
 
@@ -14,15 +14,14 @@ final _r = Random();
 class LearningListCubit extends Cubit<LearningListState> {
   LearningListCubit(
     this._wordsRepository,
+    this._settingsRepository,
   ) : super(const LearningListState());
 
   final WordsRepository _wordsRepository;
+  final UserSettingsRepository _settingsRepository;
 
   Future<void> onScreenOpened() async {
-    final words = await _wordsRepository.fetchLearningList();
-    _sortWordsByProgress(words);
-
-    emit(state.copyWith(words: UnmodifiableListView(words)));
+    refresh();
   }
 
   Future<void> refresh() async {
@@ -31,12 +30,17 @@ class LearningListCubit extends Cubit<LearningListState> {
     final words = await _wordsRepository.fetchLearningList();
     _sortWordsByProgress(words);
 
-    emit(state.copyWith(words: UnmodifiableListView(words)));
+    final maxRepetitionCount = await _settingsRepository.getRepetitionCount();
+
+    emit(state.copyWith(
+      words: UnmodifiableListView(words),
+      maxRepetitionCount: maxRepetitionCount,
+    ));
   }
 
+  /// Used to quickly add words to the list for debugging
   Future<void> debugPopulate() async {
     final cards = await _wordsRepository.findWords('draw');
-    debugPrint('debugPopulate: words.length-: ${cards.length}');
 
     for (final card in cards) {
       await _wordsRepository.setWordCardStatus(

@@ -1,11 +1,11 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
-import 'package:voca/utils/global_constants.dart';
 
 import '../base/utils/days.dart';
 import '../base/utils/prepare_words.dart';
@@ -53,24 +53,24 @@ void main() async {
       () async {
         await withClock(day1, () async {
           await wordsRepo.setWordCardRepetitions(words[0], 1);
-          await wordsRepo.setWordCardRepetitions(words[1], 2);
+          await wordsRepo.setWordCardRepetitions(words[1], 3);
 
           final list = await practiceRepo.createPracticeList();
 
-          _expectContains(list, words[0], contains: false);
-          _expectContains(list, words[1], contains: false);
+          _expectContains(list, words[0], contains: false, msg: 'day1');
+          _expectContains(list, words[1], contains: false, msg: 'day1');
         });
 
         await withClock(day2, () async {
           final list = await practiceRepo.createPracticeList();
-          _expectContains(list, words[0], contains: true);
-          _expectContains(list, words[1], contains: false);
+          _expectContains(list, words[0], contains: true, msg: 'day2');
+          _expectContains(list, words[1], contains: false, msg: 'day2');
         });
 
         await withClock(day3, () async {
           final list = await practiceRepo.createPracticeList();
-          _expectContains(list, words[0], contains: true);
-          _expectContains(list, words[1], contains: true);
+          _expectContains(list, words[0], contains: true, msg: 'day3');
+          _expectContains(list, words[1], contains: true, msg: 'day3');
         });
       },
     );
@@ -96,7 +96,7 @@ void main() async {
         await withClock(day1, () async {
           await wordsRepo.setWordCardRepetitions(
             words[0],
-            GlobalConstants.maxRepetitionCount,
+            DomainConstants.maxCardRepetitionsSetting,
           );
         });
 
@@ -109,6 +109,11 @@ void main() async {
   });
 }
 
-void _expectContains(List<WordCard> list, Word word, {required bool contains}) {
-  expect(list.any((card) => card.word == word), contains);
+void _expectContains(
+  List<WordCard> list,
+  Word word, {
+  required bool contains,
+  String? msg,
+}) {
+  expect(list.any((card) => card.word == word), contains, reason: msg);
 }

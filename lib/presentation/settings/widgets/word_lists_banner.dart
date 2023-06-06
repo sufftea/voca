@@ -34,12 +34,8 @@ class WordListsBanner extends StatelessWidget {
 
     return OutlinedButton(
       onPressed: () {
-        debugPrint('pushing learningListRoute');
-
         final router = AutoRouter.of(context);
         router.push(const LearningListRoute());
-
-        debugPrint('stack: ${router.stack}');
       },
       style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),

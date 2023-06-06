@@ -137,11 +137,13 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildCards() {
     return builder(
-      buildWhen: (prev, curr) => prev.cards != curr.cards,
+      buildWhen: (prev, curr) =>
+          prev.cards != curr.cards ||
+          prev.maxRepetitionCount != curr.maxRepetitionCount,
       builder: (context, state) {
         final cards = state.cards;
 
-        if (cards == null) {
+        if (cards == null || state.maxRepetitionCount == 0) {
           return buildLoadingCurrCard();
         }
 
@@ -175,6 +177,7 @@ class _PracticeScreenState extends State<PracticeScreen>
 
         return CardWidget(
           card: state.cards![index],
+          maxRepetitionCount: state.maxRepetitionCount,
           onShowDefinition: () {
             cubit.onShowDefinition();
           },
@@ -192,6 +195,7 @@ class _PracticeScreenState extends State<PracticeScreen>
         return FlippedCardWidget(
           card: state.cards![state.index],
           definitions: state.definitions,
+          maxRepetitionCount: state.maxRepetitionCount,
           onKnowPressed: () async {
             await cubit.onCardKnown();
             ignoreNextSwipe = true;
@@ -203,11 +207,11 @@ class _PracticeScreenState extends State<PracticeScreen>
   }
 
   Widget buildLoadingCurrCard() {
-    return BaseCard(
-      padding: const EdgeInsets.all(20),
+    return const BaseCard(
+      padding: EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           PlaceholderCard(
             width: 300,
             height: 25,

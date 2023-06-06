@@ -3,12 +3,13 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
-import 'package:voca/utils/global_constants.dart';
 
+// TODO: rename to WordCardWidget ???
 class CardWidget extends StatelessWidget {
   const CardWidget({
     required this.card,
     required this.onShowDefinition,
+    required this.maxRepetitionCount,
     this.dragging = false,
     super.key,
   });
@@ -16,6 +17,7 @@ class CardWidget extends StatelessWidget {
   final WordCard card;
   final bool dragging;
   final VoidCallback? onShowDefinition;
+  final int maxRepetitionCount;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,10 @@ class CardWidget extends StatelessWidget {
           )
         ],
       ),
-      alignment: Alignment.center,
+      // alignment: Alignment.center,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(),
           buildWord(),
@@ -63,9 +66,13 @@ class CardWidget extends StatelessWidget {
 
   Widget buildRepetitionCount() {
     return Center(
-      child: PracticeProgressIndicator(
-        currRepetitions: card.repetitionCount,
-        totalRepetitions: GlobalConstants.maxRepetitionCount,
+      child: Container(
+        width: 230,
+        alignment: Alignment.center,
+        child: PracticeProgressIndicator(
+          currRepetitions: card.repetitionCount,
+          maxRepetitionCount: maxRepetitionCount,
+        ),
       ),
     );
   }

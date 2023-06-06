@@ -15,13 +15,13 @@ import 'package:voca/presentation/word_definition/widgets/word_definitions_widge
 class WordDefinitionScreen extends StatefulWidget {
   const WordDefinitionScreen({
     required this.wordCard,
-    this.onWordStatusChange,
+    this.onCardDataChange,
     super.key,
   });
 
   final WordCard wordCard;
 
-  final Function(WordCardStatus status)? onWordStatusChange;
+  final Function()? onCardDataChange;
 
   @override
   State<WordDefinitionScreen> createState() => _WordDefinitionScreenState();
@@ -48,7 +48,20 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
     if (confirmed ?? false) {
       await cubit.resetWord();
+      widget.onCardDataChange?.call();
     }
+  }
+
+  void onCardStatusButtonPressed(int index) {
+    switch (index) {
+      case 0:
+        cubit.setWordUnknown();
+        break;
+      case 1:
+        cubit.setWordLearning();
+        break;
+    }
+    widget.onCardDataChange?.call();
   }
 
   @override
@@ -67,9 +80,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
   Widget buildAppBar() {
     return builder(
       buildWhen: (prev, curr) =>
-          prev.word != curr.word ||
-          prev.repetitionCount != curr.repetitionCount ||
-          prev.status != curr.status,
+          prev.word != curr.word || prev.status != curr.status,
       builder: (context, state) {
         return AppBarCard(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -85,7 +96,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              buildLearningInfo(state),
+              buildLearningInfo(),
               const SizedBox(height: 10),
               buildStatusSettings(state),
             ],
@@ -121,16 +132,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
             return ToggleButtons(
               isSelected: isSelected,
-              onPressed: (index) {
-                switch (index) {
-                  case 0:
-                    cubit.setWordUnknown();
-                    break;
-                  case 1:
-                    cubit.setWordLearning();
-                    break;
-                }
-              },
+              onPressed: onCardStatusButtonPressed,
               textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeights.medium,
@@ -154,33 +156,50 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     );
   }
 
-  Row buildLearningInfo(WordDefinitionState state) {
-    final t = Translations.of(context);
-    final learningEnabled = state.status == WordCardStatus.learning;
-    final resetEnabled = (state.repetitionCount ?? 0) > 0 && learningEnabled;
-
-    return Row(
-      children: [
-        buildRepetitionIndicator(learningEnabled, state),
-        const Spacer(),
-        buildResetButton(resetEnabled),
-      ],
+  Widget buildLearningInfo() {
+    return builder(
+      buildWhen: (prev, curr) {
+        return prev.repetitionCount != curr.repetitionCount ||
+            prev.maxRepetitionCount != curr.maxRepetitionCount;
+      },
+      builder: (context, state) {
+        final learningEnabled = state.status == WordCardStatus.learning;
+        final resetEnabled =
+            (state.repetitionCount ?? 0) > 0 && learningEnabled;
+        return Row(
+          children: [
+            buildRepetitionIndicator(
+              learningEnabled,
+              state.repetitionCount!,
+              state.maxRepetitionCount,
+            ),
+            const SizedBox(width: 10),
+            buildResetButton(resetEnabled),
+          ],
+        );
+      },
     );
   }
 
   Widget buildRepetitionIndicator(
     bool learningEnabled,
-    WordDefinitionState state,
+    int repetitionCount,
+    int maxRepetitionCount,
   ) {
-    return Opacity(
-      opacity: learningEnabled ? 1 : 0.3,
-      child: CardRepetitionIndicator(
-        repetitionCount: state.repetitionCount!,
+    return Expanded(
+      child: Opacity(
+        opacity: learningEnabled ? 1 : 0.3,
+        child: CardRepetitionIndicator(
+          repetitionCount: repetitionCount,
+          maxRepetitionCount: maxRepetitionCount,
+        ),
       ),
     );
   }
 
   Widget buildResetButton(bool resetEnabled) {
+    final t = Translations.of(context);
+
     return TextButton(
       onPressed: resetEnabled ? _onResetPressed : null,
       style: ButtonStyle(

@@ -4,7 +4,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:voca/domain/repositories/user_data_repository.dart';
+import 'package:voca/domain/domain_constants.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/presentation/notifications/notifications_manager.dart';
 import 'package:voca/presentation/settings/cubit/settings_events.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
@@ -13,11 +14,11 @@ import 'package:voca/presentation/settings/cubit/settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(
     this._notificationsManager,
-    this._userDataRepository,
+    this._userSettingsRepository,
   ) : super(const SettingsState());
 
   final NotificationsManager _notificationsManager;
-  final UserDataRepository _userDataRepository;
+  final UserSettingsRepository _userSettingsRepository;
 
   Stream<SettingsExceptionEvent> get exceptionEvents =>
       _exceptionEventsController.stream;
@@ -31,11 +32,15 @@ class SettingsCubit extends Cubit<SettingsState> {
         await _notificationsManager.practiceReminderController.scheduledAt();
 
     final crashReportsEnabled =
-        await _userDataRepository.isCrashlyticsCollectionAccepted();
-   
+        await _userSettingsRepository.isCrashlyticsCollectionAccepted();
+
+    final maxRepetitionCount =
+        await _userSettingsRepository.getRepetitionCount();
+
     emit(state.copyWith(
       practiceRemindersEnabled: _notificationsManager.practiceReminderEnabled,
       reminderShowAt: notifScheduledAt,
+      maxRepetitionCount: maxRepetitionCount,
       crashlyticsEnabled: crashReportsEnabled,
     ));
   }
@@ -102,9 +107,19 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(
       crashlyticsEnabled: enabled,
     ));
-    
-    await _userDataRepository.setCrashlyticsCollectionAccepted(enabled);
+
+    await _userSettingsRepository.setCrashlyticsCollectionAccepted(enabled);
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(enabled);
+  }
+
+  Future<void> onSetMaxRepetitionCount(int n) async {
+    if (!DomainConstants.cardRepetitionSettingWithinRange(n)) {
+      return;
+    }
+
+    emit(state.copyWith(maxRepetitionCount: n));
+
+    await _userSettingsRepository.setRepetitionCount(n);
   }
 
   @override

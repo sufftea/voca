@@ -1,8 +1,9 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/entities/word.dart';
 import 'package:voca/domain/entities/word_card.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/domain/use_cases/find_words_use_case.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
@@ -12,10 +13,21 @@ class SearchCubit extends Cubit<SearchState> {
   SearchCubit(
     this._findWordsUseCase,
     this._wordsRepository,
+    this._userSettingsRepository,
   ) : super(const SearchState());
 
   final FindWordsUseCase _findWordsUseCase;
   final WordsRepository _wordsRepository;
+  final UserSettingsRepository _userSettingsRepository;
+
+  Future<void> onScreenOpened() async {
+    final maxRepetitionCount =
+        await _userSettingsRepository.getRepetitionCount();
+
+    emit(state.copyWith(
+      maxRepetitionCount: maxRepetitionCount,
+    ));
+  }
 
   Future<void> onSearchTextChanged(String text) async {
     if (text.isEmpty) {
@@ -55,10 +67,10 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> onAddWord(Word word) async {
     await _wordsRepository.setWordCardStatus(word, WordCardStatus.learning);
 
-    await onWordStatusUpdate(word, WordCardStatus.learning);
+    await onWordUpdate(word);
   }
 
-  Future<void> refresh() async {
+  Future<void> refreshSearchResults() async {
     final text = state.lastSearch;
 
     if (text != null) {
@@ -66,12 +78,25 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  Future<void> onWordStatusUpdate(Word word, [WordCardStatus? newStatus]) async {
+  Future<void> onWordUpdate(Word word) async {
+    final newCard = await _wordsRepository.fetchWordCard(word);
+
+    debugPrint('newCard == ${newCard?.status}');
+    if (newCard == null) {
+      // TODO: show error???
+      return;
+    }
+
     emit(state.copyWith(
-      results: state.results
-          .map((card) =>
-              card.word == word ? card.copyWith(status: newStatus) : card)
-          .toList(),
+      results: state.results.map((card) {
+        return switch (card.word == word) {
+          true => () {
+              debugPrint('replacing ${card.word}');
+              return newCard;
+            }(),
+          false => card,
+        };
+      }).toList(),
     ));
   }
 }

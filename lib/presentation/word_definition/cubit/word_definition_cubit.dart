@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/entities/word_card.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/base/utils/sort_definitions.dart';
 import 'package:voca/presentation/word_definition/cubit/word_definition_state.dart';
@@ -9,9 +10,11 @@ import 'package:voca/presentation/word_definition/cubit/word_definition_state.da
 class WordDefinitionCubit extends Cubit<WordDefinitionState> {
   WordDefinitionCubit(
     this._wordsRepository,
+    this._settingsRepository,
   ) : super(const WordDefinitionState());
 
   final WordsRepository _wordsRepository;
+  final UserSettingsRepository _settingsRepository;
 
   Future<void> onPageOpened(WordCard wordCard) async {
     emit(state.copyWith(
@@ -23,8 +26,10 @@ class WordDefinitionCubit extends Cubit<WordDefinitionState> {
     final dictionaryEntry =
         await _wordsRepository.fetchDictionaryEntry(wordCard.word);
 
+    final maxRepetitionCount = await _settingsRepository.getRepetitionCount();
     emit(state.copyWith(
       definitions: sortDefinitions(dictionaryEntry.definitions),
+      maxRepetitionCount: maxRepetitionCount,
     ));
   }
 
