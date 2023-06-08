@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/presentation/notifications/notifications_manager.dart';
+import 'package:voca/presentation/settings/cubit/repetition_count_setting_subject.dart';
 import 'package:voca/presentation/settings/cubit/settings_events.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
 
@@ -15,15 +16,23 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(
     this._notificationsManager,
     this._userSettingsRepository,
+    this._countSettingSubject,
   ) : super(const SettingsState());
 
   final NotificationsManager _notificationsManager;
   final UserSettingsRepository _userSettingsRepository;
+  final RepetitionCountSettingSubject _countSettingSubject;
 
   Stream<SettingsExceptionEvent> get exceptionEvents =>
       _exceptionEventsController.stream;
   final _exceptionEventsController =
       StreamController<SettingsExceptionEvent>.broadcast();
+
+  @override
+  Future<void> close() async {
+    _exceptionEventsController.close();
+    return await super.close();
+  }
 
   Future<void> onScreenOpened() async {
     assert(_notificationsManager.initSuccess);
@@ -120,12 +129,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(maxRepetitionCount: n));
 
     await _userSettingsRepository.setRepetitionCount(n);
-  }
 
-  @override
-  Future<void> close() async {
-    await super.close();
-
-    _exceptionEventsController.close();
+    _countSettingSubject.add(n);
   }
 }

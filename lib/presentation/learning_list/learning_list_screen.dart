@@ -31,12 +31,7 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   void onListEntryTap(WordCard card) {
-    AutoRouter.of(context).push(WordDefinitionRoute(
-      wordCard: card,
-      onCardDataChange: () async {
-        await cubit.refresh();
-      },
-    ));
+    AutoRouter.of(context).push(WordDefinitionRoute(wordCard: card));
   }
 
   @override
@@ -50,7 +45,7 @@ class _LearningListScreenState extends State<LearningListScreen>
       ),
       floatingActionButton: Flavors.current == Flavors.dev
           ? FilledButton(
-              onPressed: () => cubit.debugPopulate(),
+              onPressed: () => cubit.debugTest(),
               child: const Text('debug test'),
             )
           : null,

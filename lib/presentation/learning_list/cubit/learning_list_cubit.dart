@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
+import 'package:voca/presentation/cubit_notifiers/word_card_subject.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_state.dart';
 
 final _r = Random();
@@ -15,31 +16,27 @@ class LearningListCubit extends Cubit<LearningListState> {
   LearningListCubit(
     this._wordsRepository,
     this._settingsRepository,
-  ) : super(const LearningListState());
+    this._wordCardSubject,
+  ) : super(const LearningListState()) {
+    _wordCardSubject.listen(_onWordCardChange);
+  }
 
   final WordsRepository _wordsRepository;
   final UserSettingsRepository _settingsRepository;
+  final WordCardSubject _wordCardSubject;
 
-  Future<void> onScreenOpened() async {
-    refresh();
+  @override
+  Future<void> close() {
+    _wordCardSubject.removeListener(_onWordCardChange);
+    return super.close();
   }
 
-  Future<void> refresh() async {
-    emit(state.copyWith(words: null));
-
-    final words = await _wordsRepository.fetchLearningList();
-    _sortWordsByProgress(words);
-
-    final maxRepetitionCount = await _settingsRepository.getRepetitionCount();
-
-    emit(state.copyWith(
-      words: UnmodifiableListView(words),
-      maxRepetitionCount: maxRepetitionCount,
-    ));
+  Future<void> onScreenOpened() async {
+    _refresh();
   }
 
   /// Used to quickly add words to the list for debugging
-  Future<void> debugPopulate() async {
+  Future<void> debugTest() async {
     final cards = await _wordsRepository.findWords('draw');
 
     for (final card in cards) {
@@ -53,7 +50,26 @@ class LearningListCubit extends Cubit<LearningListState> {
       );
     }
 
-    refresh();
+    _refresh();
+  }
+
+
+  Future<void> _refresh() async {
+    emit(state.copyWith(words: null));
+
+    final words = await _wordsRepository.fetchLearningList();
+    _sortWordsByProgress(words);
+
+    final maxRepetitionCount = await _settingsRepository.getRepetitionCount();
+
+    emit(state.copyWith(
+      words: UnmodifiableListView(words),
+      maxRepetitionCount: maxRepetitionCount,
+    ));
+  }
+
+  void _onWordCardChange(WordCard _) {
+    _refresh();
   }
 
   void _sortWordsByProgress(List<WordCard> words) {
@@ -61,4 +77,6 @@ class LearningListCubit extends Cubit<LearningListState> {
       return a.repetitionCount - b.repetitionCount;
     });
   }
+
+
 }

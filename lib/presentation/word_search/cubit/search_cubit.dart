@@ -6,6 +6,7 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/domain/use_cases/find_words_use_case.dart';
+import 'package:voca/presentation/cubit_notifiers/word_card_subject.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
 
 @injectable
@@ -14,11 +15,21 @@ class SearchCubit extends Cubit<SearchState> {
     this._findWordsUseCase,
     this._wordsRepository,
     this._userSettingsRepository,
-  ) : super(const SearchState());
+    this._wordCardSubject,
+  ) : super(const SearchState()) {
+    _wordCardSubject.listen(_onWordUpdate);
+  }
 
   final FindWordsUseCase _findWordsUseCase;
   final WordsRepository _wordsRepository;
   final UserSettingsRepository _userSettingsRepository;
+  final WordCardSubject _wordCardSubject;
+
+  @override
+  Future<void> close() {
+    _wordCardSubject.removeListener(_onWordUpdate);
+    return super.close();
+  }
 
   Future<void> onScreenOpened() async {
     final maxRepetitionCount =
@@ -64,10 +75,20 @@ class SearchCubit extends Cubit<SearchState> {
     ));
   }
 
-  Future<void> onAddWord(Word word) async {
+  Future<void> onAddWordToLearning(Word word) async {
     await _wordsRepository.setWordCardStatus(word, WordCardStatus.learning);
 
-    await onWordUpdate(word);
+    emit(state.copyWith(
+      results: state.results.map((card) {
+        return switch (card.word == word) {
+          true => card.copyWith(word: word, status: WordCardStatus.learning),
+          false => card,
+        };
+      }).toList(),
+    ));
+
+    final newCard = state.results.firstWhere((card) => card.word == word);
+    _wordCardSubject.add(newCard);
   }
 
   Future<void> refreshSearchResults() async {
@@ -78,22 +99,11 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  Future<void> onWordUpdate(Word word) async {
-    final newCard = await _wordsRepository.fetchWordCard(word);
-
-    debugPrint('newCard == ${newCard?.status}');
-    if (newCard == null) {
-      // TODO: show error???
-      return;
-    }
-
+  Future<void> _onWordUpdate(WordCard newCard) async {
     emit(state.copyWith(
       results: state.results.map((card) {
-        return switch (card.word == word) {
-          true => () {
-              debugPrint('replacing ${card.word}');
-              return newCard;
-            }(),
+        return switch (card.word == newCard.word) {
+          true => newCard,
           false => card,
         };
       }).toList(),
