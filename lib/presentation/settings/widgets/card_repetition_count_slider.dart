@@ -6,18 +6,18 @@ import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
 
-// TODO: rename to RepetitionCountSlider
-class RepetitionCountControl extends StatefulWidget {
-  const RepetitionCountControl({super.key});
+class CardRepetitionCountSlider extends StatefulWidget {
+  const CardRepetitionCountSlider({super.key});
 
   @override
-  State<RepetitionCountControl> createState() => _RepetitionCountControlState();
+  State<CardRepetitionCountSlider> createState() =>
+      _CardRepetitionCountSliderState();
 }
 
-class _RepetitionCountControlState extends State<RepetitionCountControl>
+class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
     with
         StatefulCubitConsumer<SettingsCubit, SettingsState,
-            RepetitionCountControl> {
+            CardRepetitionCountSlider> {
   final _repetitions = ValueNotifier<double?>(null);
 
   @override
@@ -28,13 +28,18 @@ class _RepetitionCountControlState extends State<RepetitionCountControl>
       listenWhen: (prev, curr) =>
           prev.maxRepetitionCount != curr.maxRepetitionCount,
       listener: (context, state) {
-        debugPrint('listener. ${state.maxRepetitionCount}');
         _repetitions.value = state.maxRepetitionCount?.toDouble();
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Card repetitions:'),
+          const Text(
+            'Card repetitions:',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeights.regular,
+            ),
+          ),
           Row(
             children: [
               buildSlider(),

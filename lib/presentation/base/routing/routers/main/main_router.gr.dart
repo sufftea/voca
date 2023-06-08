@@ -74,7 +74,6 @@ abstract class _$MainRouter extends RootStackRouter {
         routeData: routeData,
         child: WordDefinitionScreen(
           wordCard: args.wordCard,
-          onCardDataChange: args.onCardDataChange,
           key: args.key,
         ),
       );
@@ -223,14 +222,12 @@ class TabBarShellRoute extends PageRouteInfo<void> {
 class WordDefinitionRoute extends PageRouteInfo<WordDefinitionRouteArgs> {
   WordDefinitionRoute({
     required WordCard wordCard,
-    dynamic Function()? onCardDataChange,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           WordDefinitionRoute.name,
           args: WordDefinitionRouteArgs(
             wordCard: wordCard,
-            onCardDataChange: onCardDataChange,
             key: key,
           ),
           initialChildren: children,
@@ -245,18 +242,15 @@ class WordDefinitionRoute extends PageRouteInfo<WordDefinitionRouteArgs> {
 class WordDefinitionRouteArgs {
   const WordDefinitionRouteArgs({
     required this.wordCard,
-    this.onCardDataChange,
     this.key,
   });
 
   final WordCard wordCard;
 
-  final dynamic Function()? onCardDataChange;
-
   final Key? key;
 
   @override
   String toString() {
-    return 'WordDefinitionRouteArgs{wordCard: $wordCard, onCardDataChange: $onCardDataChange, key: $key}';
+    return 'WordDefinitionRouteArgs{wordCard: $wordCard, key: $key}';
   }
 }

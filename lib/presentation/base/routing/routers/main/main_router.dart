@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/routing/cubit_route_builder.dart';
-import 'package:voca/presentation/error/error_screen.dart';
 import 'package:voca/presentation/home/home_screen.dart';
 import 'package:voca/presentation/learning_list/cubit/learning_list_cubit.dart';
 import 'package:voca/presentation/learning_list/learning_list_screen.dart';

@@ -19,6 +19,18 @@ class WordDefinitionState {
   final Word? word;
   final UnmodifiableListView<WordDefinition>? definitions;
 
+  WordCard? get card {
+    if ((word, repetitionCount, status)
+        case (Word word, int repetitions, WordCardStatus status)) {
+      return WordCard(
+        word: word,
+        repetitionCount: repetitions,
+        status: status,
+      );
+    }
+    return null;
+  }
+
   WordDefinitionState copyWith({
     int? repetitionCount,
     int? maxRepetitionCount,

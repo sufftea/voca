@@ -8,6 +8,7 @@ import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/presentation/base/utils/sort_definitions.dart';
 import 'package:voca/presentation/practice/cubit/practice_state.dart';
+import 'package:voca/presentation/cubit_notifiers/word_card_subject.dart';
 
 final _random = Random();
 
@@ -17,11 +18,13 @@ class PracticeCubit extends Cubit<PracticeState> {
     this._practiceRepository,
     this._wordsRepository,
     this._userSettingsRepository,
+    this._wordCardSubject,
   ) : super(const PracticeState());
 
   final PracticeRepository _practiceRepository;
   final WordsRepository _wordsRepository;
   final UserSettingsRepository _userSettingsRepository;
+  final WordCardSubject _wordCardSubject;
 
   Future<void> onScreenOpened() async {
     final cards = await _practiceRepository.createPracticeList();
@@ -45,11 +48,20 @@ class PracticeCubit extends Cubit<PracticeState> {
   }
 
   Future<void> onCardKnown() async {
-    if (state.index == state.cards!.length) {
+    final cards = state.cards;
+    if (cards == null) {
+      throw StateError('PracticeCubit was not initialized');
+    }
+
+    if (state.index == cards.length) {
       return;
     }
 
-    await _practiceRepository.incrementCard(state.cards![state.index].word);
+    await _practiceRepository.incrementCard(cards[state.index].word);
+
+    _wordCardSubject.add(cards[state.index].copyWith(
+      repetitionCount: cards[state.index].repetitionCount + 1,
+    ));
 
     emit(state.copyWith(
       index: state.index + 1,
@@ -61,7 +73,16 @@ class PracticeCubit extends Cubit<PracticeState> {
   }
 
   Future<void> onCardUnknown() async {
-    await _practiceRepository.resetCard(state.cards![state.index].word);
+    final cards = state.cards;
+    if (cards == null) {
+      throw StateError('PracticeCubit was not initialized');
+    }
+
+    await _practiceRepository.resetCard(cards[state.index].word);
+
+    _wordCardSubject.add(cards[state.index].copyWith(
+      repetitionCount: 0,
+    ));
 
     emit(state.copyWith(
       index: state.index + 1,

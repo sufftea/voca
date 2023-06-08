@@ -15,13 +15,10 @@ import 'package:voca/presentation/word_definition/widgets/word_definitions_widge
 class WordDefinitionScreen extends StatefulWidget {
   const WordDefinitionScreen({
     required this.wordCard,
-    this.onCardDataChange,
     super.key,
   });
 
   final WordCard wordCard;
-
-  final Function()? onCardDataChange;
 
   @override
   State<WordDefinitionScreen> createState() => _WordDefinitionScreenState();
@@ -38,7 +35,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     cubit.onPageOpened(widget.wordCard);
   }
 
-  Future<void> _onResetPressed() async {
+  Future<void> onResetPressed() async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -47,8 +44,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     );
 
     if (confirmed ?? false) {
-      await cubit.resetWord();
-      widget.onCardDataChange?.call();
+      await cubit.resetCard();
     }
   }
 
@@ -61,7 +57,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
         cubit.setWordLearning();
         break;
     }
-    widget.onCardDataChange?.call();
   }
 
   @override
@@ -160,7 +155,8 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     return builder(
       buildWhen: (prev, curr) {
         return prev.repetitionCount != curr.repetitionCount ||
-            prev.maxRepetitionCount != curr.maxRepetitionCount;
+            prev.maxRepetitionCount != curr.maxRepetitionCount ||
+            prev.status != curr.status;
       },
       builder: (context, state) {
         final learningEnabled = state.status == WordCardStatus.learning;
@@ -201,7 +197,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
     final t = Translations.of(context);
 
     return TextButton(
-      onPressed: resetEnabled ? _onResetPressed : null,
+      onPressed: resetEnabled ? onResetPressed : null,
       style: ButtonStyle(
         foregroundColor: mspResolveWith(
           none: BaseColors.bittersweet,

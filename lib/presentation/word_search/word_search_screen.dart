@@ -60,10 +60,6 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     AutoRouter.of(context).root.push(
           WordDefinitionRoute(
             wordCard: card,
-            onCardDataChange: () {
-              debugPrint('search screen. updating word');
-              cubit.onWordUpdate(card.word);
-            },
           ),
         );
   }
@@ -206,7 +202,7 @@ debugPrint('rebuilding search results.');
         ),
         AddWordButton(
           onAddWord: () async {
-            await cubit.onAddWord(card.word);
+            await cubit.onAddWordToLearning(card.word);
             searchBarFocusNode.unfocus();
           },
           isAdded: card.status == WordCardStatus.learning,
