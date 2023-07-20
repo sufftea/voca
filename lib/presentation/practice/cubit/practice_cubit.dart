@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/repositories/practice_repository.dart';
@@ -48,23 +49,25 @@ class PracticeCubit extends Cubit<PracticeState> {
   }
 
   Future<void> onCardKnown() async {
+    final currIndex = state.index;
+    emit(state.copyWith(index: state.index + 1));
+
     final cards = state.cards;
     if (cards == null) {
       throw StateError('PracticeCubit was not initialized');
     }
 
-    if (state.index == cards.length) {
+    if (currIndex == cards.length) {
       return;
     }
 
-    await _practiceRepository.incrementCard(cards[state.index].word);
+    await _practiceRepository.incrementCard(cards[currIndex].word);
 
-    _wordCardSubject.add(cards[state.index].copyWith(
-      repetitionCount: cards[state.index].repetitionCount + 1,
+    _wordCardSubject.add(cards[currIndex].copyWith(
+      repetitionCount: cards[currIndex].repetitionCount + 1,
     ));
 
     emit(state.copyWith(
-      index: state.index + 1,
       isFlipped: false,
       rememberedWords: state.rememberedWords + 1,
     ));

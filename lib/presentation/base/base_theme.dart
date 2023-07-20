@@ -19,6 +19,7 @@ class BaseColors {
   static const curiousBlue = Color(0xff1E88E5);
   static final curiousBlue10 = curiousBlue.withOpacity(0.1);
   static final curiousBlue30 = curiousBlue.withOpacity(0.30);
+  static final curiousBlue80 = curiousBlue.withOpacity(0.80);
   static const neptune = Color(0xff7EACBA);
   static final neptune10 = neptune.withOpacity(0.1);
   static const bittersweet = Color(0xffFF6060);

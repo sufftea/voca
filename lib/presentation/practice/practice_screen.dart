@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +13,10 @@ import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/placeholder.dart';
 import 'package:voca/presentation/practice/cubit/practice_cubit.dart';
 import 'package:voca/presentation/practice/cubit/practice_state.dart';
-import 'package:voca/presentation/practice/widgets/card_widget.dart';
-import 'package:voca/presentation/practice/widgets/flipped_card_widget.dart';
+import 'package:voca/presentation/practice/widgets/word_card_front.dart';
+import 'package:voca/presentation/practice/widgets/word_card_back.dart';
 import 'package:voca/presentation/practice/widgets/practice_results_card_widget.dart';
+import 'package:voca/presentation/practice/widgets/word_card_widget.dart';
 
 const _examplesAreaHeight = 120.0;
 
@@ -35,17 +39,137 @@ class PracticeScreen extends StatefulWidget {
 }
 
 class _PracticeScreenState extends State<PracticeScreen>
-    with StatefulCubitConsumer<PracticeCubit, PracticeState, PracticeScreen> {
+    with
+        StatefulCubitConsumer<PracticeCubit, PracticeState, PracticeScreen>,
+        TickerProviderStateMixin {
   final cardSwiperController = CardSwiperController();
 
-  // For when the action is handled *before* the swipe.
+  /// For when the action (Know/Forgot) is handled before the swipe (when
+  /// pressing the Remember button)
   bool ignoreNextSwipe = false;
+
+  late final emojiSlideCtrl = AnimationController(
+    duration: const Duration(milliseconds: 500),
+    vsync: this,
+  );
+  late final emojiFadeCtrl = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+  late final slideAnim =
+      CurveTween(curve: Curves.easeOutCubic).animate(emojiSlideCtrl);
+  late final fadeAnim =
+      CurveTween(curve: Curves.easeInOutQuad).animate(emojiFadeCtrl);
+  late OverlayEntry swipeResultOverlay;
+  bool isEmojiShown = false;
+  final cardFlippedNotifier = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
 
     cubit.onScreenOpened();
+
+    createEmojiOverlay();
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    swipeResultOverlay.remove();
+    emojiSlideCtrl.dispose();
+    emojiFadeCtrl.dispose();
+
+    super.dispose();
+  }
+
+  void createEmojiOverlay() {
+    final entry = OverlayEntry(
+      builder: (context) {
+        return AnimatedBuilder(
+          animation: Listenable.merge([emojiSlideCtrl, emojiFadeCtrl]),
+          builder: (context, child) {
+            return Positioned(
+              top: lerpDouble(50, 100, slideAnim.value),
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Opacity(
+                    opacity: min(
+                      slideAnim.value,
+                      1 - fadeAnim.value,
+                    ),
+                    child: ValueListenableBuilder(
+                      valueListenable: cardFlippedNotifier,
+                      builder: (context, cardFlipped, child) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: cardFlipped
+                                ? BaseColors.bittersweet
+                                : BaseColors.curiousBlue80,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            cardFlipped ? '¯\\_(ツ)_/¯' : '٩( ^ᴗ^ )۶',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: BaseColors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      swipeResultOverlay = entry;
+      Overlay.of(context).insert(entry);
+    });
+  }
+
+  void showEmojiResult() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      emojiFadeCtrl.stop(canceled: false);
+      emojiFadeCtrl.value = 0;
+
+      emojiSlideCtrl.stop(canceled: false);
+      emojiSlideCtrl.forward(from: 0);
+    });
+  }
+
+  void hideEmojiResult() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      emojiFadeCtrl.forward();
+    });
+  }
+
+  void showAndHideEmojiResult([bool cardFlipped = false]) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      cardFlippedNotifier.value = cardFlipped;
+
+      debugPrint('show emoji');
+      emojiFadeCtrl.stop(canceled: false);
+      emojiFadeCtrl.value = 0;
+
+      emojiSlideCtrl.stop(canceled: false);
+      await emojiSlideCtrl.forward(from: 0);
+
+      emojiFadeCtrl.forward();
+    });
   }
 
   void onSwipe() {
@@ -68,6 +192,7 @@ class _PracticeScreenState extends State<PracticeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           verticalDirection: VerticalDirection.up,
@@ -86,10 +211,7 @@ class _PracticeScreenState extends State<PracticeScreen>
                 child: buildCards(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: buildAppBar(),
-            ),
+            buildAppBar(),
           ],
         ),
       ),
@@ -97,26 +219,28 @@ class _PracticeScreenState extends State<PracticeScreen>
   }
 
   Widget buildAppBar() {
-    return SizedBox(
-      height: 25,
-      child: Center(
-        child: builder(
-          buildWhen: (prev, curr) =>
-              prev.index != curr.index || prev.cards != curr.cards,
-          builder: (context, state) {
-            final curr = state.index;
-            final total = state.cards?.length;
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      centerTitle: true,
+      // toolbarHeight: 80,
 
-            return Text(
-              total == null ? '--/--' : '$curr/$total',
-              style: const TextStyle(
-                color: BaseColors.curiousBlue,
-                fontSize: 20,
-                fontWeight: FontWeights.bold,
-              ),
-            );
-          },
-        ),
+      title: builder(
+        buildWhen: (prev, curr) =>
+            prev.index != curr.index || prev.cards != curr.cards,
+        builder: (context, state) {
+          final curr = state.index;
+          final total = state.cards?.length;
+
+          return Text(
+            total == null ? '--/--' : '$curr/$total',
+            style: const TextStyle(
+              color: BaseColors.black,
+              fontSize: 18,
+              fontWeight: FontWeights.semiBold,
+            ),
+          );
+        },
       ),
     );
   }
@@ -136,34 +260,77 @@ class _PracticeScreenState extends State<PracticeScreen>
   }
 
   Widget buildCards() {
-    return builder(
-      buildWhen: (prev, curr) =>
-          prev.cards != curr.cards ||
-          prev.maxRepetitionCount != curr.maxRepetitionCount,
-      builder: (context, state) {
-        final cards = state.cards;
+    return LayoutBuilder(builder: (context, cons) {
+      return builder(
+        buildWhen: (prev, curr) =>
+            prev.cards != curr.cards ||
+            prev.maxRepetitionCount != curr.maxRepetitionCount ||
+            prev.index != curr.index ||
+            prev.isFlipped != curr.isFlipped,
+        builder: (context, state) {
+          final cards = state.cards;
 
-        if (cards == null || state.maxRepetitionCount == 0) {
-          return buildLoadingCurrCard();
-        }
+          if (cards == null || state.maxRepetitionCount == 0) {
+            return buildLoadingCurrCard();
+          }
 
-        final cardWidgets = [
-          for (var i = 0; i < cards.length; ++i) buildACard(i),
-          buildResults(),
-        ].reversed.toList();
+          const threshold = 0.2;
+          final numberOfCards = cards.length + 1;
 
-        return CardSwiper(
-          padding: EdgeInsets.zero,
-          controller: cardSwiperController,
-          cards: cardWidgets,
-          onEnd: onGoBack,
-          isLoop: false,
-          onSwipe: (index, direction) {
-            onSwipe();
-          },
-        );
-      },
-    );
+          return CardSwiper(
+            padding: EdgeInsets.zero,
+            controller: cardSwiperController,
+            cardsCount: numberOfCards,
+            numberOfCardsDisplayed: min(numberOfCards, 3),
+            backCardOffset: const Offset(0, 35),
+            scale: 0.9,
+            threshold: threshold,
+            cardBuilder: (
+              context,
+              index,
+              horizontalOffsetPercentage,
+              verticalOffsetPercentage,
+            ) {
+              if (index == state.index && index != cards.length) {
+                if (horizontalOffsetPercentage.abs() >= 1 ||
+                    verticalOffsetPercentage.abs() >= 1) {
+                  if (!isEmojiShown) {
+                    isEmojiShown = true;
+
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                      cardFlippedNotifier.value = state.isFlipped;
+                    });
+                    showEmojiResult();
+                  }
+                } else {
+                  if (isEmojiShown) {
+                    isEmojiShown = false;
+                    hideEmojiResult();
+                  }
+                }
+              }
+
+              if (index < cards.length) {
+                return buildACard(index);
+              } else {
+                return buildResults();
+              }
+            },
+            onEnd: onGoBack,
+            isLoop: false,
+            onSwipeRelease: (accepted) {
+              if (accepted) {
+                hideEmojiResult();
+              }
+            },
+            onSwipe: (previousIndex, currentIndex, direction) {
+              onSwipe();
+              return true;
+            },
+          );
+        },
+      );
+    });
   }
 
   Widget buildACard(int index) {
@@ -171,36 +338,38 @@ class _PracticeScreenState extends State<PracticeScreen>
       buildWhen: (prev, curr) =>
           prev.isFlipped != curr.isFlipped || prev.index != curr.index,
       builder: (context, state) {
-        if (state.isFlipped && index == state.index) {
-          return buildFlippedCard();
-        }
-
-        return CardWidget(
+        final frontCard = WordCardFront(
           card: state.cards![index],
           maxRepetitionCount: state.maxRepetitionCount,
           onShowDefinition: () {
             cubit.onShowDefinition();
           },
         );
-      },
-    );
-  }
 
-  Widget buildFlippedCard() {
-    // Needs rebuild in case the definitions were still loading when the card
-    // was flipped. (practically impossible though...)
-    return builder(
-      buildWhen: (prev, curr) => prev.definitions != curr.definitions,
-      builder: (context, state) {
-        return FlippedCardWidget(
-          card: state.cards![state.index],
-          definitions: state.definitions,
-          maxRepetitionCount: state.maxRepetitionCount,
-          onKnowPressed: () async {
-            await cubit.onCardKnown();
-            ignoreNextSwipe = true;
-            cardSwiperController.swipeTop();
-          },
+        if (index != state.index) {
+          return frontCard;
+        }
+
+        return WordCardWidget(
+          flipped: state.isFlipped,
+          front: frontCard,
+          back: builder(
+            buildWhen: (prev, curr) => prev.definitions != curr.definitions,
+            builder: (context, state) {
+              return WordCardBack(
+                card: state.cards![state.index],
+                definitions: state.definitions,
+                maxRepetitionCount: state.maxRepetitionCount,
+                onKnowPressed: () async {
+                  await cubit.onCardKnown();
+                  ignoreNextSwipe = true;
+                  cardSwiperController.swipeTop();
+
+                  showAndHideEmojiResult();
+                },
+              );
+            },
+          ),
         );
       },
     );
@@ -353,7 +522,6 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildGoBackButton() {
     final t = Translations.of(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(

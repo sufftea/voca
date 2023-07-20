@@ -15,6 +15,17 @@
             ]
         },
         {
+            "name": "voca - profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "development",
+                "--dart-define-from-file=./environments/dev.json",
+            ]
+        },
+        {
             "name": "voca - production",
             "request": "launch",
             "type": "dart",

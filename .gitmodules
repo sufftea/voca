@@ -1,0 +1,3 @@
+[submodule "packages/flutter_card_swiper"]
+	path = packages/flutter_card_swiper
+	url = git@github.com:ricardodalarme/flutter_card_swiper.git

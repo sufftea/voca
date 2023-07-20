@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
+import 'package:voca/presentation/practice/widgets/card_progress_indicator_light.dart';
 
-// TODO: rename to WordCardWidget ???
-class CardWidget extends StatelessWidget {
-  const CardWidget({
+class WordCardFront extends StatelessWidget {
+  const WordCardFront({
     required this.card,
     required this.onShowDefinition,
     required this.maxRepetitionCount,
@@ -25,17 +24,9 @@ class CardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: BaseColors.curiousBlue,
         borderRadius: BorderRadius.circular(5),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            color: Colors.black26,
-          )
-        ],
       ),
-      // alignment: Alignment.center,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(),
           buildWord(),
@@ -49,17 +40,29 @@ class CardWidget extends StatelessWidget {
   }
 
   Widget buildDefinitionButton() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: FilledButton(
-        style: const ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(BaseColors.white),
-          foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
+    return OutlinedButton(
+      onPressed: onShowDefinition,
+      style: ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(BaseColors.white10),
+        surfaceTintColor: const MaterialStatePropertyAll(BaseColors.white),
+        foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
+        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        )),
+        side: MaterialStatePropertyAll(BorderSide(
+          color: BaseColors.white50,
+          width: 0.5,
+        )),
+        textStyle: const MaterialStatePropertyAll(
+          TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeights.regular,
+          ),
         ),
-        onPressed: onShowDefinition,
-        child: Text(
-          t.practice.seeDefinition,
-        ),
+      ),
+      child: Text(
+        t.practice.seeDefinition,
       ),
     );
   }
@@ -69,7 +72,7 @@ class CardWidget extends StatelessWidget {
       child: Container(
         width: 230,
         alignment: Alignment.center,
-        child: PracticeProgressIndicator(
+        child: CardProgressIndicatorLight(
           currRepetitions: card.repetitionCount,
           maxRepetitionCount: maxRepetitionCount,
         ),
@@ -81,6 +84,7 @@ class CardWidget extends StatelessWidget {
     return Center(
       child: Text(
         card.word.name,
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: BaseColors.white,
           fontSize: 20,

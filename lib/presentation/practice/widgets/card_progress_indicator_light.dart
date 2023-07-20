@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 
-class PracticeProgressIndicator extends StatelessWidget {
-  const PracticeProgressIndicator({
+class CardProgressIndicatorLight extends StatelessWidget {
+  const CardProgressIndicatorLight({
     required this.currRepetitions,
     required this.maxRepetitionCount,
     super.key,
