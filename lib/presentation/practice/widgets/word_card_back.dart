@@ -6,12 +6,11 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/base_styles.dart';
-import 'package:voca/presentation/base/widgets/base_card.dart';
-import 'package:voca/presentation/practice/widgets/practice_progress_indicator.dart';
+import 'package:voca/presentation/practice/widgets/card_progress_indicator_light.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
 
-class FlippedCardWidget extends StatelessWidget {
-  const FlippedCardWidget({
+class WordCardBack extends StatelessWidget {
+  const WordCardBack({
     required this.card,
     required this.definitions,
     required this.onKnowPressed,
@@ -26,7 +25,12 @@ class FlippedCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseCard(
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: BaseColors.concrete,
+        borderRadius: BorderRadius.circular(5),
+      ),
       child: Column(
         verticalDirection: VerticalDirection.up,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,7 +68,7 @@ class FlippedCardWidget extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: PracticeProgressIndicator(
+            child: CardProgressIndicatorLight(
               currRepetitions: card.repetitionCount,
               maxRepetitionCount: maxRepetitionCount,
             ),
@@ -88,19 +92,40 @@ class FlippedCardWidget extends StatelessWidget {
 
   Widget buildButtons(BuildContext context) {
     final t = Translations.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: BaseColors.concrete,
-        boxShadow: [BoxShadow(blurRadius: 10, color: BaseColors.black25)]
-      ),
-      child: OutlinedButton(
-        onPressed: onKnowPressed,
-        child: Text(
-          t.practice.knowCheat,
+    return OutlinedButton(
+      onPressed: onKnowPressed,
+      style: ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
+        surfaceTintColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
+        foregroundColor: const MaterialStatePropertyAll(BaseColors.black),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
+        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        )),
+        side: MaterialStatePropertyAll(BorderSide(
+          color: BaseColors.black25,
+          width: 0.5,
+        )),
+        textStyle: const MaterialStatePropertyAll(
+          TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeights.regular,
+          ),
         ),
+      ),
+      child: Text(
+        t.practice.rememberWord,
       ),
     );
   }
 }
+
+/*
+TODO: emoticons:
+
+٩( ^ᴗ^ )۶
+
+¯\_(ツ)_/¯
+
+
+*/

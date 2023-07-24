@@ -28,10 +28,7 @@ class _MiscBannerState extends State<MiscBanner>
           const SizedBox(height: 10),
           const CrashReportsCheckbox(),
           const SizedBox(height: 10),
-          Container(
-            color: BaseColors.black25,
-            height: 1,
-          ),
+          Container(color: BaseColors.black25, height: 1),
           const SizedBox(height: 10),
           const CardRepetitionCountSlider(),
         ],

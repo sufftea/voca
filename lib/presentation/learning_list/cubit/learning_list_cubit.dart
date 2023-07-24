@@ -37,22 +37,28 @@ class LearningListCubit extends Cubit<LearningListState> {
 
   /// Used to quickly add words to the list for debugging
   Future<void> debugTest() async {
-    final cards = await _wordsRepository.findWords('draw');
+    final words = [
+      (await _wordsRepository.findWords('grumpy')).first,
+      (await _wordsRepository.findWords('fumble')).first,
+      (await _wordsRepository.findWords('garbled')).first,
+      (await _wordsRepository.findWords('slump')).first,
+    ];
 
-    for (final card in cards) {
+    for (final WordCard(word: word) in state.words!) {
       await _wordsRepository.setWordCardStatus(
-        card.word,
-        WordCardStatus.learning,
+        word,
+        WordCardStatus.unknown,
       );
-      await _wordsRepository.setWordCardRepetitions(
-        card.word,
-        _r.nextInt(7),
+    }
+    for (final WordCard(word: word) in words) {
+      await _wordsRepository.setWordCardStatus(
+        word,
+        WordCardStatus.learning,
       );
     }
 
-    _refresh();
+    await _refresh();
   }
-
 
   Future<void> _refresh() async {
     emit(state.copyWith(words: null));
@@ -77,6 +83,4 @@ class LearningListCubit extends Cubit<LearningListState> {
       return a.repetitionCount - b.repetitionCount;
     });
   }
-
-
 }

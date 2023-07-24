@@ -21,7 +21,6 @@ class PracticeState {
   final bool isFlipped;
   final UnmodifiableListView<WordDefinition>? definitions;
   final int maxRepetitionCount;
-
   final int rememberedWords;
   final int forgottenWords;
 
