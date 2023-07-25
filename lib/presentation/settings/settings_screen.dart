@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';

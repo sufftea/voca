@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:receive_intent/receive_intent.dart';
 import 'package:voca/firebase_options.dart';
 import 'package:voca/injectable/injectable_init.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/global_cubit_provider.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/add_word_router.dart';
@@ -43,7 +43,7 @@ void main() async {
   runApp(TranslationProvider(
     child: GlobalCubitProvider(
       child: MaterialApp.router(
-        theme: baseTheme,
+        theme: lightTheme,
         routerConfig: router.config(),
       ),
     ),
@@ -67,7 +67,7 @@ void mainAddWord() async {
   runApp(TranslationProvider(
     child: search != null
         ? MaterialApp.router(
-            theme: baseTheme,
+            theme: lightTheme,
             routerConfig: router.config(
               deepLinkBuilder: (deepLink) {
                 return DeepLink([
@@ -77,7 +77,7 @@ void mainAddWord() async {
             ),
           )
         : MaterialApp(
-            theme: baseTheme,
+            theme: lightTheme,
             home: const ErrorScreen(),
           ),
   ));

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -66,8 +66,10 @@ class _WordSearchScreenState extends State<WordSearchScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: BaseColors.white,
+      backgroundColor: theme.colorScheme.background,
       body: Stack(
         children: [
           buildBody(),
@@ -172,15 +174,17 @@ debugPrint('rebuilding search results.');
     );
   }
 
-  Container buildLoadingOverlay() {
+  Widget buildLoadingOverlay() {
+    final theme = Theme.of(context);
+
     return Container(
-      color: BaseColors.white50,
+      color: theme.colorScheme.background.withOpacity(0.2),
       alignment: Alignment.center,
-      child: const SizedBox(
+      child: SizedBox(
         width: 25,
         height: 25,
         child: CircularProgressIndicator(
-          color: BaseColors.mineShaft,
+          color: theme.colorScheme.onBackground,
           strokeWidth: 5,
         ),
       ),
@@ -212,6 +216,8 @@ debugPrint('rebuilding search results.');
   }
 
   Widget buildMessage(String message) {
+    final theme = Theme.of(context);
+    
     return Positioned(
       left: 0,
       right: 0,
@@ -223,9 +229,9 @@ debugPrint('rebuilding search results.');
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeights.bold,
-            color: BaseColors.neptune,
+            color: theme.colorScheme.secondary,
           ),
         ),
       ),

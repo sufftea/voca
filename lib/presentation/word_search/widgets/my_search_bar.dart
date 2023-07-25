@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class MySearchBar extends StatelessWidget {
@@ -23,13 +23,14 @@ class MySearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
-            color: BaseColors.black25,
+            color: theme.colorScheme.shadow,
             blurRadius: 5 * elevation,
             offset: const Offset(0, 2) * elevation,
           )
@@ -44,29 +45,32 @@ class MySearchBar extends StatelessWidget {
           hintText: t.search.enterWord,
           contentPadding: const EdgeInsets.all(10),
           filled: true,
-          fillColor: BaseColors.concrete,
+          fillColor: theme.colorScheme.primaryContainer,
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(color: BaseColors.curiousBlue)),
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+                color: theme.colorScheme.onPrimaryContainer.withOpacity(0.1)),
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(color: BaseColors.curiousBlue),
+            borderSide: BorderSide(
+                color: theme.colorScheme.onPrimaryContainer.withOpacity(0.2)),
           ),
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeights.regular,
-            color: BaseColors.neptune,
+            color: theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
           ),
-          suffixIcon: const Icon(
+          suffixIcon: Icon(
             Icons.search,
-            color: BaseColors.curiousBlue,
+            color: theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
             size: 18,
           ),
         ),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.bold,
-          color: BaseColors.curiousBlue,
+          color: theme.colorScheme.onPrimaryContainer,
         ),
       ),
     );

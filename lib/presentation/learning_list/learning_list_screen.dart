@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -53,7 +53,9 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   Widget buildAppBar() {
+    final theme = Theme.of(context);
     final t = Translations.of(context);
+
     return AppBarCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,8 +79,8 @@ class _LearningListScreenState extends State<LearningListScreen>
 
               return Text(
                 length.toString(),
-                style: const TextStyle(
-                  color: BaseColors.curiousBlue,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeights.light,
                   fontSize: 20,
                 ),
@@ -133,12 +135,14 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   Widget buildMessage(String message) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Text(
         message,
-        style: const TextStyle(
-          color: BaseColors.neptune,
+        style: TextStyle(
+          color: theme.colorScheme.secondary,
           fontWeight: FontWeights.bold,
         ),
       ),

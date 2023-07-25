@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/practice/widgets/card_progress_indicator_light.dart';
 
@@ -20,38 +20,42 @@ class WordCardFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: BaseColors.curiousBlue,
+        color: theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Spacer(),
-          buildWord(),
+          buildWord(theme),
           const SizedBox(height: 10),
           buildRepetitionCount(),
           const Spacer(),
-          buildDefinitionButton(),
+          buildDefinitionButton(theme),
         ],
       ),
     );
   }
 
-  Widget buildDefinitionButton() {
+  Widget buildDefinitionButton(ThemeData theme) {
     return OutlinedButton(
       onPressed: onShowDefinition,
       style: ButtonStyle(
-        overlayColor: MaterialStatePropertyAll(BaseColors.white10),
-        surfaceTintColor: const MaterialStatePropertyAll(BaseColors.white),
-        foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
+        overlayColor: MaterialStatePropertyAll(
+            theme.colorScheme.onPrimary.withOpacity(0.1)),
+        surfaceTintColor: MaterialStatePropertyAll(theme.colorScheme.onPrimary),
+        foregroundColor: MaterialStatePropertyAll(theme.colorScheme.onPrimary),
         padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         )),
         side: MaterialStatePropertyAll(BorderSide(
-          color: BaseColors.white50,
+          color: theme.colorScheme.onPrimary.withOpacity(0.1),
           width: 0.5,
         )),
         textStyle: const MaterialStatePropertyAll(
@@ -80,13 +84,13 @@ class WordCardFront extends StatelessWidget {
     );
   }
 
-  Widget buildWord() {
+  Widget buildWord(ThemeData theme) {
     return Center(
       child: Text(
         card.word.name,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: BaseColors.white,
+        style: TextStyle(
+          color: theme.colorScheme.onPrimary,
           fontSize: 20,
           fontWeight: FontWeights.bold,
         ),

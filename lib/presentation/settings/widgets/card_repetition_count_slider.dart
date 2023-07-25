@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:voca/domain/domain_constants.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
 import 'package:voca/presentation/settings/cubit/settings_state.dart';
@@ -23,6 +23,7 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
   @override
   Widget build(BuildContext context) {
     final f = NumberFormat('00');
+    final theme = Theme.of(context);
 
     return listener(
       listenWhen: (prev, curr) =>
@@ -42,7 +43,7 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
           ),
           Row(
             children: [
-              buildSlider(),
+              buildSlider(theme),
               ValueListenableBuilder(
                 valueListenable: _repetitions,
                 builder: (context, value, child) {
@@ -51,8 +52,8 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
                     style: TextStyle(
                       fontSize: 15,
                       color: value == null
-                          ? BaseColors.grey
-                          : BaseColors.curiousBlue,
+                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.8)
+                          : theme.colorScheme.onSurfaceVariant,
                     ),
                   );
                 },
@@ -64,7 +65,7 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
     );
   }
 
-  Widget buildSlider() {
+  Widget buildSlider(ThemeData theme) {
     return Expanded(
       child: ValueListenableBuilder(
         valueListenable: _repetitions,
@@ -80,7 +81,6 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
 
           return SliderTheme(
             data: SliderThemeData(
-              overlappingShapeStrokeColor: Colors.purple,
               overlayShape: SliderComponentShape.noThumb,
             ),
             child: Slider(
@@ -88,9 +88,11 @@ class _CardRepetitionCountSliderState extends State<CardRepetitionCountSlider>
               max: DomainConstants.maxCardRepetitionsSetting.toDouble(),
               min: 0,
               divisions: DomainConstants.maxCardRepetitionsSetting,
-              inactiveColor: BaseColors.botticelly,
-              activeColor: BaseColors.curiousBlue,
-              thumbColor: BaseColors.curiousBlue,
+              inactiveColor: theme.colorScheme.onSurfaceVariant.withOpacity(
+                0.2,
+              ),
+              activeColor: theme.colorScheme.tertiary,
+              thumbColor: theme.colorScheme.tertiary,
               label: value?.toInt().toString(),
               onChangeEnd: (_) {
                 // NOT using the value provided by the callback is deliberate

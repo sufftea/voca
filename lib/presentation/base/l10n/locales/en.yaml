@@ -23,7 +23,7 @@ home:
   crashlyticsPermission:
     header: Send crash reports?
     body: Automatic crash reports will help me <accent>find and fix 
-      bugs</accent> faster. <accent>No personal information</accent> is being 
+      bugs</accent> faster. No personal information is being 
       sent. You will be able to change this in settings any time.
     allow: Allow
     deny: Deny

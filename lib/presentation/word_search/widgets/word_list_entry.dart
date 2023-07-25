@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/clicable_card.dart';
 import 'package:voca/presentation/common_widgets/card_repetition_indicator.dart';
@@ -40,14 +40,17 @@ class WordListEntry extends StatelessWidget {
   }
 
   Expanded buildWord(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Expanded(
       child: RichText(
         text: TextSpan(
-          children: buildWordSpans(),
+          children: buildWordSpans(context),
           style: DefaultTextStyle.of(context).style.merge(
-                const TextStyle(
+                TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeights.bold,
+                  color: theme.colorScheme.onSecondaryContainer,
                 ),
               ),
         ),
@@ -55,16 +58,18 @@ class WordListEntry extends StatelessWidget {
     );
   }
 
-  List<InlineSpan> buildWordSpans() {
+  List<InlineSpan> buildWordSpans(BuildContext context) {
     var queryLetter = searchedWord.characters.iterator..moveNext();
     final textSpans = <InlineSpan>[];
+
+    final theme = Theme.of(context);
 
     for (final letter in card.word.name.characters) {
       if (letter == queryLetter.current && queryLetter.isNotEmpty) {
         textSpans.add(TextSpan(
           text: letter,
-          style: const TextStyle(
-            color: BaseColors.curiousBlue,
+          style: TextStyle(
+            color: theme.colorScheme.primary,
           ),
         ));
 

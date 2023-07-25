@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 class PlaceholderCard extends StatelessWidget {
   const PlaceholderCard({
@@ -15,12 +13,14 @@ class PlaceholderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: BaseColors.black10,
+        color: theme.colorScheme.surfaceVariant,
       ),
       child: expand ? const Expanded(child: SizedBox()) : null,
     );

@@ -1,74 +1,43 @@
 import 'package:flutter/material.dart';
 
-class BaseColors {
-  const BaseColors._();
+// https://realtimecolors.com/?colors=120c13-ffffff-423329-e1ebe0-62849d
 
-  static const white = Colors.white;
-  static const transparent = Colors.transparent;
-  static final white10 = Colors.white.withOpacity(0.1);
-  static final white50 = Colors.white.withOpacity(0.5);
-  static final white80 = Colors.white.withOpacity(0.8);
-  static const black = Colors.black;
-  static final black10 = Colors.black.withOpacity(0.1);
-  static final black25 = Colors.black.withOpacity(0.25);
-  static const mineShaft = Color(0xff2e2e2e);
-  static const grey = Color(0xff8b8b8b);
-  static final mineShaft10 = mineShaft.withOpacity(0.10);
-  static const mercury = Color(0xffE9E9E9);
-  static const concrete = Color(0xfff0f0f0);
-  static const curiousBlue = Color(0xff1E88E5);
-  static final curiousBlue10 = curiousBlue.withOpacity(0.1);
-  static final curiousBlue30 = curiousBlue.withOpacity(0.30);
-  static final curiousBlue80 = curiousBlue.withOpacity(0.80);
-  static const neptune = Color(0xff7EACBA);
-  static final neptune10 = neptune.withOpacity(0.1);
-  static const bittersweet = Color(0xffFF6060);
-  static final bittersweet10 = bittersweet.withOpacity(0.1);
-  static const oldRose = Color(0xFFC88888);
-  static const botticelly = Color(0xffC9DAE8);
-}
+const _primaryValue = 0xFF423329;
 
-final baseTheme = ThemeData(
+final lightTheme = ThemeData.from(
   useMaterial3: true,
-  primarySwatch: Colors.blue,
-
-  colorScheme: const ColorScheme(
-    brightness: Brightness.light,
-    primary: BaseColors.curiousBlue,
-    onPrimary: BaseColors.white,
-    secondary: BaseColors.neptune,
-    onSecondary: BaseColors.white,
-    error: BaseColors.bittersweet,
-    onError: BaseColors.white,
-    background: BaseColors.white,
-    onBackground: BaseColors.mineShaft,
-    surface: BaseColors.concrete,
-    onSurface: BaseColors.mineShaft,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.lightGreen,
+    shadow: Colors.black26,
   ),
+).copyWith(
   //
-  textTheme: Typography.blackMountainView.apply(
-    bodyColor: BaseColors.mineShaft,
-    displayColor: BaseColors.mineShaft,
-  ),
+  textTheme: Typography.blackMountainView.apply(),
   //
   textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
     backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
-    overlayColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
     elevation: const MaterialStatePropertyAll(0),
     padding: const MaterialStatePropertyAll(EdgeInsets.all(5)),
     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(5),
     )),
-    foregroundColor: const MaterialStatePropertyAll(BaseColors.mineShaft),
   )),
+  cardTheme: CardTheme(
+    clipBehavior: Clip.antiAlias,
+    elevation: 5,
+    margin: EdgeInsets.zero,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+  ),
   //
   filledButtonTheme: FilledButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: mspResolveWith(
-        disabled: BaseColors.botticelly,
-        none: BaseColors.curiousBlue,
-      ),
+      // backgroundColor: mspResolveWith(
+      //   disabled: BaseColors.botticelly,
+      //   none: BaseColors.curiousBlue,
+      // ),
       elevation: const MaterialStatePropertyAll(0),
       padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -78,7 +47,7 @@ final baseTheme = ThemeData(
       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       )),
-      foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
+      // foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
       textStyle: const MaterialStatePropertyAll(TextStyle(
         fontSize: 20,
         fontWeight: FontWeights.medium,
@@ -92,13 +61,13 @@ final baseTheme = ThemeData(
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       maximumSize: const MaterialStatePropertyAll(Size.infinite),
       minimumSize: const MaterialStatePropertyAll(Size.zero),
-      side: const MaterialStatePropertyAll(BorderSide(
-        color: BaseColors.curiousBlue,
-      )),
+      // side: const MaterialStatePropertyAll(BorderSide(
+      //   color: BaseColors.curiousBlue,
+      // )),
       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       )),
-      foregroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
+      // foregroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
       textStyle: const MaterialStatePropertyAll(TextStyle(
         fontSize: 20,
         fontWeight: FontWeights.medium,
@@ -149,3 +118,52 @@ MaterialStateProperty<T> mspResolveWith<T>({
     },
   );
 }
+
+/*
+class BaseColors {
+  const BaseColors._();
+
+  static const white = Colors.white;
+  static const transparent = Colors.transparent;
+  static final white10 = Colors.white.withOpacity(0.1);
+  static final white50 = Colors.white.withOpacity(0.5);
+  static final white80 = Colors.white.withOpacity(0.8);
+  static const black = Colors.black;
+  static final black10 = Colors.black.withOpacity(0.1);
+  static final black25 = Colors.black.withOpacity(0.25);
+  static const mineShaft = Color(0xff2e2e2e);
+  static const grey = Color(0xff8b8b8b);
+  static final mineShaft10 = mineShaft.withOpacity(0.10);
+  static const mercury = Color(0xffE9E9E9);
+  static const concrete = Color(0xfff0f0f0);
+  static const curiousBlue = Color(0xff1E88E5);
+  static final curiousBlue10 = curiousBlue.withOpacity(0.1);
+  static final curiousBlue30 = curiousBlue.withOpacity(0.30);
+  static final curiousBlue80 = curiousBlue.withOpacity(0.80);
+  static const neptune = Color(0xff7EACBA);
+  static final neptune10 = neptune.withOpacity(0.1);
+  static const bittersweet = Color(0xffFF6060);
+  static final bittersweet10 = bittersweet.withOpacity(0.1);
+  static const oldRose = Color(0xFFC88888);
+  static const botticelly = Color(0xffC9DAE8);
+}
+
+final baseThemeData = ThemeData(
+  useMaterial3: true,
+  primarySwatch: Colors.blue,
+
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: BaseColors.curiousBlue,
+    onPrimary: BaseColors.white,
+    secondary: BaseColors.neptune,
+    onSecondary: BaseColors.white,
+    error: BaseColors.bittersweet,
+    onError: BaseColors.white,
+    background: BaseColors.white,
+    onBackground: BaseColors.mineShaft,
+    surface: BaseColors.concrete,
+    onSurface: BaseColors.mineShaft,
+  ),
+);
+*/

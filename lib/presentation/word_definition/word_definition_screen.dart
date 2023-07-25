@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -103,7 +103,8 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   Widget buildStatusSettings(WordDefinitionState state) {
     final t = Translations.of(context);
-
+    final theme = Theme.of(context);
+    
     final isSelected = [false, false];
 
     switch (state.status) {
@@ -122,7 +123,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       children: [
         LayoutBuilder(
           builder: (context, constraints) {
-            const borderWidth = 2.0;
+            const borderWidth = 1.0;
             final width = constraints.biggest.width / 2 - borderWidth * 2;
 
             return ToggleButtons(
@@ -132,14 +133,14 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
                 fontSize: 16,
                 fontWeight: FontWeights.medium,
               ),
-              borderColor: BaseColors.neptune,
+              borderColor: theme.colorScheme.secondary,
               borderRadius: BorderRadius.circular(5),
               borderWidth: borderWidth,
-              color: BaseColors.neptune,
-              fillColor: BaseColors.curiousBlue10,
-              selectedBorderColor: BaseColors.curiousBlue,
+              color: theme.colorScheme.secondary,
+              fillColor: theme.colorScheme.primaryContainer,
+              selectedBorderColor: theme.colorScheme.primary,
               constraints: BoxConstraints(minWidth: width, minHeight: 35),
-              selectedColor: BaseColors.curiousBlue,
+              selectedColor: theme.colorScheme.primary,
               children: [
                 Text(t.wordDefinition.none),
                 Text(t.wordDefinition.learning),
@@ -195,16 +196,17 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   Widget buildResetButton(bool resetEnabled) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return TextButton(
       onPressed: resetEnabled ? onResetPressed : null,
       style: ButtonStyle(
         foregroundColor: mspResolveWith(
-          none: BaseColors.bittersweet,
-          disabled: BaseColors.oldRose,
+          none: theme.colorScheme.error,
+          disabled: theme.colorScheme.errorContainer,
         ),
         overlayColor: MaterialStatePropertyAll(
-          BaseColors.bittersweet10,
+          theme.colorScheme.error.withOpacity(0.1),
         ),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         textStyle: const MaterialStatePropertyAll(TextStyle(

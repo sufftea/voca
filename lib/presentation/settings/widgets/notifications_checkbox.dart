@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/settings/cubit/settings_cubit.dart';
@@ -16,6 +16,7 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
     with
         StatefulCubitConsumer<SettingsCubit, SettingsState,
             NotificationCheckbox> {
+
   Future<TimeOfDay?> _showTimePicker(
     BuildContext context, {
     required TimeOfDay currSelected,
@@ -97,6 +98,7 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
 
   Widget buildTimeButton(BuildContext context) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return Row(
       children: [
@@ -107,13 +109,13 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
                 ? () => onTimeButtonPressed(state)
                 : null,
             style: ButtonStyle(
-              overlayColor: mspResolveWith(none: BaseColors.botticelly),
+              overlayColor: mspResolveWith(none: theme.colorScheme.primaryContainer.withOpacity(0.1)),
               backgroundColor: mspResolveWith(
-                none: BaseColors.white,
+                none: theme.colorScheme.onSecondary,
               ),
               foregroundColor: mspResolveWith(
-                disabled: BaseColors.curiousBlue30,
-                none: BaseColors.curiousBlue,
+                disabled: theme.colorScheme.secondaryContainer,
+                none: theme.colorScheme.secondary,
               ),
               textStyle: mspResolveWith(
                 none: const TextStyle(
