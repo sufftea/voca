@@ -38,9 +38,10 @@ class _LearningListScreenState extends State<LearningListScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        verticalDirection: VerticalDirection.up,
         children: [
-          buildAppBar(),
           buildBody(),
+          buildAppBar(),
         ],
       ),
       floatingActionButton: Flavors.current == Flavors.dev
@@ -80,8 +81,8 @@ class _LearningListScreenState extends State<LearningListScreen>
               return Text(
                 length.toString(),
                 style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeights.light,
+                  color: theme.colorScheme.primary.withOpacity(0.8),
+                  fontWeight: FontWeights.bold,
                   fontSize: 20,
                 ),
               );

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/theming/base_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
@@ -69,7 +70,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: Stack(
         children: [
           buildBody(),
@@ -134,7 +135,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
           prev.maxRepetitionCount != curr.maxRepetitionCount,
       builder: (context, state) {
         final t = Translations.of(context);
-debugPrint('rebuilding search results.');
+        debugPrint('rebuilding search results.');
         return switch (state.status) {
           SearchStatus.needsMoreLetters => buildMessage(t.search.enterNLetters),
           SearchStatus.noResults => buildMessage(t.search.noResults),
@@ -217,7 +218,7 @@ debugPrint('rebuilding search results.');
 
   Widget buildMessage(String message) {
     final theme = Theme.of(context);
-    
+
     return Positioned(
       left: 0,
       right: 0,

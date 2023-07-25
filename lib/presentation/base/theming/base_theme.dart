@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 // https://realtimecolors.com/?colors=120c13-ffffff-423329-e1ebe0-62849d
 
-const _primaryValue = 0xFF423329;
-
 final lightTheme = ThemeData.from(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.lightGreen,
+    // seedColor: Colors.green,
+    // seedColor: Colors.teal,
+    // seedColor: Colors.lightBlue,
     shadow: Colors.black26,
   ),
 ).copyWith(

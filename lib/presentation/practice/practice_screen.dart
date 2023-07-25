@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/presentation/base/theming/base_theme.dart';
@@ -200,7 +201,7 @@ class _PracticeScreenState extends State<PracticeScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           verticalDirection: VerticalDirection.up,
@@ -512,7 +513,8 @@ class _PracticeScreenState extends State<PracticeScreen>
         height: _examplesAreaHeight,
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceVariant,
-          border: Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
+          border:
+              Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
           borderRadius: BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20),

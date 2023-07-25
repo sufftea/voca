@@ -45,32 +45,32 @@ class MySearchBar extends StatelessWidget {
           hintText: t.search.enterWord,
           contentPadding: const EdgeInsets.all(10),
           filled: true,
-          fillColor: theme.colorScheme.primaryContainer,
+          fillColor: theme.colorScheme.secondaryContainer,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
             borderSide: BorderSide(
-                color: theme.colorScheme.onPrimaryContainer.withOpacity(0.1)),
+                color: theme.colorScheme.onSecondaryContainer.withOpacity(0.1)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
             borderSide: BorderSide(
-                color: theme.colorScheme.onPrimaryContainer.withOpacity(0.2)),
+                color: theme.colorScheme.onSecondaryContainer.withOpacity(0.2)),
           ),
           hintStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeights.regular,
-            color: theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+            color: theme.colorScheme.onSecondaryContainer.withOpacity(0.5),
           ),
           suffixIcon: Icon(
             Icons.search,
-            color: theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+            color: theme.colorScheme.onSecondaryContainer.withOpacity(0.5),
             size: 18,
           ),
         ),
         style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.bold,
-          color: theme.colorScheme.onPrimaryContainer,
+          color: theme.colorScheme.onSecondaryContainer,
         ),
       ),
     );

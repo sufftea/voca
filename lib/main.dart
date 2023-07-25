@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:receive_intent/receive_intent.dart';
 import 'package:voca/firebase_options.dart';
 import 'package:voca/injectable/injectable_init.dart';
@@ -40,11 +41,19 @@ void main() async {
 
   final router = MainRouter();
 
-  runApp(TranslationProvider(
-    child: GlobalCubitProvider(
-      child: MaterialApp.router(
-        theme: lightTheme,
-        routerConfig: router.config(),
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  runApp(AnnotatedRegion<SystemUiOverlayStyle>(
+    value: const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+    child: TranslationProvider(
+      child: GlobalCubitProvider(
+        child: MaterialApp.router(
+          theme: lightTheme,
+          routerConfig: router.config(),
+        ),
       ),
     ),
   ));

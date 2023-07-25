@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
@@ -39,11 +40,7 @@ class TabBarShellScreen extends StatelessWidget {
           ),
           bottomNavigationBar: NavigationBar(
             height: 70,
-            shadowColor: Colors.black,
-            // indicatorColor: theme.colorScheme.secondary,
-            // surfaceTintColor: theme.colorScheme.surfaceTint,
-            // backgroundColor: theme.colorScheme.surfaceVariant,
-            // elevation: 0,
+            elevation: 5,
             indicatorShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

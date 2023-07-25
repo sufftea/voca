@@ -28,11 +28,10 @@ class _MiscBannerState extends State<MiscBanner>
           const NotificationCheckbox(),
           const SizedBox(height: 10),
           const CrashReportsCheckbox(),
-          // Container(color: BaseColors.black25, height: 1),
           Divider(
             height: 20,
             color: theme.colorScheme.onSecondaryContainer,
-            thickness: 1,
+            thickness: 0.5,
           ),
           const CardRepetitionCountSlider(),
         ],

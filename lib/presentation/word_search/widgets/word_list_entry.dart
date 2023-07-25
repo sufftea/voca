@@ -49,7 +49,7 @@ class WordListEntry extends StatelessWidget {
           style: DefaultTextStyle.of(context).style.merge(
                 TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeights.bold,
+                  fontWeight: FontWeights.medium,
                   color: theme.colorScheme.onSecondaryContainer,
                 ),
               ),
