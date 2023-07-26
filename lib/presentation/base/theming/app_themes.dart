@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
-  
-enum AppTheme {
+
+enum AppThemeName {
   green,
   blue,
   orange,
 }
 
-final themes = <AppTheme, ThemeData>{
-  AppTheme.blue: _applyEverythingElse(ThemeData.from(
+class AppTheme {
+  const AppTheme({
+    this.name = AppThemeName.green,
+    this.dark = false,
+  });
+
+  final AppThemeName name;
+  final bool dark;
+
+  AppTheme copyWith({
+    AppThemeName? name,
+    bool? dark,
+  }) {
+    return AppTheme(
+      name: name ?? this.name,
+      dark: dark ?? this.dark,
+    );
+  }
+}
+
+ThemeData composeTheme(AppTheme theme) {
+  return _applyEverythingElse(ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.lightBlue,
-      shadow: Colors.black26,
+      seedColor: switch (theme.name) {
+        AppThemeName.blue => Colors.lightBlue,
+        AppThemeName.green => Colors.lightGreen,
+        AppThemeName.orange => Colors.orange,
+      },
+      shadow: theme.dark ? null : Colors.black26,
+      brightness: theme.dark ? Brightness.dark : Brightness.light,
     ),
-  )),
-  AppTheme.green: _applyEverythingElse(ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.lightGreen,
-      shadow: Colors.black26,
-    ),
-  )),
-  AppTheme.orange: _applyEverythingElse(ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.orange,
-      shadow: Colors.black26,
-    ),
-  )),
-};
+  ));
+}
 
 ThemeData _applyEverythingElse(ThemeData theme) {
   return theme.copyWith(
