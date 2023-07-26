@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -38,9 +38,10 @@ class _LearningListScreenState extends State<LearningListScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        verticalDirection: VerticalDirection.up,
         children: [
-          buildAppBar(),
           buildBody(),
+          buildAppBar(),
         ],
       ),
       floatingActionButton: Flavors.current == Flavors.dev
@@ -53,7 +54,9 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   Widget buildAppBar() {
+    final theme = Theme.of(context);
     final t = Translations.of(context);
+
     return AppBarCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,9 +80,9 @@ class _LearningListScreenState extends State<LearningListScreen>
 
               return Text(
                 length.toString(),
-                style: const TextStyle(
-                  color: BaseColors.curiousBlue,
-                  fontWeight: FontWeights.light,
+                style: TextStyle(
+                  color: theme.colorScheme.primary.withOpacity(0.8),
+                  fontWeight: FontWeights.bold,
                   fontSize: 20,
                 ),
               );
@@ -91,54 +94,56 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   Widget buildBody() {
-    return builder(
-      buildWhen: (prev, curr) =>
-          prev.words != curr.words ||
-          prev.maxRepetitionCount != curr.maxRepetitionCount,
-      builder: (context, state) {
-        final words = state.words;
-        if (words == null) {
-          final t = Translations.of(context);
-          return buildMessage(t.common.wait);
-        }
-
-        if (words.isEmpty) {
-          final t = Translations.of(context);
-          return buildMessage(
-            t.learningList.noWords,
+    return Expanded(
+      child: builder(
+        buildWhen: (prev, curr) =>
+            prev.words != curr.words ||
+            prev.maxRepetitionCount != curr.maxRepetitionCount,
+        builder: (context, state) {
+          final words = state.words;
+          if (words == null) {
+            final t = Translations.of(context);
+            return buildMessage(t.common.wait);
+          }
+    
+          if (words.isEmpty) {
+            final t = Translations.of(context);
+            return buildMessage(
+              t.learningList.noWords,
+            );
+          }
+    
+          return  ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+              itemCount: words.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: WordListEntry(
+                    maxRepetitionCount: state.maxRepetitionCount,
+                    onTap: onListEntryTap,
+                    card: words[index],
+                  ),
+                );
+              },
           );
-        }
-
-        return Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            itemCount: words.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: WordListEntry(
-                  maxRepetitionCount: state.maxRepetitionCount,
-                  onTap: onListEntryTap,
-                  card: words[index],
-                ),
-              );
-            },
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 
   Widget buildMessage(String message) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Text(
         message,
-        style: const TextStyle(
-          color: BaseColors.neptune,
+        style: TextStyle(
+          color: theme.colorScheme.secondary,
           fontWeight: FontWeights.bold,
         ),
       ),

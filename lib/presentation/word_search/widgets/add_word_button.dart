@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 class AddWordButton extends StatefulWidget {
   const AddWordButton({
@@ -18,6 +17,7 @@ class AddWordButton extends StatefulWidget {
 
 class _AddWordButtonState extends State<AddWordButton> {
   bool isLoading = false;
+  late ThemeData theme = Theme.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +26,22 @@ class _AddWordButtonState extends State<AddWordButton> {
     if (widget.isAdded) {
       child = null;
     } else if (isLoading) {
-      child = const SizedBox(
+      child = SizedBox(
         height: 20,
         width: 20,
-        child:  CircularProgressIndicator(
-          color: BaseColors.curiousBlue,
-          
+        child: CircularProgressIndicator(
+          color: theme.colorScheme.secondary,
         ),
       );
     } else {
       child = IconButton(
         onPressed: onPressed,
-        style: const ButtonStyle(
-          foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
+        style: ButtonStyle(
+          foregroundColor:
+              MaterialStatePropertyAll(theme.colorScheme.secondary),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          iconSize: MaterialStatePropertyAll(30),
-          maximumSize: MaterialStatePropertyAll(Size.square(50)),
+          iconSize: const MaterialStatePropertyAll(30),
+          maximumSize: const MaterialStatePropertyAll(Size.square(50)),
         ),
         icon: const Icon(Icons.add_rounded),
       );
@@ -54,14 +54,14 @@ class _AddWordButtonState extends State<AddWordButton> {
   }
 
   void onPressed() async {
-      setState(() {
-        isLoading = true;
-      });
-  
-      await widget.onAddWord();
-  
-      setState(() {
-        isLoading = false;
-      });
-    }
+    setState(() {
+      isLoading = true;
+    });
+
+    await widget.onAddWord();
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 }

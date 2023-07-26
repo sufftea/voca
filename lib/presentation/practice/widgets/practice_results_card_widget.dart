@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class PracticeResultsCardWidget extends StatelessWidget {
@@ -15,14 +15,15 @@ class PracticeResultsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: BaseColors.white80,
+        color: theme.colorScheme.surface.withOpacity(0.8),
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: BaseColors.curiousBlue,
+          color: theme.colorScheme.secondary,
           width: 1,
         ),
       ),
@@ -43,9 +44,9 @@ class PracticeResultsCardWidget extends StatelessWidget {
               const SizedBox(width: 3),
               Text(
                 remembered.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  color: BaseColors.curiousBlue,
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeights.bold,
                 ),
               ),
@@ -65,15 +66,14 @@ class PracticeResultsCardWidget extends StatelessWidget {
               const SizedBox(width: 3),
               Text(
                 forgotten.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  color: BaseColors.bittersweet,
+                  color: theme.colorScheme.error,
                   fontWeight: FontWeights.bold,
                 ),
               ),
             ],
           ),
-          
         ],
       ),
     );

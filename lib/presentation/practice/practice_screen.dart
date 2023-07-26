@@ -4,9 +4,10 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -70,7 +71,9 @@ class _PracticeScreenState extends State<PracticeScreen>
 
     cubit.onScreenOpened();
 
-    createEmojiOverlay();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      createEmojiOverlay();
+    });
   }
 
   @override
@@ -88,6 +91,8 @@ class _PracticeScreenState extends State<PracticeScreen>
   }
 
   void createEmojiOverlay() {
+    final theme = Theme.of(context);
+
     final entry = OverlayEntry(
       builder: (context) {
         return AnimatedBuilder(
@@ -112,15 +117,17 @@ class _PracticeScreenState extends State<PracticeScreen>
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             color: cardFlipped
-                                ? BaseColors.bittersweet
-                                : BaseColors.curiousBlue80,
+                                ? theme.colorScheme.errorContainer
+                                : theme.colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Text(
                             cardFlipped ? '¯\\_(ツ)_/¯' : '٩( ^ᴗ^ )۶',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
-                              color: BaseColors.white,
+                              color: cardFlipped
+                                  ? theme.colorScheme.onErrorContainer
+                                  : theme.colorScheme.onPrimaryContainer,
                             ),
                           ),
                         );
@@ -161,7 +168,6 @@ class _PracticeScreenState extends State<PracticeScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       cardFlippedNotifier.value = cardFlipped;
 
-      debugPrint('show emoji');
       emojiFadeCtrl.stop(canceled: false);
       emojiFadeCtrl.value = 0;
 
@@ -191,8 +197,10 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           verticalDirection: VerticalDirection.up,
@@ -200,7 +208,7 @@ class _PracticeScreenState extends State<PracticeScreen>
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
-              child: buildExamplesArea(),
+              child: buildExamplesArea(theme),
             ),
             Expanded(
               child: Padding(
@@ -211,14 +219,14 @@ class _PracticeScreenState extends State<PracticeScreen>
                 child: buildCards(),
               ),
             ),
-            buildAppBar(),
+            buildAppBar(theme),
           ],
         ),
       ),
     );
   }
 
-  Widget buildAppBar() {
+  Widget buildAppBar(ThemeData theme) {
     return AppBar(
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
@@ -234,8 +242,8 @@ class _PracticeScreenState extends State<PracticeScreen>
 
           return Text(
             total == null ? '--/--' : '$curr/$total',
-            style: const TextStyle(
-              color: BaseColors.black,
+            style: TextStyle(
+              color: theme.colorScheme.onBackground,
               fontSize: 18,
               fontWeight: FontWeights.semiBold,
             ),
@@ -402,7 +410,7 @@ class _PracticeScreenState extends State<PracticeScreen>
     );
   }
 
-  Widget buildExamplesArea() {
+  Widget buildExamplesArea(ThemeData theme) {
     return builder(
       buildWhen: (prev, curr) =>
           prev.definitions != curr.definitions || prev.index != curr.index,
@@ -414,7 +422,7 @@ class _PracticeScreenState extends State<PracticeScreen>
         final definitions = state.definitions;
 
         if (definitions == null) {
-          return buildMessageCard('');
+          return buildMessageCard('', theme);
         }
 
         final t = Translations.of(context);
@@ -424,12 +432,12 @@ class _PracticeScreenState extends State<PracticeScreen>
         ];
 
         if (examples.isEmpty) {
-          return buildMessageCard(t.practice.noExamples);
+          return buildMessageCard(t.practice.noExamples, theme);
         }
 
         final cards = <Widget>[
-          buildFirstExamplesCard(),
-          for (final example in examples) buildExampleCard(example),
+          buildFirstExamplesCard(theme),
+          for (final example in examples) buildExampleCard(example, theme),
         ];
 
         return LayoutBuilder(builder: (context, cons) {
@@ -450,13 +458,13 @@ class _PracticeScreenState extends State<PracticeScreen>
     );
   }
 
-  Widget buildFirstExamplesCard() {
+  Widget buildFirstExamplesCard(ThemeData theme) {
     final t = Translations.of(context);
 
     return Container(
       decoration: BoxDecoration(
-        color: BaseColors.concrete,
-        border: Border.all(color: BaseColors.neptune, width: 1),
+        color: theme.colorScheme.surfaceVariant,
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
@@ -465,24 +473,24 @@ class _PracticeScreenState extends State<PracticeScreen>
         children: [
           Text(
             t.practice.examples,
-            style: const TextStyle(
-              color: BaseColors.neptune,
+            style: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(width: 5),
-          const Icon(
+          Icon(
             Icons.chevron_right,
-            color: BaseColors.neptune,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ],
       ),
     );
   }
 
-  Widget buildExampleCard(String example) {
+  Widget buildExampleCard(String example, ThemeData theme) {
     return Container(
       decoration: BoxDecoration(
-        color: BaseColors.neptune,
+        color: theme.colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(5),
       ),
       alignment: Alignment.center,
@@ -490,21 +498,22 @@ class _PracticeScreenState extends State<PracticeScreen>
       child: Text(
         '"$example"',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: BaseColors.white,
+        style: TextStyle(
+          color: theme.colorScheme.onSecondaryContainer,
         ),
       ),
     );
   }
 
-  Widget buildMessageCard(String message) {
+  Widget buildMessageCard(String message, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         height: _examplesAreaHeight,
         decoration: BoxDecoration(
-          color: BaseColors.concrete,
-          border: Border.all(color: BaseColors.neptune, width: 1),
+          color: theme.colorScheme.surfaceVariant,
+          border:
+              Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
           borderRadius: BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -512,8 +521,8 @@ class _PracticeScreenState extends State<PracticeScreen>
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: BaseColors.neptune,
+          style: TextStyle(
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/widgets/placeholder.dart';
 
 // TODO: should be defined in the language package, not localized
@@ -30,6 +30,7 @@ class WordDefinitionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final posDefinitions = <PartOfSpeech, List<WordDefinition>>{};
+    final theme = Theme.of(context);
 
     for (final definition in definitions) {
       final curr = posDefinitions[definition.pos] ??
@@ -47,16 +48,17 @@ class WordDefinitionsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (final entry in posDefinitions.entries) ...[
-            buildPosName(entry.key),
+            buildPosName(entry.key, theme),
             const SizedBox(height: 10),
-            ...buildDefinitionsForPos(entry.value),
+            ...buildDefinitionsForPos(entry.value, theme),
           ],
         ],
       ),
     );
   }
 
-  List<Widget> buildDefinitionsForPos(List<WordDefinition> definitions) {
+  List<Widget> buildDefinitionsForPos(List<WordDefinition> definitions,
+  ThemeData theme) {
     return [
       for (var i = 0; i < definitions.length; ++i)
         Row(
@@ -67,16 +69,16 @@ class WordDefinitionsWidget extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 (i + 1).toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  color: BaseColors.curiousBlue,
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeights.extraBold,
                 ),
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: buildDefinition(definitions[i]),
+              child: buildDefinition(definitions[i], theme),
             ),
           ],
         ),
@@ -84,18 +86,18 @@ class WordDefinitionsWidget extends StatelessWidget {
     ];
   }
 
-  Widget buildPosName(PartOfSpeech pos) {
+  Widget buildPosName(PartOfSpeech pos, ThemeData theme) {
     return Text(
       mapPos(pos),
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 19,
         fontWeight: FontWeights.bold,
-        color: BaseColors.curiousBlue,
+        color: theme.colorScheme.primary,
       ),
     );
   }
 
-  Widget buildDefinition(WordDefinition definition) {
+  Widget buildDefinition(WordDefinition definition, ThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,8 +111,8 @@ class WordDefinitionsWidget extends StatelessWidget {
         for (final example in definition.examples) ...[
           Text(
             '"$example"',
-            style: const TextStyle(
-              color: BaseColors.grey,
+            style: TextStyle(
+              color: theme.colorScheme.onBackground.withOpacity(0.8),
               fontSize: 15,
               fontWeight: FontWeights.light,
             ),

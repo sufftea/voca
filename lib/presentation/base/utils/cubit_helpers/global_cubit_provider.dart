@@ -16,8 +16,8 @@ class GlobalCubitProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => getIt.get<HomeCubit>()),
-        BlocProvider(create: (_) => getIt.get<SettingsCubit>()),
+        BlocProvider(create: (_) => getIt.get<HomeCubit>()..onInitialize()),
+        BlocProvider(create: (_) => getIt.get<SettingsCubit>()..onInitialize()),
       ],
       child: child,
     );

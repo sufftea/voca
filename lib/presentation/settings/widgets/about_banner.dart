@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 
@@ -41,20 +41,23 @@ class AboutBanner extends StatelessWidget {
   }
 
   Widget bulidWordNetCitation(BuildContext context) {
+    final theme = Theme.of(context);
+
     return RichText(
       text: TextSpan(
-        style: DefaultTextStyle.of(context).style.merge(const TextStyle(
+        style: DefaultTextStyle.of(context).style.merge(TextStyle(
               fontSize: 15,
               fontWeight: FontWeights.regular,
-            )), 
+              color: theme.colorScheme.onSurfaceVariant,
+            )),
         children: [
           TextSpan(
             text: t.settings.about.dictionaryFrom,
           ),
           TextSpan(
             text: t.settings.about.wordNet,
-            style: const TextStyle(
-              color: BaseColors.curiousBlue,
+            style: TextStyle(
+              color: theme.colorScheme.primary,
               fontWeight: FontWeights.medium,
             ),
             recognizer: TapGestureRecognizer()..onTap = onWordNetTap,

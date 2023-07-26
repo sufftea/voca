@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:styled_text/styled_text.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class CrashlyticsDialog extends StatelessWidget {
@@ -9,11 +9,10 @@ class CrashlyticsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return Dialog(
-      // insetPadding: const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      surfaceTintColor: BaseColors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -23,10 +22,10 @@ class CrashlyticsDialog extends StatelessWidget {
             Text(
               t.home.crashlyticsPermission.header,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 19,
                 fontWeight: FontWeights.bold,
-                color: BaseColors.curiousBlue,
+                color: theme.colorScheme.primary,
               ),
             ),
             const SizedBox(height: 10),
@@ -45,14 +44,14 @@ class CrashlyticsDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            buildButtons(context),
+            buildButtons(context, theme),
           ],
         ),
       ),
     );
   }
 
-  Row buildButtons(BuildContext context) {
+  Row buildButtons(BuildContext context, ThemeData theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -60,9 +59,10 @@ class CrashlyticsDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop(false);
           },
-          style: const ButtonStyle(
-              foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
-              textStyle: MaterialStatePropertyAll(TextStyle(
+          style: ButtonStyle(
+              foregroundColor:
+                  MaterialStatePropertyAll(theme.colorScheme.primary),
+              textStyle: const MaterialStatePropertyAll(TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeights.bold,
               ))),

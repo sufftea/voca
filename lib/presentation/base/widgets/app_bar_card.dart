@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 // TODO: remove this and use BaseStyles.appBarDecoration instead
 class AppBarCard extends StatelessWidget {
@@ -22,20 +22,32 @@ class AppBarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: color ?? BaseColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: BaseColors.black10,
-            blurRadius: 10,
-          ),
-        ],
+    final theme = Theme.of(context);
+
+    return DefaultTextStyle.merge(
+      style: TextStyle(
+        color: theme.colorScheme.onSurfaceVariant,
       ),
-      child: safeArea ? SafeArea(child: child) : child,
+      child: Container(
+        height: height,
+        width: width,
+        padding: padding,
+        decoration: BoxDecoration(
+          color: color ?? theme.colorScheme.surfaceVariant,
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow,
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: safeArea
+            ? SafeArea(
+              bottom: false,
+                child: child,
+              )
+            : child,
+      ),
     );
   }
 }

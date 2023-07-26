@@ -41,7 +41,7 @@ class HomeCubit extends Cubit<HomeState> {
     return super.close();
   }
 
-  Future<void> onScreenOpened() async {
+  Future<void> onInitialize() async {
     if (await _userDataRepository.isCrashlyticsCollectionAccepted() == null) {
       _eventController.add(RequestCrashlyticsPermission());
     }

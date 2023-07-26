@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -30,7 +30,8 @@ class PracticeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-
+    final theme = Theme.of(context);
+    
     return BaseCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -46,7 +47,7 @@ class PracticeBanner extends StatelessWidget {
           ),
           if (!learningListEmpty) ...[
             const SizedBox(height: 20),
-            buildCardsForTodayInfo(),
+            buildCardsForTodayInfo(theme),
             const SizedBox(height: 20),
             FilledButton(
               onPressed: switch (cardsForPractice) {
@@ -60,10 +61,10 @@ class PracticeBanner extends StatelessWidget {
             Text(
               t.home.practiceBanner.noWordsInLearnList,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeights.regular,
-                color: BaseColors.neptune,
+                color: theme.colorScheme.secondary,
               ),
             ),
           ]
@@ -72,15 +73,15 @@ class PracticeBanner extends StatelessWidget {
     );
   }
 
-  Widget buildCardsForTodayInfo() {
+  Widget buildCardsForTodayInfo(ThemeData theme) {
     if (cardsForPractice == 0) {
       return Text(
         t.home.practiceBanner.noCardsForToday,
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeights.regular,
-          color: BaseColors.neptune,
+          color: theme.colorScheme.secondary,
         ),
       );
     }
@@ -98,9 +99,9 @@ class PracticeBanner extends StatelessWidget {
         const SizedBox(width: 5),
         Text(
           cardsForPractice.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
-            color: BaseColors.curiousBlue,
+            color: theme.colorScheme.primary,
             fontWeight: FontWeights.bold,
           ),
         ),

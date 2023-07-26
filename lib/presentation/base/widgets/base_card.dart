@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 class BaseCard extends StatelessWidget {
   const BaseCard({
@@ -17,18 +16,25 @@ class BaseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
-      color: color ?? BaseColors.concrete,
+      color: color ?? theme.colorScheme.surfaceVariant,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
         side: borderSide,
       ),
-      child: Padding(
-        padding: padding,
-        child: child,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: theme.colorScheme.onSurfaceVariant
+        ),
+        child: Padding(
+          padding: padding,
+          child: child,
+        ),
       ),
     );
   }

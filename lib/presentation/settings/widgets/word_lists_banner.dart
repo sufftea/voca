@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
@@ -10,6 +10,8 @@ class WordListsBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme= Theme.of(context);
+
     return BaseCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -17,9 +19,10 @@ class WordListsBanner extends StatelessWidget {
         children: [
           Text(
             t.settings.words,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeights.bold,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 10),
@@ -37,26 +40,14 @@ class WordListsBanner extends StatelessWidget {
         final router = AutoRouter.of(context);
         router.push(const LearningListRoute());
       },
-      style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
-          alignment: Alignment.center,
-          side: const MaterialStatePropertyAll(BorderSide(
-            width: 2,
-            color: BaseColors.curiousBlue,
-          ))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            t.common.learning,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeights.medium,
-              color: BaseColors.curiousBlue,
-            ),
-          ),
-        ],
+      style: const ButtonStyle(
+        alignment: Alignment.center,
+      ),
+      child: Text(
+        t.common.learning,
+        style: const TextStyle(
+          fontSize: 15,
+        ),
       ),
     );
   }

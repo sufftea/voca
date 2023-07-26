@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 class CardProgressIndicatorLight extends StatelessWidget {
   const CardProgressIndicatorLight({
@@ -13,6 +12,7 @@ class CardProgressIndicatorLight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Wrap(
       spacing: 3,
       runSpacing: 5,
@@ -23,11 +23,11 @@ class CardProgressIndicatorLight extends StatelessWidget {
             height: 10,
             decoration: BoxDecoration(
               color: i < currRepetitions
-                  ? BaseColors.white
-                  : BaseColors.transparent,
+                  ? theme.colorScheme.onPrimary
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(2),
               border: Border.all(
-                color: BaseColors.white,
+                color: theme.colorScheme.onPrimary,
                 width: 1,
               ),
             ),

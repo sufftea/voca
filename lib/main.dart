@@ -5,11 +5,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:receive_intent/receive_intent.dart';
+import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/firebase_options.dart';
 import 'package:voca/injectable/injectable_init.dart';
-import 'package:voca/presentation/base/base_theme.dart';
-import 'package:voca/presentation/base/utils/cubit_helpers/global_cubit_provider.dart';
+import 'package:voca/presentation/base/app_dependencies.dart';
+import 'package:voca/presentation/base/theming/theme_mapper.dart';
+import 'package:voca/presentation/base/theming/theme_notifier.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/add_word_router.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
@@ -40,13 +43,18 @@ void main() async {
 
   final router = MainRouter();
 
-  runApp(TranslationProvider(
-    child: GlobalCubitProvider(
-      child: MaterialApp.router(
-        theme: baseTheme,
+  final theme = ThemeMapper.fromData(
+    await getIt.get<UserSettingsRepository>().getTheme(),
+  );
+
+  runApp(AppDependencies(
+    theme: theme,
+    builder: (context) {
+      return MaterialApp.router(
+        theme: context.watch<ThemeNotifier>().themeData,
         routerConfig: router.config(),
-      ),
-    ),
+      );
+    },
   ));
 }
 
@@ -64,21 +72,31 @@ void mainAddWord() async {
 
   final router = AddWordRouter();
 
-  runApp(TranslationProvider(
-    child: search != null
-        ? MaterialApp.router(
-            theme: baseTheme,
-            routerConfig: router.config(
-              deepLinkBuilder: (deepLink) {
-                return DeepLink([
-                  WordSearchRoute(initialSearch: search),
-                ]);
-              },
-            ),
-          )
-        : MaterialApp(
-            theme: baseTheme,
-            home: const ErrorScreen(),
-          ),
+  final theme = ThemeMapper.fromData(
+    await getIt.get<UserSettingsRepository>().getTheme(),
+  );
+
+  runApp(AppDependencies(
+    theme: theme,
+    builder: (context) {
+      final themeData = context.watch<ThemeNotifier>().themeData;
+
+      if (search == null) {
+        return MaterialApp(
+          theme: themeData,
+          home: const ErrorScreen(),
+        );
+      }
+      return MaterialApp.router(
+        theme: themeData,
+        routerConfig: router.config(
+          deepLinkBuilder: (deepLink) {
+            return DeepLink([
+              WordSearchRoute(initialSearch: search),
+            ]);
+          },
+        ),
+      );
+    },
   ));
 }

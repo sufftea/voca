@@ -3,9 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/utils/base_styles.dart';
 import 'package:voca/presentation/practice/widgets/card_progress_indicator_light.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
 
@@ -25,45 +24,38 @@ class WordCardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: BaseColors.concrete,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        verticalDirection: VerticalDirection.up,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          buildButtons(context),
-          Expanded(child: buildDefinitions()),
-          buildHeader(),
-        ],
+    final theme = Theme.of(context);
+
+    return Card(
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: theme.colorScheme.onSurface),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(theme),
+            Expanded(child: buildDefinitions()),
+            buildButtons(context, theme),
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildHeader() {
+  Widget buildHeader(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BaseStyles.appBarCardDecoration.copyWith(
-        color: BaseColors.curiousBlue,
-        boxShadow: [
-          BoxShadow(
-            color: BaseColors.black25,
-            blurRadius: 10,
-          ),
-        ],
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary,
       ),
       child: Row(
         children: [
           Expanded(
             child: Text(
               card.word.name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeights.bold,
-                color: BaseColors.white,
+                color: theme.colorScheme.onPrimary,
               ),
             ),
           ),
@@ -90,20 +82,23 @@ class WordCardBack extends StatelessWidget {
     );
   }
 
-  Widget buildButtons(BuildContext context) {
+  Widget buildButtons(BuildContext context, ThemeData theme) {
     final t = Translations.of(context);
     return OutlinedButton(
       onPressed: onKnowPressed,
       style: ButtonStyle(
-        overlayColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
-        surfaceTintColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
-        foregroundColor: const MaterialStatePropertyAll(BaseColors.black),
+        overlayColor: MaterialStatePropertyAll(
+            theme.colorScheme.primaryContainer.withOpacity(0.1)),
+        surfaceTintColor: MaterialStatePropertyAll(
+            theme.colorScheme.primaryContainer.withOpacity(0.1)),
+        foregroundColor: MaterialStatePropertyAll(theme.colorScheme.onSurface),
         padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
-        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(0),
+        shape: const MaterialStatePropertyAll(LinearBorder(
+          top: LinearBorderEdge(size: 1),
+          bottom: LinearBorderEdge(size: 1),
         )),
         side: MaterialStatePropertyAll(BorderSide(
-          color: BaseColors.black25,
+          color: theme.colorScheme.onSurface.withOpacity(0.2),
           width: 0.5,
         )),
         textStyle: const MaterialStatePropertyAll(
@@ -119,13 +114,3 @@ class WordCardBack extends StatelessWidget {
     );
   }
 }
-
-/*
-TODO: emoticons:
-
-٩( ^ᴗ^ )۶
-
-¯\_(ツ)_/¯
-
-
-*/

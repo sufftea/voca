@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:flutter/services.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
@@ -15,6 +15,7 @@ class TabBarShellScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return AutoTabsRouter(
       routes: const [
@@ -37,44 +38,32 @@ class TabBarShellScreen extends StatelessWidget {
               size: 30,
             ),
           ),
-          bottomNavigationBar: DecoratedBox(
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: BaseColors.black10,
-                blurRadius: 10,
-              ),
-            ]),
-            child: NavigationBar(
-              height: 70,
-              indicatorColor: BaseColors.neptune,
-              surfaceTintColor: BaseColors.white,
-              backgroundColor: BaseColors.white,
-              elevation: 0,
-              indicatorShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              selectedIndex: router.activeIndex,
-              onDestinationSelected: (index) {
-                if (router.activeIndex == index) {
-                  final tabRouter =
-                      router.childControllers[index] as StackRouter;
-                  tabRouter.popUntilRoot();
-                  return;
-                }
-
-                router.setActiveIndex(index);
-              },
-              destinations: [
-                NavigationDestination(
-                  icon: const Icon(Icons.home),
-                  label: t.navBar.home,
-                ),
-                NavigationDestination(
-                  icon: const Icon(Icons.settings),
-                  label: t.navBar.settings,
-                ),
-              ],
+          bottomNavigationBar: NavigationBar(
+            height: 70,
+            elevation: 5,
+            indicatorShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
+            selectedIndex: router.activeIndex,
+            onDestinationSelected: (index) {
+              if (router.activeIndex == index) {
+                final tabRouter = router.childControllers[index] as StackRouter;
+                tabRouter.popUntilRoot();
+                return;
+              }
+
+              router.setActiveIndex(index);
+            },
+            destinations: [
+              NavigationDestination(
+                icon: const Icon(Icons.home),
+                label: t.navBar.home,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.settings),
+                label: t.navBar.settings,
+              ),
+            ],
           ),
         );
       },

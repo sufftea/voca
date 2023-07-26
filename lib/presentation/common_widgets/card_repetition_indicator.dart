@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
 
 class CardRepetitionIndicator extends StatelessWidget {
   const CardRepetitionIndicator({
@@ -13,6 +12,8 @@ class CardRepetitionIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Wrap(
       runSpacing: 3,
       spacing: 5,
@@ -23,13 +24,14 @@ class CardRepetitionIndicator extends StatelessWidget {
             height: 10,
             decoration: i < repetitionCount
                 ? BoxDecoration(
-                    color: BaseColors.curiousBlue,
-                    borderRadius: BorderRadius.circular(3))
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(3),
+                  )
                 : BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
-                    color: BaseColors.white,
+                    color: Colors.transparent,
                     border: Border.all(
-                      color: BaseColors.curiousBlue,
+                      color: theme.colorScheme.primary,
                       width: 1,
                       strokeAlign: BorderSide.strokeAlignInside,
                     ),

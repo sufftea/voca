@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class ConfirmResetDialog extends StatelessWidget {
@@ -21,19 +21,21 @@ class ConfirmResetDialog extends StatelessWidget {
   }
 
   List<Widget> buildActions(BuildContext context) {
+    final theme = Theme.of(context);
+
     return [
       TextButton(
         onPressed: () {
           Navigator.of(context, rootNavigator: true).pop(false);
         },
-        style: const ButtonStyle(
-          textStyle: MaterialStatePropertyAll(
+        style: ButtonStyle(
+          textStyle: const MaterialStatePropertyAll(
             TextStyle(
               fontSize: 17,
               fontWeight: FontWeights.medium,
             ),
           ),
-          foregroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue),
+          foregroundColor: MaterialStatePropertyAll(theme.colorScheme.primary),
         ),
         child: Text(t.wordDefinition.resetDialog.cancel),
       ),
