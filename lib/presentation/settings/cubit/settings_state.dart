@@ -21,7 +21,8 @@ class SettingsState {
     int? maxRepetitionCount,
   }) {
     return SettingsState(
-      practiceRemindersEnabled: practiceRemindersEnabled ?? this.practiceRemindersEnabled,
+      practiceRemindersEnabled:
+          practiceRemindersEnabled ?? this.practiceRemindersEnabled,
       reminderShowAt: reminderShowAt ?? this.reminderShowAt,
       crashlyticsEnabled: crashlyticsEnabled ?? this.crashlyticsEnabled,
       maxRepetitionCount: maxRepetitionCount ?? this.maxRepetitionCount,

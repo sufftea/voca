@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
-import 'package:voca/presentation/base/theming/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/widgets/placeholder.dart';
 
 // TODO: should be defined in the language package, not localized

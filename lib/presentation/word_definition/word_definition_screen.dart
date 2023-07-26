@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/theming/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -61,13 +61,20 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      body: Column(
-        verticalDirection: VerticalDirection.up,
-        children: [
-          Expanded(child: buildBody()),
-          buildAppBar(),
-        ],
+      body: DefaultTextStyle.merge(
+          style: TextStyle(
+            color: theme.colorScheme.onSurface,
+          ),
+        child: Column(
+          verticalDirection: VerticalDirection.up,
+          children: [
+            Expanded(child: buildBody()),
+            buildAppBar(),
+          ],
+        ),
       ),
     );
   }
@@ -203,7 +210,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       style: ButtonStyle(
         foregroundColor: mspResolveWith(
           none: theme.colorScheme.error,
-          disabled: theme.colorScheme.errorContainer,
+          disabled: theme.colorScheme.errorContainer.withOpacity(0.8),
         ),
         overlayColor: MaterialStatePropertyAll(
           theme.colorScheme.error.withOpacity(0.1),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/theming/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class ConfirmResetDialog extends StatelessWidget {

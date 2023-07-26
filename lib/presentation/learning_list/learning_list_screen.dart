@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/theming/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -94,44 +94,44 @@ class _LearningListScreenState extends State<LearningListScreen>
   }
 
   Widget buildBody() {
-    return builder(
-      buildWhen: (prev, curr) =>
-          prev.words != curr.words ||
-          prev.maxRepetitionCount != curr.maxRepetitionCount,
-      builder: (context, state) {
-        final words = state.words;
-        if (words == null) {
-          final t = Translations.of(context);
-          return buildMessage(t.common.wait);
-        }
-
-        if (words.isEmpty) {
-          final t = Translations.of(context);
-          return buildMessage(
-            t.learningList.noWords,
+    return Expanded(
+      child: builder(
+        buildWhen: (prev, curr) =>
+            prev.words != curr.words ||
+            prev.maxRepetitionCount != curr.maxRepetitionCount,
+        builder: (context, state) {
+          final words = state.words;
+          if (words == null) {
+            final t = Translations.of(context);
+            return buildMessage(t.common.wait);
+          }
+    
+          if (words.isEmpty) {
+            final t = Translations.of(context);
+            return buildMessage(
+              t.learningList.noWords,
+            );
+          }
+    
+          return  ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+              itemCount: words.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: WordListEntry(
+                    maxRepetitionCount: state.maxRepetitionCount,
+                    onTap: onListEntryTap,
+                    card: words[index],
+                  ),
+                );
+              },
           );
-        }
-
-        return Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            itemCount: words.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: WordListEntry(
-                  maxRepetitionCount: state.maxRepetitionCount,
-                  onTap: onListEntryTap,
-                  card: words[index],
-                ),
-              );
-            },
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 

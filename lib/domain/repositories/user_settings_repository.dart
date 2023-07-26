@@ -4,4 +4,7 @@ abstract class UserSettingsRepository {
 
   Future<bool?> isCrashlyticsCollectionAccepted();
   Future<void> setCrashlyticsCollectionAccepted(bool accepted);
+
+  Future<void> setTheme(String themeCode);
+  Future<String?> getTheme();
 }

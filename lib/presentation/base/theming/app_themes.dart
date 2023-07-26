@@ -1,81 +1,90 @@
 import 'package:flutter/material.dart';
+  
+enum AppTheme {
+  green,
+  blue,
+  orange,
+}
 
-// https://realtimecolors.com/?colors=120c13-ffffff-423329-e1ebe0-62849d
-
-final lightTheme = ThemeData.from(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.lightGreen,
-    // seedColor: Colors.green,
-    // seedColor: Colors.teal,
-    // seedColor: Colors.lightBlue,
-    shadow: Colors.black26,
-  ),
-).copyWith(
-  //
-  textTheme: Typography.blackMountainView.apply(),
-  //
-  textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-    backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
-    elevation: const MaterialStatePropertyAll(0),
-    padding: const MaterialStatePropertyAll(EdgeInsets.all(5)),
-    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5),
-    )),
+final themes = <AppTheme, ThemeData>{
+  AppTheme.blue: _applyEverythingElse(ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      shadow: Colors.black26,
+    ),
   )),
-  cardTheme: CardTheme(
-    clipBehavior: Clip.antiAlias,
-    elevation: 5,
-    margin: EdgeInsets.zero,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5),
+  AppTheme.green: _applyEverythingElse(ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.lightGreen,
+      shadow: Colors.black26,
     ),
-  ),
-  //
-  filledButtonTheme: FilledButtonThemeData(
-    style: ButtonStyle(
-      // backgroundColor: mspResolveWith(
-      //   disabled: BaseColors.botticelly,
-      //   none: BaseColors.curiousBlue,
-      // ),
+  )),
+  AppTheme.orange: _applyEverythingElse(ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.orange,
+      shadow: Colors.black26,
+    ),
+  )),
+};
+
+ThemeData _applyEverythingElse(ThemeData theme) {
+  return theme.copyWith(
+    useMaterial3: true,
+    textTheme: Typography.blackMountainView.apply(),
+    //
+    textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+      backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
       elevation: const MaterialStatePropertyAll(0),
-      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      maximumSize: const MaterialStatePropertyAll(Size.infinite),
-      minimumSize: const MaterialStatePropertyAll(Size.zero),
-      side: const MaterialStatePropertyAll(BorderSide.none),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(5)),
       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       )),
-      // foregroundColor: const MaterialStatePropertyAll(BaseColors.white),
-      textStyle: const MaterialStatePropertyAll(TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeights.medium,
-      )),
-    ),
-  ),
-  //
-  outlinedButtonTheme: OutlinedButtonThemeData(
-    style: ButtonStyle(
-      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      maximumSize: const MaterialStatePropertyAll(Size.infinite),
-      minimumSize: const MaterialStatePropertyAll(Size.zero),
-      // side: const MaterialStatePropertyAll(BorderSide(
-      //   color: BaseColors.curiousBlue,
-      // )),
-      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+    )),
+    cardTheme: CardTheme(
+      clipBehavior: Clip.antiAlias,
+      elevation: 5,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
-      )),
-      // foregroundColor: const MaterialStatePropertyAll(BaseColors.curiousBlue),
-      textStyle: const MaterialStatePropertyAll(TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeights.medium,
-      )),
+      ),
     ),
-  ),
-);
+    //
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        elevation: const MaterialStatePropertyAll(0),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        maximumSize: const MaterialStatePropertyAll(Size.infinite),
+        minimumSize: const MaterialStatePropertyAll(Size.zero),
+        side: const MaterialStatePropertyAll(BorderSide.none),
+        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        )),
+        textStyle: const MaterialStatePropertyAll(TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeights.medium,
+        )),
+      ),
+    ),
+    //
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        maximumSize: const MaterialStatePropertyAll(Size.infinite),
+        minimumSize: const MaterialStatePropertyAll(Size.zero),
+        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        )),
+        textStyle: const MaterialStatePropertyAll(TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeights.medium,
+        )),
+      ),
+    ),
+  );
+}
 
 class FontWeights {
   const FontWeights._();

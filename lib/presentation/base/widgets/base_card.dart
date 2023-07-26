@@ -27,9 +27,14 @@ class BaseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         side: borderSide,
       ),
-      child: Padding(
-        padding: padding,
-        child: child,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: theme.colorScheme.onSurfaceVariant
+        ),
+        child: Padding(
+          padding: padding,
+          child: child,
+        ),
       ),
     );
   }

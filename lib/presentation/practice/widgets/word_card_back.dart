@@ -3,9 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/theming/base_theme.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/theming/base_styles.dart';
 import 'package:voca/presentation/practice/widgets/card_progress_indicator_light.dart';
 import 'package:voca/presentation/word_definition/widgets/word_definitions_widget.dart';
 
@@ -28,13 +27,16 @@ class WordCardBack extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          buildHeader(theme),
-          Expanded(child: buildDefinitions()),
-          buildButtons(context, theme),
-        ],
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: theme.colorScheme.onSurface),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(theme),
+            Expanded(child: buildDefinitions()),
+            buildButtons(context, theme),
+          ],
+        ),
       ),
     );
   }

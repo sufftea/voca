@@ -23,21 +23,26 @@ class AppBarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
-    return Container(
-      height: height,
-      width: width,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: color ?? theme.colorScheme.surfaceVariant,
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow,
-            blurRadius: 10,
-          ),
-        ],
+
+    return DefaultTextStyle.merge(
+      style: TextStyle(
+        color: theme.colorScheme.onSurfaceVariant,
       ),
-      child: safeArea ? SafeArea(child: child) : child,
+      child: Container(
+        height: height,
+        width: width,
+        padding: padding,
+        decoration: BoxDecoration(
+          color: color ?? theme.colorScheme.surfaceVariant,
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow,
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: safeArea ? SafeArea(child: child) : child,
+      ),
     );
   }
 }
