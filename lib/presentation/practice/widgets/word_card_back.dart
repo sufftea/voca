@@ -93,9 +93,6 @@ class WordCardBack extends StatelessWidget {
             theme.colorScheme.primaryContainer.withOpacity(0.1)),
         foregroundColor: MaterialStatePropertyAll(theme.colorScheme.onSurface),
         padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
-        // shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(0),
-        // )),
         shape: const MaterialStatePropertyAll(LinearBorder(
           top: LinearBorderEdge(size: 1),
           bottom: LinearBorderEdge(size: 1),
@@ -117,13 +114,3 @@ class WordCardBack extends StatelessWidget {
     );
   }
 }
-
-/*
-TODO: emoticons:
-
-٩( ^ᴗ^ )۶
-
-¯\_(ツ)_/¯
-
-
-*/

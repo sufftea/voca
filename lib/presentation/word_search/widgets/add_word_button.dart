@@ -37,7 +37,8 @@ class _AddWordButtonState extends State<AddWordButton> {
       child = IconButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          foregroundColor: MaterialStatePropertyAll(theme.colorScheme.secondary),
+          foregroundColor:
+              MaterialStatePropertyAll(theme.colorScheme.secondary),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           iconSize: const MaterialStatePropertyAll(30),
           maximumSize: const MaterialStatePropertyAll(Size.square(50)),

@@ -65,6 +65,8 @@ settings:
     dailyReminders: Receive daily reminders
     atTime: At ${time}
     crashReports: Send crash reports
+  theme:
+    header: Theme
 
 learningList:
   header: Learning list

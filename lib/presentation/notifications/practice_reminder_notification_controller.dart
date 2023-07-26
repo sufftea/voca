@@ -9,7 +9,7 @@ class PracticeReminderNotificationController {
     channelKey: channelKey,
     channelName: t.notifications.dailyReminder.channelName,
     channelDescription: t.notifications.dailyReminder.channelDescription,
-    defaultColor: Colors.blue, // TODO
+    defaultColor: Colors.blue,
     ledColor: null,
   );
 

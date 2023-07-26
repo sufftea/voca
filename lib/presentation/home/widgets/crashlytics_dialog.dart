@@ -13,7 +13,6 @@ class CrashlyticsDialog extends StatelessWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      // surfaceTintColor: theme.color,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

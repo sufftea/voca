@@ -85,7 +85,6 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           prev.word != curr.word || prev.status != curr.status,
       builder: (context, state) {
         return AppBarCard(
-          // safeArea: false,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,

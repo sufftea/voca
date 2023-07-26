@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/theming/app_themes.dart';
@@ -23,12 +25,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with StatefulCubitConsumer<HomeCubit, HomeState, HomeScreen> {
+      late final StreamSubscription cubitEventSubscription;
+
   @override
   void initState() {
     super.initState();
 
-    cubit.eventStream.listen(cubitEventListener);
-    cubit.onScreenOpened();
+    cubitEventSubscription = cubit.eventStream.listen(cubitEventListener);
+  }
+  @override
+  void dispose() {
+    super.dispose();
+
+    cubitEventSubscription.cancel();
   }
 
   void cubitEventListener(HomeEvent event) {

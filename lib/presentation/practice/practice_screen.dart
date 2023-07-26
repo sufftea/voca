@@ -168,7 +168,6 @@ class _PracticeScreenState extends State<PracticeScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       cardFlippedNotifier.value = cardFlipped;
 
-      debugPrint('show emoji');
       emojiFadeCtrl.stop(canceled: false);
       emojiFadeCtrl.value = 0;
 

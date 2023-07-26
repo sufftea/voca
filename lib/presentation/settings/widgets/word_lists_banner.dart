@@ -41,19 +41,12 @@ class WordListsBanner extends StatelessWidget {
         router.push(const LearningListRoute());
       },
       style: const ButtonStyle(
-        // backgroundColor: MaterialStatePropertyAll(BaseColors.curiousBlue10),
         alignment: Alignment.center,
-        // side: const MaterialStatePropertyAll(BorderSide(
-        //   width: 2,
-        //   color: BaseColors.curiousBlue,
-        // )),
       ),
       child: Text(
         t.common.learning,
         style: const TextStyle(
           fontSize: 15,
-          // fontWeight: FontWeights.medium,
-          // color: BaseColors.curiousBlue,
         ),
       ),
     );

@@ -22,13 +22,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen>
     with StatefulCubitConsumer<SettingsCubit, SettingsState, SettingsScreen> {
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   cubit.onInitialize();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
