@@ -65,9 +65,9 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
 
     return Scaffold(
       body: DefaultTextStyle.merge(
-          style: TextStyle(
-            color: theme.colorScheme.onSurface,
-          ),
+        style: TextStyle(
+          color: theme.colorScheme.onSurface,
+        ),
         child: Column(
           verticalDirection: VerticalDirection.up,
           children: [
@@ -85,6 +85,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           prev.word != curr.word || prev.status != curr.status,
       builder: (context, state) {
         return AppBarCard(
+          // safeArea: false,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -111,7 +112,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
   Widget buildStatusSettings(WordDefinitionState state) {
     final t = Translations.of(context);
     final theme = Theme.of(context);
-    
+
     final isSelected = [false, false];
 
     switch (state.status) {
@@ -210,7 +211,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       style: ButtonStyle(
         foregroundColor: mspResolveWith(
           none: theme.colorScheme.error,
-          disabled: theme.colorScheme.errorContainer.withOpacity(0.8),
+          disabled: theme.colorScheme.error.withOpacity(0.5),
         ),
         overlayColor: MaterialStatePropertyAll(
           theme.colorScheme.error.withOpacity(0.1),

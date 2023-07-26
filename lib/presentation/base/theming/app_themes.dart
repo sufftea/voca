@@ -9,7 +9,7 @@ enum AppTheme {
 final themes = <AppTheme, ThemeData>{
   AppTheme.blue: _applyEverythingElse(ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      seedColor: Colors.lightBlue,
       shadow: Colors.black26,
     ),
   )),

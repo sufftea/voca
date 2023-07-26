@@ -41,7 +41,12 @@ class AppBarCard extends StatelessWidget {
             ),
           ],
         ),
-        child: safeArea ? SafeArea(child: child) : child,
+        child: safeArea
+            ? SafeArea(
+              bottom: false,
+                child: child,
+              )
+            : child,
       ),
     );
   }
