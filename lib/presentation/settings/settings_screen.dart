@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:voca/presentation/base/theming/theme_notifier.dart';
 import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
@@ -37,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               children: [
                 SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     child: Text(
                       t.settings.header,
                       style: const TextStyle(
@@ -48,16 +46,16 @@ class _SettingsScreenState extends State<SettingsScreen>
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       WordListsBanner(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       MiscBanner(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       AboutBanner(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       ThemeBanner(),
                     ],
                   ),

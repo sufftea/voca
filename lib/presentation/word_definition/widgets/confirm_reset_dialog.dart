@@ -15,7 +15,7 @@ class ConfirmResetDialog extends StatelessWidget {
       actions: buildActions(context),
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       ),
     );
   }
@@ -51,7 +51,7 @@ class ConfirmResetDialog extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(t.wordDefinition.resetDialog.yes),
         ),
       ),

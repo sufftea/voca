@@ -21,15 +21,15 @@ class _MiscBannerState extends State<MiscBanner>
     final theme = Theme.of(context);
 
     return BaseCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const NotificationCheckbox(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           const CrashReportsCheckbox(),
           Divider(
-            height: 20,
+            height: 24,
             color: theme.colorScheme.onSecondaryContainer,
             thickness: 0.5,
           ),

@@ -17,64 +17,67 @@ class PracticeResultsCardWidget extends StatelessWidget {
     final t = Translations.of(context);
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: theme.colorScheme.secondary,
-          width: 1,
+    return DefaultTextStyle(
+      style: TextStyle(color: theme.colorScheme.onSurface),
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: theme.colorScheme.secondary,
+            width: 1,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                t.practice.wordsRemembered,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeights.bold,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  t.practice.wordsRemembered,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeights.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 3),
-              Text(
-                remembered.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeights.bold,
+                const SizedBox(width: 4),
+                Text(
+                  remembered.toString(),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeights.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                t.practice.wordsForgotten,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeights.bold,
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  t.practice.wordsForgotten,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeights.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 3),
-              Text(
-                forgotten.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeights.bold,
+                const SizedBox(width: 4),
+                Text(
+                  forgotten.toString(),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: theme.colorScheme.error,
+                    fontWeight: FontWeights.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

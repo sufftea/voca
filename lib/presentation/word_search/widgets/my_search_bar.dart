@@ -43,16 +43,16 @@ class MySearchBar extends StatelessWidget {
         focusNode: focusNode,
         decoration: InputDecoration(
           hintText: t.search.enterWord,
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: const EdgeInsets.all(12),
           filled: true,
           fillColor: theme.colorScheme.secondaryContainer,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(
                 color: theme.colorScheme.onSecondaryContainer.withOpacity(0.1)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(
                 color: theme.colorScheme.onSecondaryContainer.withOpacity(0.2)),
           ),

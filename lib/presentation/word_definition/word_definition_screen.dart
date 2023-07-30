@@ -85,7 +85,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           prev.word != curr.word || prev.status != curr.status,
       builder: (context, state) {
         return AppBarCard(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,9 +97,9 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
                   fontWeight: FontWeights.bold,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               buildLearningInfo(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               buildStatusSettings(state),
             ],
           ),
@@ -124,38 +124,32 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       default:
     }
 
-    // TODO: can I remove the column?
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            const borderWidth = 1.0;
-            final width = constraints.biggest.width / 2 - borderWidth * 2;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const borderWidth = 1.0;
+        final width = constraints.biggest.width / 2 - borderWidth * 2;
 
-            return ToggleButtons(
-              isSelected: isSelected,
-              onPressed: onCardStatusButtonPressed,
-              textStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeights.medium,
-              ),
-              borderColor: theme.colorScheme.secondary,
-              borderRadius: BorderRadius.circular(5),
-              borderWidth: borderWidth,
-              color: theme.colorScheme.secondary,
-              fillColor: theme.colorScheme.primaryContainer,
-              selectedBorderColor: theme.colorScheme.primary,
-              constraints: BoxConstraints(minWidth: width, minHeight: 35),
-              selectedColor: theme.colorScheme.primary,
-              children: [
-                Text(t.wordDefinition.none),
-                Text(t.wordDefinition.learning),
-              ],
-            );
-          },
-        ),
-      ],
+        return ToggleButtons(
+          isSelected: isSelected,
+          onPressed: onCardStatusButtonPressed,
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeights.medium,
+          ),
+          borderColor: theme.colorScheme.secondary,
+          borderRadius: BorderRadius.circular(6),
+          borderWidth: borderWidth,
+          color: theme.colorScheme.secondary,
+          fillColor: theme.colorScheme.primaryContainer,
+          selectedBorderColor: theme.colorScheme.primary,
+          constraints: BoxConstraints(minWidth: width, minHeight: 48),
+          selectedColor: theme.colorScheme.primary,
+          children: [
+            Text(t.wordDefinition.none),
+            Text(t.wordDefinition.learning),
+          ],
+        );
+      },
     );
   }
 
@@ -177,7 +171,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
               state.repetitionCount!,
               state.maxRepetitionCount,
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             buildResetButton(resetEnabled),
           ],
         );
@@ -223,7 +217,7 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
       child: Row(
         children: [
           const Icon(Icons.refresh_rounded),
-          const SizedBox(width: 5),
+          const SizedBox(width: 6),
           Text(
             t.wordDefinition.reset,
           ),

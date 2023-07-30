@@ -19,8 +19,8 @@ class CardProgressIndicatorLight extends StatelessWidget {
       children: [
         for (var i = 0; i < maxRepetitionCount; ++i)
           Container(
-            width: 20,
-            height: 10,
+            width: 18,
+            height: 8,
             decoration: BoxDecoration(
               color: i < currRepetitions
                   ? theme.colorScheme.onPrimary

@@ -13,7 +13,7 @@ class WordListsBanner extends StatelessWidget {
     final theme= Theme.of(context);
 
     return BaseCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -25,7 +25,7 @@ class WordListsBanner extends StatelessWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           buildLearningButton(context),
         ],
       ),

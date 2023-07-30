@@ -22,7 +22,7 @@ class AboutBanner extends StatelessWidget {
     final t = Translations.of(context);
 
     return BaseCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -34,6 +34,7 @@ class AboutBanner extends StatelessWidget {
               fontWeight: FontWeights.bold,
             ),
           ),
+          const SizedBox(height: 12),
           bulidWordNetCitation(context),
         ],
       ),

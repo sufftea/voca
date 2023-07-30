@@ -26,14 +26,14 @@ class WordCardFront extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Spacer(),
           buildWord(theme),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           buildRepetitionCount(),
           const Spacer(),
           buildDefinitionButton(theme),
@@ -74,7 +74,7 @@ class WordCardFront extends StatelessWidget {
   Widget buildRepetitionCount() {
     return Center(
       child: Container(
-        width: 230,
+        width: 192,
         alignment: Alignment.center,
         child: CardProgressIndicatorLight(
           currRepetitions: card.repetitionCount,

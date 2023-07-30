@@ -21,7 +21,7 @@ class CrashReportsCheckbox extends StatelessWidget
     return Row(
       children: [
         buildCheckBox(),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         buildText(context),
       ],
     );
@@ -33,8 +33,8 @@ class CrashReportsCheckbox extends StatelessWidget
           prev.crashlyticsEnabled != curr.crashlyticsEnabled,
       builder: (context, state) {
         return Container(
-          height: 20,
-          width: 20,
+          height: 16,
+          width: 16,
           alignment: Alignment.center,
           child: Checkbox(
             value: state.crashlyticsEnabled,
