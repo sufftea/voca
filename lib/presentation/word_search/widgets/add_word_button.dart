@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +29,8 @@ class _AddWordButtonState extends State<AddWordButton> {
       child = null;
     } else if (isLoading) {
       child = SizedBox(
-        height: 20,
-        width: 20,
+        height: 32,
+        width: 32,
         child: CircularProgressIndicator(
           color: theme.colorScheme.secondary,
         ),
@@ -39,16 +41,22 @@ class _AddWordButtonState extends State<AddWordButton> {
         style: ButtonStyle(
           foregroundColor:
               MaterialStatePropertyAll(theme.colorScheme.secondary),
+          padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          iconSize: const MaterialStatePropertyAll(30),
-          maximumSize: const MaterialStatePropertyAll(Size.square(50)),
+          iconSize: const MaterialStatePropertyAll(32),
+          fixedSize: const MaterialStatePropertyAll(Size.square(48)),
+          // visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
         ),
-        icon: const Icon(Icons.add_rounded),
+        visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+        icon: const Icon(
+          Icons.add_rounded,
+          // size: 20,
+        ),
       );
     }
 
     return SizedBox(
-      width: 60,
+      width: 64,
       child: Center(child: child),
     );
   }

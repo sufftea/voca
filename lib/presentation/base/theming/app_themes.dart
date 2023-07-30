@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 enum AppThemeName {
+  orange,
   green,
   blue,
-  orange,
 }
 
 class AppTheme {
@@ -30,9 +30,9 @@ ThemeData composeTheme(AppTheme theme) {
   return _applyEverythingElse(ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
       seedColor: switch (theme.name) {
-        AppThemeName.blue => Colors.lightBlue,
-        AppThemeName.green => Colors.lightGreen,
         AppThemeName.orange => Colors.orange,
+        AppThemeName.green => Colors.lightGreen,
+        AppThemeName.blue => Colors.blue,
       },
       shadow: theme.dark ? null : Colors.black26,
       brightness: theme.dark ? Brightness.dark : Brightness.light,
@@ -49,9 +49,9 @@ ThemeData _applyEverythingElse(ThemeData theme) {
         style: ButtonStyle(
       backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
       elevation: const MaterialStatePropertyAll(0),
-      padding: const MaterialStatePropertyAll(EdgeInsets.all(5)),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(6)),
       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       )),
     )),
     cardTheme: CardTheme(
@@ -59,20 +59,20 @@ ThemeData _applyEverythingElse(ThemeData theme) {
       elevation: 5,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       ),
     ),
     //
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
         elevation: const MaterialStatePropertyAll(0),
-        padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(8)),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         maximumSize: const MaterialStatePropertyAll(Size.infinite),
         minimumSize: const MaterialStatePropertyAll(Size.zero),
         side: const MaterialStatePropertyAll(BorderSide.none),
         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(6),
         )),
         textStyle: const MaterialStatePropertyAll(TextStyle(
           fontSize: 20,
@@ -83,17 +83,23 @@ ThemeData _applyEverythingElse(ThemeData theme) {
     //
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(8)),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         maximumSize: const MaterialStatePropertyAll(Size.infinite),
         minimumSize: const MaterialStatePropertyAll(Size.zero),
         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(6),
         )),
         textStyle: const MaterialStatePropertyAll(TextStyle(
           fontSize: 20,
           fontWeight: FontWeights.medium,
         )),
+      ),
+    ),
+    timePickerTheme: const TimePickerThemeData(
+      hourMinuteTextStyle: TextStyle(
+        fontSize: 64,
+        fontWeight: FontWeight.w200,
       ),
     ),
   );

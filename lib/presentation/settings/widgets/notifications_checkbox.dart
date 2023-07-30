@@ -16,7 +16,6 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
     with
         StatefulCubitConsumer<SettingsCubit, SettingsState,
             NotificationCheckbox> {
-
   Future<TimeOfDay?> _showTimePicker(
     BuildContext context, {
     required TimeOfDay currSelected,
@@ -25,6 +24,13 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
       context: context,
       initialTime: currSelected,
       initialEntryMode: TimePickerEntryMode.dial,
+      useRootNavigator: true,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: child!,
+        );
+      },
     );
   }
 
@@ -56,8 +62,9 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
     return Row(
       children: [
         buildCheckBox(),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         buildText(),
+        const SizedBox(width: 12),
         buildTimeButton(context),
       ],
     );
@@ -69,8 +76,8 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
           prev.practiceRemindersEnabled != curr.practiceRemindersEnabled,
       builder: (context, state) {
         return Container(
-          height: 20,
-          width: 20,
+          height: 16,
+          width: 16,
           alignment: Alignment.center,
           child: Checkbox(
             value: state.practiceRemindersEnabled,
@@ -100,36 +107,34 @@ class _NotificationCheckboxState extends State<NotificationCheckbox>
     final t = Translations.of(context);
     final theme = Theme.of(context);
 
-    return Row(
-      children: [
-        const SizedBox(width: 30),
-        builder(builder: (context, state) {
-          return FilledButton(
-            onPressed: state.practiceRemindersEnabled ?? false
-                ? () => onTimeButtonPressed(state)
-                : null,
-            style: ButtonStyle(
-              overlayColor: mspResolveWith(none: theme.colorScheme.primaryContainer.withOpacity(0.1)),
-              backgroundColor: mspResolveWith(
-                none: theme.colorScheme.onSecondary,
-              ),
-              foregroundColor: mspResolveWith(
-                disabled: theme.colorScheme.secondaryContainer,
-                none: theme.colorScheme.secondary,
-              ),
-              textStyle: mspResolveWith(
-                none: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeights.medium,
-                ),
-              ),
+    return builder(builder: (context, state) {
+      return FilledButton(
+        onPressed: state.practiceRemindersEnabled ?? false
+            ? () => onTimeButtonPressed(state)
+            : null,
+        style: ButtonStyle(
+          overlayColor: mspResolveWith(
+              none: theme.colorScheme.primaryContainer.withOpacity(0.1)),
+          backgroundColor: mspResolveWith(
+            none: theme.colorScheme.onSecondary,
+          ),
+          foregroundColor: mspResolveWith(
+            disabled: theme.colorScheme.secondaryContainer,
+            none: theme.colorScheme.secondary,
+          ),
+          textStyle: mspResolveWith(
+            none: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeights.medium,
             ),
-            child: Text(t.settings.misc.atTime(
-              time: state.reminderShowAt.format(context),
-            )),
-          );
-        }),
-      ],
-    );
+          ),
+        ),
+        child: Text(
+          t.settings.misc.atTime(
+            time: state.reminderShowAt.format(context),
+          ),
+        ),
+      );
+    });
   }
 }

@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:vector_math/vector_math_64.dart';
-
 import 'package:flutter/material.dart';
 
 class WordCardWidget extends StatefulWidget {

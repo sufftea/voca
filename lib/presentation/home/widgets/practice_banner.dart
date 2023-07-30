@@ -33,7 +33,7 @@ class PracticeBanner extends StatelessWidget {
     final theme = Theme.of(context);
     
     return BaseCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -46,9 +46,9 @@ class PracticeBanner extends StatelessWidget {
             ),
           ),
           if (!learningListEmpty) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             buildCardsForTodayInfo(theme),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             FilledButton(
               onPressed: switch (cardsForPractice) {
                 0 => null,
@@ -57,7 +57,7 @@ class PracticeBanner extends StatelessWidget {
               child: Text(t.home.practiceBanner.practice),
             ),
           ] else ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Text(
               t.home.practiceBanner.noWordsInLearnList,
               textAlign: TextAlign.center,
@@ -96,7 +96,7 @@ class PracticeBanner extends StatelessWidget {
             fontWeight: FontWeights.regular,
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 4),
         Text(
           cardsForPractice.toString(),
           style: TextStyle(

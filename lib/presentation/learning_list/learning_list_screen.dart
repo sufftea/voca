@@ -115,13 +115,13 @@ class _LearningListScreenState extends State<LearningListScreen>
     
           return  ListView.builder(
               padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
+                horizontal: 16,
+                vertical: 8,
               ),
               itemCount: words.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
+                  padding: const EdgeInsets.only(bottom: 4),
                   child: WordListEntry(
                     maxRepetitionCount: state.maxRepetitionCount,
                     onTap: onListEntryTap,
@@ -139,7 +139,7 @@ class _LearningListScreenState extends State<LearningListScreen>
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       child: Text(
         message,
         style: TextStyle(

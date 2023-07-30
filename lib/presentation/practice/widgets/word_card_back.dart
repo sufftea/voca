@@ -43,7 +43,7 @@ class WordCardBack extends StatelessWidget {
 
   Widget buildHeader(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
       ),

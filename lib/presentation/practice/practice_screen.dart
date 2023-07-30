@@ -207,14 +207,14 @@ class _PracticeScreenState extends State<PracticeScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: buildExamplesArea(theme),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
+                  horizontal: 16,
+                  vertical: 12,
                 ),
                 child: buildCards(),
               ),
@@ -385,7 +385,7 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildLoadingCurrCard() {
     return const BaseCard(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -393,20 +393,13 @@ class _PracticeScreenState extends State<PracticeScreen>
             width: 300,
             height: 25,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 12),
           PlaceholderCard(
             width: 200,
             height: 20,
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildRepetitionsCounter() {
-    return const Placeholder(
-      fallbackHeight: 15,
-      fallbackWidth: 200,
     );
   }
 
@@ -447,7 +440,7 @@ class _PracticeScreenState extends State<PracticeScreen>
             child: Swiper(
               index: 0,
               loop: false,
-              viewportFraction: (cons.maxWidth - 40) / cons.maxWidth,
+              viewportFraction: (cons.maxWidth - 32) / cons.maxWidth,
               scale: 0.92,
               itemCount: cards.length,
               itemBuilder: (context, index) => cards[index],
@@ -465,7 +458,7 @@ class _PracticeScreenState extends State<PracticeScreen>
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceVariant,
         border: Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -477,7 +470,7 @@ class _PracticeScreenState extends State<PracticeScreen>
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 6),
           Icon(
             Icons.chevron_right,
             color: theme.colorScheme.onSurfaceVariant,
@@ -491,10 +484,10 @@ class _PracticeScreenState extends State<PracticeScreen>
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
       ),
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         '"$example"',
         textAlign: TextAlign.center,
@@ -507,16 +500,16 @@ class _PracticeScreenState extends State<PracticeScreen>
 
   Widget buildMessageCard(String message, ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         height: _examplesAreaHeight,
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceVariant,
           border:
               Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(6),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         alignment: Alignment.center,
         child: Text(
           message,
@@ -532,7 +525,7 @@ class _PracticeScreenState extends State<PracticeScreen>
   Widget buildGoBackButton() {
     final t = Translations.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: _examplesAreaHeight,
         child: FilledButton.icon(

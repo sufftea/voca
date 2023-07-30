@@ -13,7 +13,7 @@ class SuperSwitch extends StatefulWidget {
   final VoidCallback onTap;
 
   final width = 60.0;
-  final height = 30.0;
+  final height = 28.0;
   final padding = 6.0;
   final shadowSize = 2.0;
 

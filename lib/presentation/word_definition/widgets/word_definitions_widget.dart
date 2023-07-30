@@ -3,7 +3,6 @@ import 'package:voca/domain/entities/dictionary_entry.dart';
 import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/widgets/placeholder.dart';
 
-// TODO: should be defined in the language package, not localized
 String mapPos(PartOfSpeech pos) {
   switch (pos) {
     case PartOfSpeech.adjective:
@@ -41,15 +40,15 @@ class WordDefinitionsWidget extends StatelessWidget {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 20,
+        vertical: 12,
+        horizontal: 16,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (final entry in posDefinitions.entries) ...[
             buildPosName(entry.key, theme),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             ...buildDefinitionsForPos(entry.value, theme),
           ],
         ],
@@ -57,15 +56,19 @@ class WordDefinitionsWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> buildDefinitionsForPos(List<WordDefinition> definitions,
-  ThemeData theme) {
+  List<Widget> buildDefinitionsForPos(
+    List<WordDefinition> definitions,
+    ThemeData theme,
+  ) {
+    
+
     return [
       for (var i = 0; i < definitions.length; ++i)
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 30,
+              width: 24,
               alignment: Alignment.centerRight,
               child: Text(
                 (i + 1).toString(),

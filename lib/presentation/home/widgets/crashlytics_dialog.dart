@@ -14,7 +14,7 @@ class CrashlyticsDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -28,7 +28,7 @@ class CrashlyticsDialog extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             StyledText(
               text: t.home.crashlyticsPermission.body,
               tags: {
@@ -43,7 +43,7 @@ class CrashlyticsDialog extends StatelessWidget {
                 fontWeight: FontWeights.light,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             buildButtons(context, theme),
           ],
         ),
@@ -68,7 +68,7 @@ class CrashlyticsDialog extends StatelessWidget {
               ))),
           child: Text(t.home.crashlyticsPermission.deny),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         FilledButton(
           onPressed: () {
             Navigator.of(context).pop(true);

@@ -17,15 +17,14 @@ class ThemeBanner extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final themeNotifier = context.watch<ThemeNotifier>();
-    final t = Translations.of(context);
 
     return BaseCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildHeaderAndSwitch(themeNotifier, context),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           buildColorSelection(themeNotifier, context),
         ],
       ),

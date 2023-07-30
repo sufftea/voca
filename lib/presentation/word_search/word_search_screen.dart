@@ -87,7 +87,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
       left: 0,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           child: Hero(
             tag: SearchBarHeroData.tag,
             flightShuttleBuilder: (
@@ -156,15 +156,15 @@ class _WordSearchScreenState extends State<WordSearchScreen>
         ListView.builder(
           itemCount: state.results.length,
           padding: EdgeInsets.only(
-            left: 20,
-            top: 80 + MediaQuery.of(context).padding.top,
-            bottom: 10,
+            left: 16,
+            top: 70 + MediaQuery.of(context).padding.top,
+            bottom: 12,
           ),
           clipBehavior: Clip.none,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 5,
+                vertical: 4,
               ),
               child: buildEntry(state, index, context),
             );
@@ -182,8 +182,8 @@ class _WordSearchScreenState extends State<WordSearchScreen>
       color: theme.colorScheme.background.withOpacity(0.2),
       alignment: Alignment.center,
       child: SizedBox(
-        width: 25,
-        height: 25,
+        width: 32,
+        height: 32,
         child: CircularProgressIndicator(
           color: theme.colorScheme.onBackground,
           strokeWidth: 5,
@@ -195,24 +195,28 @@ class _WordSearchScreenState extends State<WordSearchScreen>
   Widget buildEntry(SearchState state, int index, BuildContext context) {
     final card = state.results[index];
 
-    return Row(
-      children: [
-        Expanded(
-          child: WordListEntry(
-            card: card,
-            searchedWord: state.lastSearch ?? '',
-            maxRepetitionCount: state.maxRepetitionCount,
-            onTap: openWordDefinition,
+    return SizedBox(
+      height: 48,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: WordListEntry(
+              card: card,
+              searchedWord: state.lastSearch ?? '',
+              maxRepetitionCount: state.maxRepetitionCount,
+              onTap: openWordDefinition,
+            ),
           ),
-        ),
-        AddWordButton(
-          onAddWord: () async {
-            await cubit.onAddWordToLearning(card.word);
-            searchBarFocusNode.unfocus();
-          },
-          isAdded: card.status == WordCardStatus.learning,
-        ),
-      ],
+          AddWordButton(
+            onAddWord: () async {
+              await cubit.onAddWordToLearning(card.word);
+              searchBarFocusNode.unfocus();
+            },
+            isAdded: card.status == WordCardStatus.learning,
+          ),
+        ],
+      ),
     );
   }
 
@@ -224,8 +228,8 @@ class _WordSearchScreenState extends State<WordSearchScreen>
       right: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 120,
+          horizontal: 16,
+          vertical: 128,
         ),
         child: Text(
           message,

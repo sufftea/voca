@@ -21,19 +21,16 @@ class WordListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // height: 50,
-      child: ClickableCard(
-        onTap: () => onTap(card),
-        child: BaseCard(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              buildWord(context),
-              const SizedBox(width: 5),
-              buildProgressIndicator(),
-            ],
-          ),
+    return ClickableCard(
+      onTap: () => onTap(card),
+      child: BaseCard(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        child: Row(
+          children: [
+            buildWord(context),
+            const SizedBox(width: 4),
+            buildProgressIndicator(),
+          ],
         ),
       ),
     );
@@ -85,7 +82,8 @@ class WordListEntry extends StatelessWidget {
   Widget buildProgressIndicator() {
     switch (card.status) {
       case WordCardStatus.learning:
-        return Expanded(
+        return SizedBox(
+          width: 128,
           child: Align(
             alignment: Alignment.centerRight,
             child: CardRepetitionIndicator(
