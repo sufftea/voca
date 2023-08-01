@@ -122,10 +122,13 @@ class _LearningListScreenState extends State<LearningListScreen>
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 4),
-                  child: WordListEntry(
-                    maxRepetitionCount: state.maxRepetitionCount,
-                    onTap: onListEntryTap,
-                    card: words[index],
+                  child: SizedBox(
+                    height: 48,
+                    child: WordListEntry(
+                      maxRepetitionCount: state.maxRepetitionCount,
+                      onTap: onListEntryTap,
+                      card: words[index],
+                    ),
                   ),
                 );
               },
