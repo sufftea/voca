@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
@@ -7,14 +9,22 @@ import 'package:voca/domain/entities/word_card.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
 import 'package:voca/main.dart' as app;
 import 'package:voca/presentation/home/widgets/crashlytics_dialog.dart';
+import 'package:voca/presentation/home/widgets/practice_banner.dart';
+import 'package:voca/presentation/learning_list/learning_list_screen.dart';
+import 'package:voca/presentation/nav_bar/tab_bar_shell_screen.dart';
+import 'package:voca/presentation/practice/practice_screen.dart';
+import 'package:voca/presentation/practice/widgets/word_card_front.dart';
 import 'package:voca/presentation/settings/widgets/word_lists_banner.dart';
 import 'package:voca/presentation/word_definition/word_definition_screen.dart';
+import 'package:voca/presentation/word_search/widgets/add_word_button.dart';
 import 'package:voca/presentation/word_search/widgets/word_search_bar.dart';
+import 'package:voca/presentation/word_search/word_search_screen.dart';
 
 import 'utils/utils.dart';
 
 Future<void> pumpAndSettle(WidgetTester tester) async {
-  await Future.delayed(const Duration(seconds: 1));
+  // await tester.pumpAndSettle();
+  // await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   return;
 }
@@ -26,10 +36,10 @@ void main() {
     'Full app test',
     (tester) async {
       app.main();
-      await Future.delayed(const Duration(seconds: 4));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 5));
       await tester.pumpAndSettle();
 
-      // crashlytics dialog
       await testCase(
         "Shows crashlytics dialog upon the first launch",
         () async {
@@ -40,7 +50,6 @@ void main() {
         },
       );
 
-      // Word search
       const randomWord = 'random';
       final searchedWord = find.text(randomWord, findRichText: true);
       await testCase(
@@ -60,7 +69,6 @@ void main() {
         },
       );
 
-      // Adding a word to learning
       await testCase(
         "Add word to learning from WordDefinitionScreen",
         () async {
@@ -89,15 +97,113 @@ void main() {
       await testCase(
         "Learning list screen displays the added word",
         () async {
-          app.navigatorKey.currentState!.pop(); // from WordDefinitionScreen
+          popCurrentContext(tester, WordDefinitionScreen);
           await pumpAndSettle(tester);
-          app.navigatorKey.currentState!.pop(); // from WordSearchScreen
+          popCurrentContext(tester, WordSearchScreen);
           await pumpAndSettle(tester);
-          await tester.tap(find.byIcon(Icons.settings));
+
+          await tester.tap(find.byKey(TabBarShellScreen.settingsTabKey));
           await pumpAndSettle(tester);
           await tester.tap(find.byKey(WordListsBanner.learningListButtonKey));
           await pumpAndSettle(tester);
           expect(find.text(randomWord, findRichText: true), findsOneWidget);
+          await pumpAndSettle(tester);
+        },
+      );
+
+      final words = <String>['air', 'water', 'fire', 'earth'];
+      await testCase(
+        "Add more words to the list",
+        () async {
+          popCurrentContext(tester, LearningListScreen);
+          await pumpAndSettle(tester);
+
+          await tester.tap(find.byKey(TabBarShellScreen.homeTabKey));
+          await pumpAndSettle(tester);
+
+          for (final word in words) {
+            await tester.tap(
+              find.byKey(WordSearchBar.textFieldKey),
+              warnIfMissed: false,
+            );
+            await pumpAndSettle(tester);
+
+            await tester.enterText(
+              find.byKey(WordSearchBar.textFieldKey),
+              word,
+            );
+            await pumpAndSettle(tester);
+
+            await tester.tap(find.byType(AddWordButton).first);
+            await pumpAndSettle(tester);
+          }
+        },
+      );
+
+      final remembered = <String>{};
+      final forgotten = <String>{};
+      await testCase(
+        "Practice words",
+        () async {
+          popCurrentContext(tester, WordSearchScreen);
+          await pumpAndSettle(tester);
+
+          await tester.tap(find.byKey(PracticeBanner.practiceButtonKey));
+          await pumpAndSettle(tester);
+
+          await Future.delayed(const Duration(seconds: 2));
+
+          expect(
+            find.byElementPredicate(
+              (element) {
+                if (element.widget case final Text t) {
+                  return t.data == '0/5';
+                }
+                return false;
+              },
+            ),
+            findsOneWidget,
+          );
+
+          final cardController =
+              tester.widget<CardSwiper>(find.byType(CardSwiper)).controller!;
+
+          for (int i = 0; i < 2; ++i) {
+            final currWord = tester
+                .widget<Text>(find.descendant(
+                  of: find.byKey(PracticeScreen.currentCardKey),
+                  matching: find.byKey(WordCardFront.wordTextKey),
+                ))
+                .data!;
+
+            remembered.add(currWord);
+            cardController.swipe();
+            await pumpAndSettle(tester);
+          }
+
+          for (int i = 0; i < 3; ++i) {
+            final currWord = tester
+                .widget<Text>(find.descendant(
+                  of: find.byKey(PracticeScreen.currentCardKey),
+                  matching: find.byKey(WordCardFront.wordTextKey),
+                ))
+                .data!;
+
+            forgotten.add(currWord);
+
+            await tester.tap(find.descendant(
+              of: find.byKey(PracticeScreen.currentCardKey),
+              matching: find.byKey(WordCardFront.seeDefinitionKey),
+            ));
+            await pumpAndSettle(tester);
+
+            cardController.swipe();
+            await pumpAndSettle(tester);
+          }
+
+          await pumpAndSettle(tester);
+          await pumpAndSettle(tester);
+          await pumpAndSettle(tester);
           await pumpAndSettle(tester);
         },
       );

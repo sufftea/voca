@@ -13,6 +13,9 @@ class WordCardFront extends StatelessWidget {
     super.key,
   });
 
+  static final wordTextKey = UniqueKey();
+  static final seeDefinitionKey = UniqueKey();
+
   final WordCard card;
   final bool dragging;
   final VoidCallback? onShowDefinition;
@@ -44,6 +47,7 @@ class WordCardFront extends StatelessWidget {
 
   Widget buildDefinitionButton(ThemeData theme) {
     return OutlinedButton(
+      key: seeDefinitionKey,
       onPressed: onShowDefinition,
       style: ButtonStyle(
         overlayColor: MaterialStatePropertyAll(
@@ -88,6 +92,7 @@ class WordCardFront extends StatelessWidget {
     return Center(
       child: Text(
         card.word.name,
+        key: wordTextKey,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: theme.colorScheme.onPrimary,

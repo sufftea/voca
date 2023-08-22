@@ -35,6 +35,9 @@ class SwipeCardData {
 class PracticeScreen extends StatefulWidget {
   const PracticeScreen({super.key});
 
+  static final cardCounterKey = UniqueKey();
+  static final currentCardKey = UniqueKey();
+
   @override
   State<PracticeScreen> createState() => _PracticeScreenState();
 }
@@ -242,6 +245,7 @@ class _PracticeScreenState extends State<PracticeScreen>
 
           return Text(
             total == null ? '--/--' : '$curr/$total',
+            key: PracticeScreen.cardCounterKey,
             style: TextStyle(
               color: theme.colorScheme.onBackground,
               fontSize: 18,
@@ -347,6 +351,7 @@ class _PracticeScreenState extends State<PracticeScreen>
           prev.isFlipped != curr.isFlipped || prev.index != curr.index,
       builder: (context, state) {
         final frontCard = WordCardFront(
+          key: state.index == index ? PracticeScreen.currentCardKey : null,
           card: state.cards![index],
           maxRepetitionCount: state.maxRepetitionCount,
           onShowDefinition: () {

@@ -11,6 +11,9 @@ class TabBarShellScreen extends StatelessWidget {
     super.key,
   });
 
+  static final homeTabKey = UniqueKey();
+  static final settingsTabKey = UniqueKey();
+
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
@@ -55,10 +58,12 @@ class TabBarShellScreen extends StatelessWidget {
             },
             destinations: [
               NavigationDestination(
+                key: homeTabKey,
                 icon: const Icon(Icons.home),
                 label: t.navBar.home,
               ),
               NavigationDestination(
+                key: settingsTabKey,
                 icon: const Icon(Icons.settings),
                 label: t.navBar.settings,
               ),
