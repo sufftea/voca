@@ -21,6 +21,8 @@ part 'main_router.gr.dart';
 
 @AutoRouterConfig()
 class MainRouter extends _$MainRouter {
+  MainRouter({super.navigatorKey});
+
   @override
   List<AutoRoute> get routes => [
         CustomRoute(

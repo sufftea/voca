@@ -4,7 +4,10 @@ import 'package:voca/data/managers/database_manager/database_manager.dart';
 import 'package:voca/domain/repositories/app_data_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
 
-@LazySingleton(as: AppDataRepository, env: [mainEnv])
+@LazySingleton(as: AppDataRepository, env: [
+  InjectableEnv.main,
+  InjectableEnv.integration,
+ ])
 class AppDataRepositoryImpl implements AppDataRepository {
   const AppDataRepositoryImpl(this._assetsManager, this._databaseManager);
 

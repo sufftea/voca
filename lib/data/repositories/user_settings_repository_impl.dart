@@ -5,7 +5,10 @@ import 'package:voca/domain/entities/app_theme.dart' as domain;
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
 
-@LazySingleton(as: UserSettingsRepository, env: [mainEnv])
+@LazySingleton(as: UserSettingsRepository, env: [
+  InjectableEnv.main,
+  InjectableEnv.integration,
+])
 class UserSettingsRepositoryImpl extends UserSettingsRepository {
   UserSettingsRepositoryImpl(
     this._prefs,

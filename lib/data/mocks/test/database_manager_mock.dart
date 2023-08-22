@@ -4,10 +4,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:voca/data/managers/assets_manager/assets_manager.dart';
 import 'package:voca/data/managers/database_manager/database_manager.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:voca/injectable/injectable_init.dart';
 
-import '../../injectable/configure_test_dependencies.dart';
 
-@LazySingleton(as: DatabaseManager, env: [testEnv])
+
+@LazySingleton(as: DatabaseManager, env: [InjectableEnv.test])
 class DatabaseManagerMock extends DatabaseManager {
   Database? _db;
 

@@ -6,6 +6,9 @@ import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 class CrashlyticsDialog extends StatelessWidget {
   const CrashlyticsDialog({super.key});
 
+  static final acceptKey = UniqueKey();
+  static final denyKey = UniqueKey();
+
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
@@ -56,20 +59,23 @@ class CrashlyticsDialog extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
+          key: denyKey,
           onPressed: () {
             Navigator.of(context).pop(false);
           },
           style: ButtonStyle(
-              foregroundColor:
-                  MaterialStatePropertyAll(theme.colorScheme.primary),
-              textStyle: const MaterialStatePropertyAll(TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeights.bold,
-              ))),
+            foregroundColor:
+                MaterialStatePropertyAll(theme.colorScheme.primary),
+            textStyle: const MaterialStatePropertyAll(TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeights.bold,
+            )),
+          ),
           child: Text(t.home.crashlyticsPermission.deny),
         ),
         const SizedBox(width: 8),
         FilledButton(
+          key: acceptKey,
           onPressed: () {
             Navigator.of(context).pop(true);
           },

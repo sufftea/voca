@@ -45,12 +45,21 @@ OR
 
 You can try to just remove the firebase initialization in `main.dart`. I only use crashlytics currently, so it should still work.
 
-**Tests**
+## Tests
+
+**Unit tests**
 
 Run this once before testing:
 ```
 test/scripts/update_test_db.sh 
 ```
+
+**Integration tests**
+
+```
+scripts/run_integration.sh [specific_test.dart]
+```
+
 
 
 ## Sources

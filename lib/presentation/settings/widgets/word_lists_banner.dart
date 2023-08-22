@@ -8,6 +8,8 @@ import 'package:voca/presentation/base/widgets/base_card.dart';
 class WordListsBanner extends StatelessWidget {
   const WordListsBanner({super.key});
 
+  static final learningListButtonKey = UniqueKey();
+
   @override
   Widget build(BuildContext context) {
     final theme= Theme.of(context);
@@ -36,6 +38,7 @@ class WordListsBanner extends StatelessWidget {
     final t = Translations.of(context);
 
     return OutlinedButton(
+      key: learningListButtonKey,
       onPressed: () {
         final router = AutoRouter.of(context);
         router.push(const LearningListRoute());
