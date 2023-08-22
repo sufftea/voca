@@ -1,12 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:voca/domain/repositories/words_repository.dart';
-
-import '../injectable/configure_test_dependencies.dart';
+import 'package:voca/injectable/injectable_init.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureTestDependencies();
+  await configureDependencies(InjectableEnv.test);
 
   final wordsRepo = getIt.get<WordsRepository>();
 

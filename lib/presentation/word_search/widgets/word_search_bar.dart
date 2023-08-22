@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/theming/app_themes.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
-class MySearchBar extends StatelessWidget {
-  const MySearchBar({
+class WordSearchBar extends StatelessWidget {
+  const WordSearchBar({
     this.onChanged,
     this.onTap,
     this.initialValue,
@@ -11,6 +11,8 @@ class MySearchBar extends StatelessWidget {
     this.elevation = 1.0,
     super.key,
   });
+
+  static final textFieldKey = UniqueKey();
 
   final VoidCallback? onTap;
   final void Function(String)? onChanged;
@@ -37,6 +39,7 @@ class MySearchBar extends StatelessWidget {
         ],
       ),
       child: TextFormField(
+        key: textFieldKey,
         initialValue: initialValue,
         onTap: onTap,
         onChanged: onChanged,

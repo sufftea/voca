@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/main_router.dart';
-import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/word_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 
 @RoutePage()
@@ -95,7 +95,7 @@ class TabBarShellScreen extends StatelessWidget {
           tag: SearchBarHeroData.tag,
           child: Material(
             type: MaterialType.transparency,
-            child: MySearchBar(
+            child: WordSearchBar(
               elevation: 0,
             ),
           ),

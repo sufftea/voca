@@ -11,7 +11,7 @@ import 'package:voca/presentation/home/cubit/home_events.dart';
 import 'package:voca/presentation/home/cubit/home_state.dart';
 import 'package:voca/presentation/home/widgets/crashlytics_dialog.dart';
 import 'package:voca/presentation/home/widgets/practice_banner.dart';
-import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/word_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 
 @RoutePage()
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen>
             onPointerDown: (_) => onOpenSearch(),
             behavior: HitTestBehavior.opaque,
             child: const AbsorbPointer(
-              child: MySearchBar(
+              child: WordSearchBar(
                 elevation: 0,
               ),
             ),
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PlaceholderOr(real: MySearchBar()),
+          PlaceholderOr(real: WordSearchBar()),
         ],
       ),
     );

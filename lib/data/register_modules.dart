@@ -4,7 +4,7 @@ import 'package:voca/injectable/injectable_init.dart';
 
 @module
 abstract class Modules {
-  @Environment(mainEnv)
+  @Environment(InjectableEnv.main)
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 }

@@ -9,7 +9,7 @@ import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/word_search/cubit/search_cubit.dart';
 import 'package:voca/presentation/word_search/cubit/search_state.dart';
 import 'package:voca/presentation/word_search/widgets/add_word_button.dart';
-import 'package:voca/presentation/word_search/widgets/my_search_bar.dart';
+import 'package:voca/presentation/word_search/widgets/word_search_bar.dart';
 import 'package:voca/presentation/word_search/widgets/search_bar_hero_data.dart';
 import 'package:voca/presentation/word_search/widgets/word_list_entry.dart';
 
@@ -102,7 +102,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
                 builder: (context, _) {
                   return Material(
                     type: MaterialType.transparency,
-                    child: MySearchBar(
+                    child: WordSearchBar(
                       initialValue: widget.initialSearch,
                       key: k,
                       focusNode: searchBarFocusNode,
@@ -114,7 +114,7 @@ class _WordSearchScreenState extends State<WordSearchScreen>
             },
             child: Material(
               type: MaterialType.transparency,
-              child: MySearchBar(
+              child: WordSearchBar(
                 onChanged: cubit.onSearchTextChanged,
                 initialValue: widget.initialSearch,
                 key: k,
@@ -135,7 +135,6 @@ class _WordSearchScreenState extends State<WordSearchScreen>
           prev.maxRepetitionCount != curr.maxRepetitionCount,
       builder: (context, state) {
         final t = Translations.of(context);
-        debugPrint('rebuilding search results.');
         return switch (state.status) {
           SearchStatus.needsMoreLetters => buildMessage(t.search.enterNLetters),
           SearchStatus.noResults => buildMessage(t.search.noResults),

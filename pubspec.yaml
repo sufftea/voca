@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -25,7 +25,7 @@ dependencies:
   provider: ^6.0.5
   card_swiper: ^2.0.4
   # flutter_card_swiper: ^6.0.0
-  flutter_card_swiper: 
+  flutter_card_swiper:
     path: packages/flutter_card_swiper
   url_launcher: ^6.1.10
   receive_intent: ^0.2.3
@@ -39,6 +39,8 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3

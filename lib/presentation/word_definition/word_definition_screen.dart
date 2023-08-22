@@ -18,6 +18,8 @@ class WordDefinitionScreen extends StatefulWidget {
     super.key,
   });
 
+  static final noneButtonKey = UniqueKey();
+  static final addToLearningButtonKey = UniqueKey();
   final WordCard wordCard;
 
   @override
@@ -145,8 +147,14 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           constraints: BoxConstraints(minWidth: width, minHeight: 48),
           selectedColor: theme.colorScheme.primary,
           children: [
-            Text(t.wordDefinition.none),
-            Text(t.wordDefinition.learning),
+            Text(
+              key: WordDefinitionScreen.noneButtonKey,
+              t.wordDefinition.none,
+            ),
+            Text(
+              key: WordDefinitionScreen.addToLearningButtonKey,
+              t.wordDefinition.learning,
+            ),
           ],
         );
       },

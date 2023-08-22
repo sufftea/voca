@@ -1,12 +1,14 @@
 import 'package:injectable/injectable.dart';
+import 'package:voca/data/repositories/user_settings_repository_impl.dart';
 import 'package:voca/domain/domain_constants.dart';
+import 'package:voca/domain/entities/app_theme.dart' as domain;
 import 'package:voca/domain/repositories/user_settings_repository.dart';
+import 'package:voca/injectable/injectable_init.dart';
+import 'package:voca/presentation/base/theming/app_themes.dart';
 
-import '../../injectable/configure_test_dependencies.dart';
-
-@LazySingleton(as: UserSettingsRepository, env: [testEnv])
-class UserSettingsRepositoryImpl extends UserSettingsRepository {
-  UserSettingsRepositoryImpl();
+@LazySingleton(as: UserSettingsRepository, env: [InjectableEnv.test])
+class UserSettingsRepositoryMock extends UserSettingsRepository {
+  UserSettingsRepositoryMock();
 
   int? _repetitionCount;
   bool? _crashlyticsCollectionAccepted;
@@ -39,10 +41,15 @@ class UserSettingsRepositoryImpl extends UserSettingsRepository {
   Future<void> setCrashlyticsCollectionAccepted(bool accepted) async {
     _crashlyticsCollectionAccepted = accepted;
   }
+
+  @override
+  Future<domain.AppTheme?> getTheme() async {
+    return domain.AppTheme(
+      themeName: AppThemeName.green.toString(),
+      dark: false,
+    );
+  }
+
+  @override
+  Future<void> setTheme(domain.AppTheme theme) async {}
 }
-
-sealed class UserSettingsException implements Exception {}
-
-class RepetitionCountLimitException extends UserSettingsException {}
-
-class StorageUpdateFailed extends UserSettingsException {}
