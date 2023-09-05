@@ -13,6 +13,8 @@ class PracticeBanner extends StatelessWidget {
     super.key,
   });
 
+  static final practiceButtonKey = UniqueKey();
+
   static const placeholder = PlaceholderOr(
     real: PracticeBanner(
       cardsForPractice: 0,
@@ -50,6 +52,7 @@ class PracticeBanner extends StatelessWidget {
             buildCardsForTodayInfo(theme),
             const SizedBox(height: 16),
             FilledButton(
+              key: practiceButtonKey,
               onPressed: switch (cardsForPractice) {
                 0 => null,
                 _ => () => onPracticeButtonPressed(context),

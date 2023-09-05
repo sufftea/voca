@@ -22,7 +22,6 @@ class WordsRepositoryImpl implements WordsRepository {
   Future<List<WordCard>> findWords(String query) async {
     final db = _databaseManager.db;
 
-    
     query = query.trim();
     final qWords = await db.query(
       'word',
@@ -31,7 +30,8 @@ class WordsRepositoryImpl implements WordsRepository {
       whereArgs: [
         query.replaceAll('', '%'),
       ],
-      orderBy: "(word like '%$query') + (word like '$query%') DESC",
+      orderBy:
+          "(word like '%$query') + (word like '$query%') + (word == '$query') DESC",
       limit: 100,
     );
 
