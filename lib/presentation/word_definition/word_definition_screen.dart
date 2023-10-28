@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/widgets/app_bar_card.dart';
@@ -142,10 +142,10 @@ class _WordDefinitionScreenState extends State<WordDefinitionScreen>
           borderRadius: BorderRadius.circular(6),
           borderWidth: borderWidth,
           color: theme.colorScheme.secondary,
-          fillColor: theme.colorScheme.primaryContainer,
-          selectedBorderColor: theme.colorScheme.primary,
+          fillColor: theme.colorScheme.secondaryContainer,
+          selectedBorderColor: theme.colorScheme.secondary,
           constraints: BoxConstraints(minWidth: width, minHeight: 48),
-          selectedColor: theme.colorScheme.primary,
+          selectedColor: theme.colorScheme.onSecondaryContainer,
           children: [
             Text(
               key: WordDefinitionScreen.noneButtonKey,

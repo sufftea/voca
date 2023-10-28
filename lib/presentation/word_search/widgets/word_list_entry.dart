@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voca/domain/entities/word_card.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 import 'package:voca/presentation/base/widgets/base_card.dart';
 import 'package:voca/presentation/base/widgets/clicable_card.dart';
 import 'package:voca/presentation/common_widgets/card_repetition_indicator.dart';

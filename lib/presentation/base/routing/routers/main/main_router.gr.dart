@@ -15,27 +15,22 @@ abstract class _$MainRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    WordSearchRoute.name: (routeData) {
-      final args = routeData.argsAs<WordSearchRouteArgs>(
-          orElse: () => const WordSearchRouteArgs());
+    HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: WordSearchScreen(
-          initialSearch: args.initialSearch,
-          key: args.key,
-        ),
+        child: const HomeScreen(),
+      );
+    },
+    HomeTabRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeTabRouterScreen(),
       );
     },
     LearningListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const LearningListScreen(),
-      );
-    },
-    HomeRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomeScreen(),
       );
     },
     PracticeRoute.name: (routeData) {
@@ -56,12 +51,6 @@ abstract class _$MainRouter extends RootStackRouter {
         child: const SettingsTabRouterScreen(),
       );
     },
-    HomeTabRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomeTabRouterScreen(),
-      );
-    },
     TabBarShellRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -78,59 +67,18 @@ abstract class _$MainRouter extends RootStackRouter {
         ),
       );
     },
+    WordSearchRoute.name: (routeData) {
+      final args = routeData.argsAs<WordSearchRouteArgs>(
+          orElse: () => const WordSearchRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WordSearchScreen(
+          initialSearch: args.initialSearch,
+          key: args.key,
+        ),
+      );
+    },
   };
-}
-
-/// generated route for
-/// [WordSearchScreen]
-class WordSearchRoute extends PageRouteInfo<WordSearchRouteArgs> {
-  WordSearchRoute({
-    String? initialSearch,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          WordSearchRoute.name,
-          args: WordSearchRouteArgs(
-            initialSearch: initialSearch,
-            key: key,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'WordSearchRoute';
-
-  static const PageInfo<WordSearchRouteArgs> page =
-      PageInfo<WordSearchRouteArgs>(name);
-}
-
-class WordSearchRouteArgs {
-  const WordSearchRouteArgs({
-    this.initialSearch,
-    this.key,
-  });
-
-  final String? initialSearch;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'WordSearchRouteArgs{initialSearch: $initialSearch, key: $key}';
-  }
-}
-
-/// generated route for
-/// [LearningListScreen]
-class LearningListRoute extends PageRouteInfo<void> {
-  const LearningListRoute({List<PageRouteInfo>? children})
-      : super(
-          LearningListRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'LearningListRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -143,6 +91,34 @@ class HomeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'HomeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeTabRouterScreen]
+class HomeTabRoute extends PageRouteInfo<void> {
+  const HomeTabRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeTabRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeTabRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LearningListScreen]
+class LearningListRoute extends PageRouteInfo<void> {
+  const LearningListRoute({List<PageRouteInfo>? children})
+      : super(
+          LearningListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LearningListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -185,20 +161,6 @@ class SettingsTabRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsTabRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [HomeTabRouterScreen]
-class HomeTabRoute extends PageRouteInfo<void> {
-  const HomeTabRoute({List<PageRouteInfo>? children})
-      : super(
-          HomeTabRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeTabRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -252,5 +214,43 @@ class WordDefinitionRouteArgs {
   @override
   String toString() {
     return 'WordDefinitionRouteArgs{wordCard: $wordCard, key: $key}';
+  }
+}
+
+/// generated route for
+/// [WordSearchScreen]
+class WordSearchRoute extends PageRouteInfo<WordSearchRouteArgs> {
+  WordSearchRoute({
+    String? initialSearch,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WordSearchRoute.name,
+          args: WordSearchRouteArgs(
+            initialSearch: initialSearch,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'WordSearchRoute';
+
+  static const PageInfo<WordSearchRouteArgs> page =
+      PageInfo<WordSearchRouteArgs>(name);
+}
+
+class WordSearchRouteArgs {
+  const WordSearchRouteArgs({
+    this.initialSearch,
+    this.key,
+  });
+
+  final String? initialSearch;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WordSearchRouteArgs{initialSearch: $initialSearch, key: $key}';
   }
 }

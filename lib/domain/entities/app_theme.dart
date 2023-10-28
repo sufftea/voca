@@ -1,9 +1,25 @@
 class AppTheme {
   const AppTheme({
-    required this.themeName,
-    required this.dark,
+    this.themeColor = ThemeColors.blue,
+    this.isDark = false,
   });
 
-  final String themeName;
-  final bool dark;
+  final ThemeColors themeColor;
+  final bool isDark;
+
+  AppTheme copyWith({
+    ThemeColors? themeColor,
+    bool? isDark,
+  }) {
+    return AppTheme(
+      themeColor: themeColor ?? this.themeColor,
+      isDark: isDark ?? this.isDark,
+    );
+  }
+}
+
+enum ThemeColors {
+  orange, 
+  blue, 
+  green,
 }

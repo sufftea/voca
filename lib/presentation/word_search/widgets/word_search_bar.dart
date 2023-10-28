@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 
 class WordSearchBar extends StatelessWidget {
@@ -32,7 +32,7 @@ class WordSearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.shadow,
+            color: theme.shadowColor,
             blurRadius: 5 * elevation,
             offset: const Offset(0, 2) * elevation,
           )
@@ -48,16 +48,21 @@ class WordSearchBar extends StatelessWidget {
           hintText: t.search.enterWord,
           contentPadding: const EdgeInsets.all(12),
           filled: true,
-          fillColor: theme.colorScheme.secondaryContainer,
+          // fillColor: theme.colorScheme.secondaryContainer,
+          fillColor: theme.colorScheme.surfaceVariant,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(
-                color: theme.colorScheme.onSecondaryContainer.withOpacity(0.1)),
+              color: theme.colorScheme.onSecondaryContainer.withOpacity(0.1),
+              strokeAlign: BorderSide.strokeAlignInside,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(
-                color: theme.colorScheme.onSecondaryContainer.withOpacity(0.2)),
+              color: theme.colorScheme.onSecondaryContainer.withOpacity(0.2),
+              strokeAlign: BorderSide.strokeAlignInside,
+            ),
           ),
           hintStyle: TextStyle(
             fontSize: 15,

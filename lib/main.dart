@@ -6,14 +6,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_intent/receive_intent.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/firebase_options.dart';
 import 'package:voca/injectable/injectable_init.dart';
 import 'package:voca/presentation/base/app_dependencies.dart';
-import 'package:voca/presentation/base/theming/theme_mapper.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 import 'package:voca/presentation/base/theming/theme_notifier.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
 import 'package:voca/presentation/base/routing/routers/main/add_word_router.dart';
@@ -51,13 +50,14 @@ void main() async {
   final router = MainRouter(navigatorKey: navigatorKey);
 
   final theme = await getIt.get<UserSettingsRepository>().getTheme();
-  final themeName = ThemeMapper.fromData(theme);
 
   runApp(AppDependencies(
-    theme: themeName,
+    theme: theme,
     builder: (context) {
+      final themeNotifier = context.watch<ThemeNotifier>();
+
       return MaterialApp.router(
-        theme: context.watch<ThemeNotifier>().compose(),
+        theme: composeTheme(themeNotifier.appTheme),
         routerConfig: router.config(),
       );
     },
@@ -79,12 +79,12 @@ void mainAddWord() async {
   final router = AddWordRouter();
 
   final theme = await getIt.get<UserSettingsRepository>().getTheme();
-  final themeName = ThemeMapper.fromData(theme);
 
   runApp(AppDependencies(
-    theme: themeName,
+    theme: theme,
     builder: (context) {
-      final themeData = context.watch<ThemeNotifier>().compose();
+      final themeNotifier = context.watch<ThemeNotifier>();
+      final themeData=  composeTheme(themeNotifier.appTheme);
 
       if (search == null) {
         return MaterialApp(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:voca/domain/entities/app_theme.dart';
 import 'package:voca/presentation/base/l10n/gen/strings.g.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 import 'package:voca/presentation/base/theming/theme_notifier.dart';
 import 'package:voca/presentation/base/utils/cubit_helpers/cubit_consumer.dart';
 import 'package:voca/presentation/base/utils/extensions/list_x.dart';
@@ -46,33 +47,33 @@ class ThemeBanner extends StatelessWidget
         SuperSwitch(
           onTap: () {
             final updatedTheme = themeNotifier.appTheme.copyWith(
-              dark: !themeNotifier.appTheme.dark,
+              isDark: !themeNotifier.appTheme.isDark,
             );
 
             themeNotifier.appTheme = updatedTheme;
-            cubit(context).onSetTheme(updatedTheme);
           },
-          value: themeNotifier.appTheme.dark,
+          value: themeNotifier.appTheme.isDark,
         ),
       ],
     );
   }
 
   Row buildColorSelection(ThemeNotifier themeNotifier, BuildContext context) {
-    final cols = <(int, AppThemeName, ThemeData)>[];
+    final colors = <(ThemeColors, ThemeData)>[];
 
-    for (final (int i, AppThemeName themeName)
-        in AppThemeName.values.enumerate()) {
-      cols.add((
-        i,
-        themeName,
-        composeTheme(themeNotifier.appTheme.copyWith(name: themeName)),
+    for (final ThemeColors color in ThemeColors.values) {
+      colors.add((
+        color,
+        composeTheme(AppTheme(
+          themeColor: color,
+          isDark: themeNotifier.appTheme.isDark,
+        )),
       ));
     }
 
     return Row(
       children: [
-        for (final (i, themeName, themeData) in cols) ...[
+        for (final (i, (themeColor, themeData)) in colors.enumerate()) ...[
           if (i != 0) const SizedBox(width: 8),
           Expanded(
             child: Theme(
@@ -80,23 +81,22 @@ class ThemeBanner extends StatelessWidget
               child: FilledButton(
                 onPressed: () async {
                   final updatedTheme = themeNotifier.appTheme.copyWith(
-                    name: themeName,
+                    themeColor: themeColor,
                   );
 
                   themeNotifier.appTheme = updatedTheme;
-                  await cubit(context).onSetTheme(updatedTheme);
                 },
                 style: ButtonStyle(
                   padding: const MaterialStatePropertyAll(EdgeInsets.zero),
                   side: MaterialStatePropertyAll(BorderSide(
                     color: themeData.colorScheme.onPrimaryContainer,
-                    width: themeNotifier.appTheme.name == themeName ? 2 : 0,
+                    width: themeNotifier.appTheme.themeColor == themeColor ? 2 : 0,
                   )),
                 ),
                 child: SizedBox(
                   height: 32,
                   child: Center(
-                    child: themeNotifier.appTheme.name == themeName
+                    child: themeNotifier.appTheme.themeColor == themeColor
                         ? const Icon(Icons.check)
                         : null,
                   ),

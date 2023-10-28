@@ -36,7 +36,7 @@ class AppBarCard extends StatelessWidget {
           color: color ?? theme.colorScheme.surfaceVariant,
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow,
+              color: theme.shadowColor,
               blurRadius: 10,
             ),
           ],

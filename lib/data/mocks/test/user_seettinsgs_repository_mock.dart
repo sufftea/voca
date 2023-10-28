@@ -1,10 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:voca/data/repositories/user_settings_repository_impl.dart';
 import 'package:voca/domain/domain_constants.dart';
-import 'package:voca/domain/entities/app_theme.dart' as domain;
+import 'package:voca/domain/entities/app_theme.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
+import 'package:voca/presentation/base/theming/theming.dart';
 
 @LazySingleton(as: UserSettingsRepository, env: [InjectableEnv.test])
 class UserSettingsRepositoryMock extends UserSettingsRepository {
@@ -43,13 +43,13 @@ class UserSettingsRepositoryMock extends UserSettingsRepository {
   }
 
   @override
-  Future<domain.AppTheme?> getTheme() async {
-    return domain.AppTheme(
-      themeName: AppThemeName.green.toString(),
-      dark: false,
+  Future<AppTheme> getTheme() async {
+    return const AppTheme(
+      themeColor: ThemeColors.green,
+      isDark: false,
     );
   }
 
   @override
-  Future<void> setTheme(domain.AppTheme theme) async {}
+  Future<void> setTheme(AppTheme theme) async {}
 }
