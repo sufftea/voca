@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:voca/domain/domain_constants.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
-import 'package:voca/presentation/base/theming/app_themes.dart';
-import 'package:voca/presentation/base/theming/theme_mapper.dart';
 import 'package:voca/presentation/notifications/notifications_manager.dart';
 import 'package:voca/presentation/settings/cubit/repetition_count_setting_subject.dart';
 import 'package:voca/presentation/settings/cubit/settings_events.dart';
@@ -133,9 +131,5 @@ class SettingsCubit extends Cubit<SettingsState> {
     await _userSettingsRepository.setRepetitionCount(n);
 
     _countSettingSubject.add(n);
-  }
-
-  Future<void> onSetTheme(AppTheme theme) async {
-    _userSettingsRepository.setTheme(ThemeMapper.toData(theme));
   }
 }

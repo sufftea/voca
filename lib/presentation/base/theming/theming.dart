@@ -1,48 +1,52 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:voca/domain/entities/app_theme.dart';
 
-enum AppThemeName {
-  orange,
-  green,
-  blue,
+ThemeData composeTheme(AppTheme appTheme) {
+  final colors = switch (appTheme.themeColor) {
+    // ThemeColors.orange => FlexScheme.espresso,
+    // ThemeColors.blue => FlexScheme.ebonyClay,
+    // ThemeColors.green => FlexScheme.green,
+    ThemeColors.orange => FlexSchemeColor(
+        primary: Colors.brown.shade400,
+        secondary: const Color(0xff7f7eff),
+      ),
+    ThemeColors.blue => FlexSchemeColor(
+        primary: const Color(0xff7f7eff),
+        secondary: Colors.brown.shade400,
+      ),
+    ThemeColors.green => const FlexSchemeColor(
+        primary: Colors.green,
+        secondary: Color.fromARGB(0, 167, 197, 57),
+      ),
+    /*
+    consider: dellGenoa, flutterDash, 
+    add: espresso, hippieBlue
+    */
+  };
+
+  const keyColors = FlexKeyColors(
+    keepPrimary: true,
+    useSecondary: true,
+  );
+
+  return applySharedTheming(appTheme.isDark
+      ? FlexThemeData.dark(
+          useMaterial3: true,
+          colors: colors,
+          // scheme: color,
+          keyColors: keyColors,
+        )
+      : FlexColorScheme.light(
+          useMaterial3: true,
+          colors: colors,
+          // scheme: color,
+          keyColors: keyColors,
+        ).toTheme.copyWith(shadowColor: Colors.black45));
 }
 
-class AppTheme {
-  const AppTheme({
-    this.name = AppThemeName.green,
-    this.dark = false,
-  });
-
-  final AppThemeName name;
-  final bool dark;
-
-  AppTheme copyWith({
-    AppThemeName? name,
-    bool? dark,
-  }) {
-    return AppTheme(
-      name: name ?? this.name,
-      dark: dark ?? this.dark,
-    );
-  }
-}
-
-ThemeData composeTheme(AppTheme theme) {
-  return _applyEverythingElse(ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: switch (theme.name) {
-        AppThemeName.orange => Colors.orange,
-        AppThemeName.green => Colors.lightGreen,
-        AppThemeName.blue => Colors.blue,
-      },
-      shadow: theme.dark ? null : Colors.black26,
-      brightness: theme.dark ? Brightness.dark : Brightness.light,
-    ),
-  ));
-}
-
-ThemeData _applyEverythingElse(ThemeData theme) {
+ThemeData applySharedTheming(ThemeData theme) {
   return theme.copyWith(
-    useMaterial3: true,
     textTheme: Typography.blackMountainView.apply(),
     //
     textButtonTheme: TextButtonThemeData(
@@ -94,6 +98,7 @@ ThemeData _applyEverythingElse(ThemeData theme) {
           fontSize: 20,
           fontWeight: FontWeights.medium,
         )),
+        foregroundColor: MaterialStatePropertyAll(theme.colorScheme.onSurface)
       ),
     ),
     timePickerTheme: const TimePickerThemeData(

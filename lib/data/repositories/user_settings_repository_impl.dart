@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:voca/data/utils/theme_mapper.dart';
 import 'package:voca/domain/domain_constants.dart';
-import 'package:voca/domain/entities/app_theme.dart' as domain;
+import 'package:voca/domain/entities/app_theme.dart';
 import 'package:voca/domain/repositories/user_settings_repository.dart';
 import 'package:voca/injectable/injectable_init.dart';
 
@@ -49,26 +50,32 @@ class UserSettingsRepositoryImpl extends UserSettingsRepository {
   }
 
   @override
-  Future<void> setTheme(domain.AppTheme theme) async {
-    _prefs.setString(_Keys.appThemeName, theme.themeName);
-    _prefs.setBool(_Keys.isDarkTheme, theme.dark);
+  Future<void> setTheme(AppTheme theme) async {
+    _prefs.setString(
+      _Keys.appThemeColor,
+      ThemeMapper.colorToString(theme.themeColor),
+    );
+    _prefs.setBool(_Keys.isDarkTheme, theme.isDark);
   }
 
   @override
-  Future<domain.AppTheme?> getTheme() async {
-    final name = _prefs.getString(_Keys.appThemeName);
+  Future<AppTheme> getTheme() async {
+    final name = _prefs.getString(_Keys.appThemeColor);
     final dark = _prefs.getBool(_Keys.isDarkTheme);
 
-    if (name == null || dark == null) return null;
+    if (name == null || dark == null) return const AppTheme();
 
-    return domain.AppTheme(themeName: name, dark: dark);
+    return AppTheme(
+      themeColor: ThemeMapper.fromString(name),
+      isDark: dark,
+    );
   }
 }
 
 class _Keys {
   static const repetitionCount = 'repetitionCount';
   static const crashlyticsCollectionAccepted = 'crashlyticsCollectionAccepted';
-  static const appThemeName = 'appThemeCode';
+  static const appThemeColor = 'appThemeCode';
   static const isDarkTheme = 'isDarkTheme';
 }
 
